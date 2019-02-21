@@ -1,0 +1,112 @@
+﻿<Dialogs:BaseMetroDialog x:Class="RSMaster.UI.Dialogs.LoginDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RSMaster.UI"
+        xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Height="Auto" Width="700"
+        BorderBrush="{DynamicResource WindowBorderBrush}"
+        Background="{DynamicResource DialogBackgroundBrush}">
+
+    <Dialogs:BaseMetroDialog.Resources>
+        <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
+    </Dialogs:BaseMetroDialog.Resources>
+    <Grid Width="400">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+            Grid.Row="0"
+            x:Name="ErrorMessage"
+            HorizontalAlignment="Left"
+            DockPanel.Dock="Left"
+            Height="0"
+            Margin="20 0"
+            Foreground="#df1717"
+            Style="{StaticResource TextBlockStyle}">Remember Details</TextBlock>
+        
+        <StackPanel
+            Grid.Row="1" 
+            Margin="20">
+                <TextBox
+                    Margin="0 0 0 6"
+                    Controls:TextBoxHelper.Watermark="Username"
+                    x:Name="TxtBoxUsername"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </TextBox>
+                <PasswordBox
+                    Margin="0 0 0 6"
+                    Controls:TextBoxHelper.Watermark="Password"
+                    x:Name="TxtBoxPassword"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </PasswordBox>
+                <TextBox
+                    Controls:TextBoxHelper.Watermark="License Key"
+                    x:Name="TxtBoxLicenseKey"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </TextBox>
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <DockPanel
+                Grid.Column="0"
+                Margin="20 0 20 20"
+                HorizontalAlignment="Left"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Remember Details</TextBlock>
+                <CheckBox 
+                    DockPanel.Dock="Left"
+                    HorizontalAlignment="Left"
+                    x:Name="ChkBoxRememberDetails" 
+                    Style="{DynamicResource CheckBoxStyle}"/>
+            </DockPanel>
+            
+            <DockPanel
+                Grid.Column="1" 
+                HorizontalAlignment="Right"
+                FlowDirection="LeftToRight"
+                Margin="0,0,20,20">
+                <Button
+				    Name="ButtonLogin"
+				    Height="27"
+				    FontFamily="Tahoma"
+				    FontWeight="Bold"
+				    FontSize="11"
+				    Padding="20,0,20,0"
+				    Content="Login" Style="{StaticResource ButtonStyle}" 
+                    Click="ButtonLogin_Click"/>
+                <Button
+				    Name="ButtonRegister"
+				    Height="27"
+				    FontFamily="Tahoma"
+				    FontWeight="Bold"
+				    FontSize="11"
+				    Padding="20,0,20,0"
+				    Content="Register"
+				    Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
+                    Click="ButtonRegister_Click"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Dialogs:BaseMetroDialog>

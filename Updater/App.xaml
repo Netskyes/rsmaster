@@ -1,0 +1,67 @@
+﻿<Application x:Class="Updater.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Updater"
+             StartupUri="MainWindow.xaml"
+             Startup="App_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <!-- Accent and AppTheme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary>
+                    <Color 
+                        x:Key="WindowBorderColor">#4a4f55</Color>
+                    <SolidColorBrush 
+                        x:Key="WindowBorderBrush" 
+                        Color="{StaticResource WindowBorderColor}" />
+                    <Color 
+                        x:Key="DialogBackgroundColor">#36393e</Color>
+                    <SolidColorBrush 
+                        x:Key="DialogBackgroundBrush" 
+                        Color="{StaticResource DialogBackgroundColor}" />
+                    <Color 
+                        x:Key="WindowBackground">#1e2124</Color>
+                    <SolidColorBrush 
+                        x:Key="WindowBackgroundBrush" 
+                        Color="{StaticResource WindowBackground}" />
+                    <Color
+				        x:Key="TextBoxBackgroundColor">#4a4f55</Color>
+                    <SolidColorBrush
+				        x:Key="TextBoxBackgroundBrush"
+				        Color="{StaticResource TextBoxBackgroundColor}" />
+                    <Color
+				        x:Key="TextBoxBorderColor">#6b7081</Color>
+                    <SolidColorBrush
+				        x:Key="TextBoxBorderBrush"
+				        Color="{StaticResource TextBoxBorderColor}" />
+                    <Color
+                        x:Key="BrightColor">#3e4146</Color>
+                    <SolidColorBrush
+				        x:Key="BrightBrush"
+				        Color="{StaticResource BrightColor}" />
+                    <Color
+				        x:Key="WhiteColor">#4a4f55</Color>
+                    <SolidColorBrush
+				        x:Key="WhiteBrush"
+				        Color="{StaticResource WhiteColor}" />
+                    <Color
+				        x:Key="HoverColor">#6b7081</Color>
+                    <SolidColorBrush
+                        x:Key="HoverBrush"
+                        Color="{StaticResource HoverColor}" />
+
+                    <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+                        <Setter Property="FontFamily" Value="Tahoma" />
+                        <Setter Property="Foreground" Value="#FFFFFF" />
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

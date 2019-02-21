@@ -1,0 +1,878 @@
+﻿<Controls:MetroWindow x:Class="RSMaster.UI.MainWindow"
+        Title="RS Master"
+        WindowStartupLocation="CenterScreen"
+        Height="700" Width="860"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:local="clr-namespace:RSMaster.UI"
+        mc:Ignorable="d"
+        Loaded="MetroWindow_Loaded"
+        BorderBrush="{DynamicResource WindowBorderBrush}" 
+        NonActiveBorderBrush="{DynamicResource WindowBorderBrush}"
+        WindowTitleBrush="{DynamicResource WindowBackgroundBrush}"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        WindowTransitionsEnabled="False"
+        RightWindowCommandsOverlayBehavior="HiddenTitleBar"
+        Closed="MetroWindow_Closed"
+        Closing="MetroWindow_Closing">
+
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
+    </Controls:MetroWindow.Resources>
+
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="Account Service" x:Name="ButtonServices" Click="ButtonServices_Click" />
+            <Button Content="Proxies" x:Name="ButtonProxySettings" Click="ButtonProxySettings_Click" />
+            <Button Content="Settings" x:Name="ButtonBotSettings" Click="ButtonBotSettings_Click" />
+            <Button Content="Client Options" x:Name="ButtonClientOptions" Click="ButtonClientOptions_Click" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
+    
+    <Grid Background="{DynamicResource DialogBackgroundBrush}">
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="2" />
+                <RowDefinition MinHeight="40" MaxHeight="210" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2" />
+                    <ColumnDefinition MaxWidth="320" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <DockPanel Grid.Row="0">
+                            <Button x:Name="ButtonLaunchAccount"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonLaunchAccount_Click"
+                                    ToolTip="Launch Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource PlayNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource PlayHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonStopAccount"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonStopAccount_Click"
+                                    ToolTip="Stop Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource StopNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource StopHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonAddAccount"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonAddAccount_Click"
+                                    ToolTip="Add New Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource NewNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource NewHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonImportExistingAccounts"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonImportExistingAccounts_Click"
+                                    ToolTip="Import Existing Accounts">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource ImportFileNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource ImportFileHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonDelAccount"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonDelAccount_Click"
+                                    ToolTip="Remove Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource DeleteNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource DeleteHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonAccountSettings"
+                                    Padding="0"
+                                    Margin="64 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonAccountSettings_Click"
+                                    ToolTip="Account Settings">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource SettingsNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource SettingsHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonAccountSchedule"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonAccountSchedule_Click"
+                                    ToolTip="Account Schedule">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource TimerNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource TimerHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                        </DockPanel>
+                    </Border>
+
+                    <DataGrid
+                        Grid.Row="1" 
+                        x:Name="AccountsList"
+                        ItemsSource="{Binding Path=AccountsListItems}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        SelectionMode="Single" 
+                        SelectionUnit="FullRow"
+                        CanUserAddRows="False"
+                        CanUserSortColumns="False"
+                        AutoGenerateColumns="False"
+                        ClipboardCopyMode="None"
+                        BorderThickness="0"
+                        Background="{DynamicResource DialogBackgroundBrush}"
+                        Foreground="#F4F4F4"
+                        HeadersVisibility="None"
+                        CellStyle="{StaticResource CellStyleWithPadding}">
+                        
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{DynamicResource DialogBackgroundBrush}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding Username}" Header="Username" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
+                            <!--<DataGridTextColumn Binding="{Binding Script}" Header="Script" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="100"/>-->
+                            <!--<DataGridTextColumn Binding="{Binding ProxyName}" Header="Proxy" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="100"/>-->
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Status" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="60">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#CCC" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Online">
+                                                <Setter Property="Foreground" Value="#21a884" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="Visibility" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="56">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button 
+                                            x:Name="AccountVisibility"
+                                            Background="Transparent" 
+                                            Height="16" 
+                                            Width="20" 
+                                            HorizontalAlignment="Center"
+                                            BorderThickness="0"
+                                            Click="AccountVisibility_Click">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="Transparent" BorderThickness="0">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                            <Image 
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Source" Value="{DynamicResource VisibilityNormal}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Visible}" Value="True">
+                                                                <Setter Property="Source" Value="{DynamicResource VisibilityHovered}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Visible}" Value="False">
+                                                                <Setter Property="Source" Value="{DynamicResource VisibilityNormal}"/>
+                                                            </DataTrigger>
+                                                            <!--<Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Source" Value="{DynamicResource VisibilityHovered}"/>
+                                                            </Trigger>-->
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <Grid Grid.Column="2">
+                    <WindowsFormsHost Visibility="Hidden" x:Name="WindowHost" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <wf:Panel x:Name="WindowPanelHost" Dock="Fill"/>
+                    </WindowsFormsHost>
+                    
+                    <Grid x:Name="ClientOptionsTab" 
+                          Visibility="Hidden">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="33" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="33" />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Margin="9 9" 
+                                Style="{StaticResource TextBlockStyle}">Client Options</TextBlock>
+                        </Grid>
+
+                        <Grid Grid.Row="2" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Margin="9 9" 
+                                Style="{StaticResource TextBlockStyle}">Permissions</TextBlock>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Margin="20">
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Memory (MB)</TextBlock>
+                                <TextBox
+                                        DockPanel.Dock="Right"
+                                        Text="{Binding ClientMemory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="TxtBoxClientMemory"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="120"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Debug Mode</TextBlock>
+                                <CheckBox 
+                                    x:Name="ChkBoxEnableDebugMode" 
+                                    Style="{DynamicResource CheckBoxStyle}"
+                                    IsChecked="{Binding DebugMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Checked="Settings_Changed"
+                                    Unchecked="Settings_Changed"/>
+                            </DockPanel>
+                            
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Data Collection</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientDataCollection" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientDataCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <!--<DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Launch Hidden</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientLaunchHidden" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientLaunchHidden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>-->
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4" Margin="20">
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Use Reflection</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientReflection" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientReflection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Low CPU</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientLowCPU" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientLowCPU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Low Resource</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientLowResource" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientLowResource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">No Render</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientNoRender" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientNoRender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">No Randoms</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientNoRandoms" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientNoRandoms, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight"
+                                    Visibility="Hidden">
+                                <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">No Interface</TextBlock>
+                                <CheckBox 
+                                        x:Name="ChkBoxClientNoInterface" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding ClientNoInterface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="SettingsTab" 
+                          Visibility="Hidden">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="33" />
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="33" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Margin="9 9" 
+                                Style="{StaticResource TextBlockStyle}">OSBot Settings</TextBlock>
+                        </Grid>
+
+                        <Grid Grid.Row="2" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Margin="9 9" 
+                                Style="{StaticResource TextBlockStyle}">General</TextBlock>
+                        </Grid>
+
+                        <StackPanel Grid.Row="1" Margin="20">
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Username</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="OSBot Username"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxBotUsername"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Password</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="OSBot Password"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxBotPassword"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Base Location</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="OSBot User Location"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding BotBaseLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxBotLocation"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    IsReadOnly="True"
+                                    PreviewMouseDown="TxtBoxBotLocation_MouseDown"
+                                    TextChanged="Settings_Changed">
+                                </TextBox>
+                            </DockPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Margin="20">
+                            <TextBlock 
+                                Margin="0 0 0 8" 
+                                Style="{StaticResource TextBlockStyle}">Captcha API Key</TextBlock>
+                            <TextBox
+                                Margin="0 0 0 12" 
+                                Text="{Binding CaptchaApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                x:Name="TxtBoxCaptchaApiKey"
+                                Foreground="#FFFFFF" 
+                                Background="{DynamicResource TextBoxBackgroundBrush}"
+                                BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                TextChanged="Settings_Changed">
+                            </TextBox>
+                            
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <CheckBox 
+                                    Margin="0 0 6 0"
+                                    x:Name="ChkBoxHideAccountOnLaunch" 
+                                    Style="{DynamicResource CheckBoxStyle}"
+                                    IsChecked="{Binding ClientLaunchHidden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Checked="Settings_Changed"
+                                    Unchecked="Settings_Changed"/>
+                                <TextBlock 
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Launch Accounts Hidden</TextBlock>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <CheckBox 
+                                    Margin="0 0 6 0"
+                                    x:Name="ChkBoxKillClientsOnExit" 
+                                    Style="{DynamicResource CheckBoxStyle}"
+                                    IsChecked="{Binding KillClientsOnExit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Checked="Settings_Changed"
+                                    Unchecked="Settings_Changed"/>
+                                <TextBlock 
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Terminate OSBot Clients on program exit</TextBlock>
+                            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="AccountTab" 
+                          Visibility="Hidden">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="33" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="{DynamicResource WhiteBrush}">
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Margin="9 9" 
+                                Style="{StaticResource TextBlockStyle}">Account Settings</TextBlock>
+                        </Grid>
+
+                        <StackPanel 
+                            Grid.Row="1" 
+                            Margin="20" 
+                            x:Name="AccountTabDetails">
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Name</TextBlock>
+                                <TextBox
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountName"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Username</TextBlock>
+                                <TextBox
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountUsername"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Password</TextBlock>
+                                <TextBox
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountPassword"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel 
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Bank PIN</TextBlock>
+                                <TextBox
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding BankPIN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountBankPIN"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Startup Script</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="Name/Id:p1.p2.p3"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountScript"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Default World</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="301 - 525"
+                                    DockPanel.Dock="Right"
+                                    Text="{Binding World, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountWorld"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    LostFocus="AccountDetails_Changed">
+                                </TextBox>
+                            </DockPanel>
+                            
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Socks5 Proxy</TextBlock>
+                                <ComboBox
+                                    DockPanel.Dock="Right"
+                                    ItemsSource="{Binding SocksProxyListItems, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    DisplayMemberPath="Alias"
+                                    SelectedValuePath="Alias"
+                                    SelectedValue="{Binding ProxyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="CmbBoxAccountProxy"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    SelectionChanged="AccountDetails_Changed"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="100"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Enable Proxy</TextBlock>
+                                <CheckBox 
+                                    x:Name="ChkBoxEnableProxy" 
+                                    Style="{DynamicResource CheckBoxStyle}"
+                                    IsChecked="{Binding ProxyEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Checked="AccountDetails_Changed"
+                                    Unchecked="AccountDetails_Changed"/>
+                            </DockPanel>
+                        </StackPanel>
+
+                        <StackPanel 
+                            Grid.Row="3" 
+                            Margin="20" 
+                            x:Name="AccountTabOptions">
+
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <GridSplitter 
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch" 
+                    Width="2" 
+                    Grid.Column="1" 
+                    Background="{DynamicResource WindowBorderBrush}"/>
+            </Grid>
+
+            <GridSplitter 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" 
+                Height="2" 
+                Grid.Row="1" 
+                Background="{DynamicResource WindowBorderBrush}"/>
+
+            <Grid Grid.Row="2">
+                <TabControl Style="{DynamicResource TabControlStyle}">
+                    <TabItem 
+                        Header="Logs" 
+                        x:Name="LogsTab"
+                        Style="{DynamicResource TabItemStyle}">
+                        <TextBox 
+                            x:Name="Console" 
+                            TextWrapping="Wrap" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            BorderThickness="0"
+                            Padding="6"
+                            IsReadOnly="True"
+                            Background="{DynamicResource BrightBrush}"
+                            VerticalScrollBarVisibility="Auto">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="#f4f4f4" />
+                                    <Setter Property="FontFamily" Value="Tahoma" />
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </TabItem>
+                    <!--<TabItem 
+                        Header="Services" 
+                        x:Name="ServicesTab"
+                        Style="{DynamicResource TabItemStyle}">
+                        <Grid Background="{DynamicResource BrightBrush}"/>
+                    </TabItem>-->
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>

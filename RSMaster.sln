@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSMaster", "RSMaster\RSMaster.csproj", "{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Updater", "Updater\Updater.csproj", "{E4CB611A-0A60-4D07-9E14-4972EB14224B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSMaster.Utility", "RSMaster.Utility\RSMaster.Utility.csproj", "{A68EE588-BD26-479E-9EB4-CB00C2E2894B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CB611A-0A60-4D07-9E14-4972EB14224B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CB611A-0A60-4D07-9E14-4972EB14224B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CB611A-0A60-4D07-9E14-4972EB14224B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CB611A-0A60-4D07-9E14-4972EB14224B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A68EE588-BD26-479E-9EB4-CB00C2E2894B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68EE588-BD26-479E-9EB4-CB00C2E2894B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68EE588-BD26-479E-9EB4-CB00C2E2894B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68EE588-BD26-479E-9EB4-CB00C2E2894B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61C352A7-E07D-4F9F-A70E-006F56E403D1}
+	EndGlobalSection
+EndGlobal

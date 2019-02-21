@@ -1,0 +1,566 @@
+﻿<Controls:MetroWindow x:Class="RSMaster.UI.ServicesWindow"
+        Title="Account Service"
+        WindowStartupLocation="CenterScreen"
+        Height="480" Width="640"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:RSMaster.UI"
+        mc:Ignorable="d"
+        BorderBrush="{DynamicResource WindowBorderBrush}" 
+        NonActiveBorderBrush="{DynamicResource WindowBorderBrush}"
+        WindowTitleBrush="{DynamicResource WindowBackgroundBrush}"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        WindowTransitionsEnabled="False"
+        ResizeMode="NoResize"
+        Closing="MetroWindow_Closing">
+    
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
+    </Controls:MetroWindow.Resources>
+    <Grid Background="{DynamicResource DialogBackgroundBrush}">
+        <TabControl
+            Style="{DynamicResource TabControlStyle}"
+            x:Name="ServiceTabs">
+            <TabItem 
+                Header="Setup" 
+                x:Name="SetupTab"
+                Style="{DynamicResource TabItemStyle}">
+                <Grid 
+                    Background="{DynamicResource BrightBrush}"
+                    x:Name="AccountCreationSettings">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="33" />
+                            <RowDefinition />
+                            <RowDefinition Height="100"/>
+                        </Grid.RowDefinitions>
+
+                        <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                            <DockPanel Grid.Row="0">
+                                <Button x:Name="ButtonStartService"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonStartService_Click"
+                                    ToolTip="Create Accounts">
+                                    <Image Stretch="Fill">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{StaticResource PlayNormal}"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Source" Value="{StaticResource PlayHovered}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Button>
+                                <Button x:Name="ButtonStopService"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonStopService_Click"
+                                    ToolTip="Stop Accounts Creation">
+                                    <Image Stretch="Fill">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{StaticResource StopNormal}"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Source" Value="{StaticResource StopHovered}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Button>
+                            </DockPanel>
+                        </Border>
+
+                        <StackPanel 
+                            Margin="20" 
+                            x:Name="AccountGeneralSettings"
+                            Grid.Row="1">
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    DockPanel.Dock="Left"
+                                    Width="120"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Creation Method</TextBlock>
+                                <ComboBox
+                                    DisplayMemberPath="Value"
+                                    SelectedValuePath="Key"
+                                    x:Name="ComboBoxAccountCreationMethod"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    SelectedIndex="0"/>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    Width="120"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}"
+                                    ToolTip="Maximum accounts to process at the same time (0 unlimited)">Queue Limit</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="Unlimited"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding AccountCreateQueueLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxCreateAccountsQueueLimit"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed" />
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    Width="120"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}"
+                                    ToolTip="Break time between processing accounts in queue (0 none)">Break Time (min)</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="None"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding AccountCreateBreakTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxCreateAccountsDelay"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed" />
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    Width="120"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}"
+                                    ToolTip="Maximum accounts to create (0 unlimited)">Accounts Limit</TextBlock>
+                                <TextBox
+                                    Controls:TextBoxHelper.Watermark="Unlimited"
+                                    Width="80"
+                                    HorizontalAlignment="Left"
+                                    Text="{Binding AccountCreateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxCreateAccountsLimit"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed" />
+                            </DockPanel>
+                        </StackPanel>
+
+                        <Border
+                            Grid.Row="2" 
+                            BorderThickness="0 1 0 0" 
+                            BorderBrush="{DynamicResource WindowBorderBrush}">
+                            <TextBox
+                                x:Name="Console" 
+                                TextWrapping="Wrap" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                BorderThickness="0"
+                                Padding="12"
+                                IsReadOnly="True"
+                                Background="{DynamicResource BrightBrush}"
+                                VerticalScrollBarVisibility="Auto">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Foreground" Value="#f4f4f4" />
+                                        <Setter Property="FontFamily" Value="Tahoma" />
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Border>
+                    </Grid>
+
+                    <Border 
+                        Grid.Column="1" 
+                        BorderThickness="1 0 0 0" 
+                        BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="33" />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="33" />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Background="{DynamicResource WhiteBrush}">
+                                <TextBlock 
+                                    FontWeight="Bold"
+                                    Margin="9 9" 
+                                    Style="{StaticResource TextBlockStyle}">Account Creation</TextBlock>
+                            </Grid>
+
+                            <Grid Grid.Row="2" Background="{DynamicResource WhiteBrush}">
+                                <TextBlock 
+                                    FontWeight="Bold"
+                                    Margin="9 9" 
+                                    Style="{StaticResource TextBlockStyle}">On Account Created</TextBlock>
+                            </Grid>
+
+                            <StackPanel Grid.Row="1" Margin="20">
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Enable Proxy</TextBlock>
+                                    <CheckBox 
+                                        x:Name="ChkBoxCreateAccountUseHttpProxy" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding CreateAccountUseHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">HTTP(s) Proxy</TextBlock>
+                                    <ComboBox
+                                        ItemsSource="{Binding HttpsProxyListItems, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        DisplayMemberPath="Alias"
+                                        SelectedValuePath="Alias"
+                                        SelectedValue="{Binding CreateAccountHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="ComboBoxCreateAccountHttpProxy"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        SelectionChanged="Settings_Changed"/>
+                                </DockPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Margin="20">
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Launch Account</TextBlock>
+                                    <CheckBox 
+                                        x:Name="ChkBoxLaunchAccountOnCreate" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding LaunchAccountOnCreate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Set Script</TextBlock>
+                                    <TextBox
+                                        Controls:TextBoxHelper.Watermark="Name/Id:p1.p2.p3"
+                                        Text="{Binding AccountDefaultScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="TxtBoxAccountDefaultScript"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed">
+                                    </TextBox>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Set World</TextBlock>
+                                    <TextBox
+                                        Controls:TextBoxHelper.Watermark="301 - 525"
+                                        Text="{Binding AccountDefaultWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="TxtBoxAccountDefaultWorld"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed">
+                                    </TextBox>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Enable Proxy</TextBlock>
+                                    <CheckBox 
+                                        x:Name="ChkBoxAccountDefaultEnableProxy" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding AccountDefaultEnableProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Set Proxy</TextBlock>
+                                    <ComboBox
+                                        ItemsSource="{Binding SocksProxyListItems}"
+                                        DisplayMemberPath="Alias"
+                                        SelectedValuePath="Alias"
+                                        SelectedValue="{Binding AccountDefaultProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="ComboBoxAccountDefaultProxy"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        SelectionChanged="Settings_Changed"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem
+                Header="Imported"
+                x:Name="ImportedTab"
+                Style="{DynamicResource TabItemStyle}">
+                <Grid Background="{DynamicResource BrightBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <DockPanel Grid.Row="0">
+                            <Button x:Name="ButtonImportList"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonImportList_Click"
+                                    ToolTip="Import Accounts List">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource ImportFileNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource ImportFileHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonDeleteImported"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonDeleteImported_Click"
+                                    ToolTip="Delete Imported Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource DeleteNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource DeleteHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                        </DockPanel>
+                    </Border>
+
+                    <DataGrid 
+                        Grid.Row="1" 
+                        x:Name="AccountsList"
+                        ItemsSource="{Binding AccountsImportList, RelativeSource={RelativeSource AncestorType=Window}}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        SelectionMode="Single" 
+                        SelectionUnit="FullRow"
+                        CanUserAddRows="False"
+                        CanUserSortColumns="False"
+                        AutoGenerateColumns="False"
+                        ClipboardCopyMode="None"
+                        BorderThickness="0"
+                        Background="{DynamicResource DialogBackgroundBrush}"
+                        Foreground="#F4F4F4"
+                        HeadersVisibility="None"
+                        CellStyle="{StaticResource CellStyleWithPadding}">
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{DynamicResource DialogBackgroundBrush}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="80"/>
+                            <DataGridTextColumn Binding="{Binding Username}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Script}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding World}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="2">
+                        <TextBox
+                            x:Name="ImportHelpNote" 
+                            TextWrapping="Wrap" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            BorderThickness="0"
+                            Padding="12"
+                            IsReadOnly="True"
+                            Background="{DynamicResource BrightBrush}"
+                            VerticalScrollBarVisibility="Auto"
+                            Text="Import format: username/password/bankpin/script:params/world or replace value with /null/ to ignore
+                            Only username/password params are mandatory"
+                            Foreground="#CCC">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="#f4f4f4" />
+                                    <Setter Property="FontFamily" Value="Tahoma" />
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem 
+                Header="Status" 
+                x:Name="StatusTab"
+                Style="{DynamicResource TabItemStyle}">
+                <Grid Background="{DynamicResource BrightBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <DockPanel Grid.Row="0">
+                            <Button x:Name="ButtonClearStatuses"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonClearStatuses_Click"
+                                    ToolTip="Clear List">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource DeleteNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource DeleteHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                        </DockPanel>
+                    </Border>
+                    
+                    <DataGrid 
+                        Grid.Row="1" 
+                        x:Name="TasksList"
+                        ItemsSource="{Binding Path=TaskListItems}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        SelectionMode="Single" 
+                        SelectionUnit="FullRow"
+                        CanUserAddRows="False"
+                        CanUserSortColumns="False"
+                        AutoGenerateColumns="False"
+                        ClipboardCopyMode="None"
+                        BorderThickness="0"
+                        Background="{DynamicResource DialogBackgroundBrush}"
+                        Foreground="#F4F4F4"
+                        HeadersVisibility="None"
+                        CellStyle="{StaticResource CellStyleWithPadding}">
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{DynamicResource DialogBackgroundBrush}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}" Header="Name" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>

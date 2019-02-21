@@ -1,0 +1,290 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RSMaster.UI"
+                    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <Color 
+                x:Key="WindowBorderColor">#4a4f55</Color>
+            <SolidColorBrush 
+                x:Key="WindowBorderBrush" 
+                Color="{StaticResource WindowBorderColor}" />
+            <Color 
+                x:Key="DialogBackgroundColor">#36393e</Color>
+            <SolidColorBrush 
+                x:Key="DialogBackgroundBrush" 
+                Color="{StaticResource DialogBackgroundColor}" />
+            <Color 
+                x:Key="WindowBackground">#1e2124</Color>
+            <SolidColorBrush 
+                x:Key="WindowBackgroundBrush" 
+                Color="{StaticResource WindowBackground}" />
+            <Color
+				x:Key="TextBoxBackgroundColor">#4a4f55</Color>
+            <SolidColorBrush
+				x:Key="TextBoxBackgroundBrush"
+				Color="{StaticResource TextBoxBackgroundColor}" />
+            <Color
+				x:Key="TextBoxBorderColor">#6b7081</Color>
+            <SolidColorBrush
+				x:Key="TextBoxBorderBrush"
+				Color="{StaticResource TextBoxBorderColor}" />
+            <Color
+                x:Key="BrightColor">#3e4146</Color>
+            <SolidColorBrush
+				x:Key="BrightBrush"
+				Color="{StaticResource BrightColor}" />
+            <Color
+				x:Key="WhiteColor">#4a4f55</Color>
+            <SolidColorBrush
+				x:Key="WhiteBrush"
+				Color="{StaticResource WhiteColor}" />
+            <Color
+				x:Key="HoverColor">#6b7081</Color>
+            <SolidColorBrush
+                x:Key="HoverBrush"
+                Color="{StaticResource HoverColor}" />
+            <Color
+				x:Key="ButtonBorderColor">#6b7081</Color>
+            <SolidColorBrush
+				x:Key="ButtonBorderBrush"
+				Color="{StaticResource ButtonBorderColor}" />
+            <Color
+				x:Key="HoveredButtonColor">#6b7081</Color>
+            <SolidColorBrush
+				x:Key="HoveredButtonBrush"
+				Color="{StaticResource HoveredButtonColor}" />
+            <Color
+				x:Key="PressedButtonColor">#6c87e1</Color>
+            <SolidColorBrush
+				x:Key="PressedButtonBrush"
+				Color="{StaticResource PressedButtonColor}" />
+            <Color
+				x:Key="ButtonBorderPressedColor">#6b7081</Color>
+            <SolidColorBrush
+				x:Key="ButtonBorderPressedBrush"
+				Color="{StaticResource ButtonBorderPressedColor}" />
+
+            <BitmapImage
+                x:Key="PlayNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/play_dark_normal.png" />
+            <BitmapImage
+                x:Key="PlayHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/play_dark_hovered.png" />
+            <BitmapImage
+                x:Key="StopNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/stop_dark_normal.png" />
+            <BitmapImage
+                x:Key="StopHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/stop_dark_hovered.png" />
+            <BitmapImage
+                x:Key="StopPressed"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/stop_dark_pressed.png" />
+            <BitmapImage
+				x:Key="RedoNormal"
+				UriSource="pack://application:,,,/RSMaster;component/UI/Icons/redo_dark_normal.png" />
+            <BitmapImage
+				x:Key="RedoHovered"
+				UriSource="pack://application:,,,/RSMaster;component/UI/Icons/redo_dark_hovered.png" />
+            <BitmapImage
+				x:Key="DeleteNormal"
+				UriSource="pack://application:,,,/RSMaster;component/UI/Icons/delete_dark_normal.png" />
+            <BitmapImage
+				x:Key="DeleteHovered"
+				UriSource="pack://application:,,,/RSMaster;component/UI/Icons/delete_dark_hovered.png" />
+            <BitmapImage
+                x:Key="SaveFileNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/save_file_dark_normal.png" />
+            <BitmapImage
+                x:Key="SaveFileHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/save_file_dark_hovered.png" />
+            <BitmapImage
+                x:Key="SettingsNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/settings_dark_normal.png" />
+            <BitmapImage
+                x:Key="SettingsHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/settings_dark_hovered.png" />
+            <BitmapImage
+                x:Key="NewNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/new_dark_normal.png" />
+            <BitmapImage
+                x:Key="NewHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/new_dark_hovered.png" />
+            <BitmapImage
+                x:Key="OpenFileNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/open_file_dark_normal.png" />
+            <BitmapImage
+                x:Key="OpenFileHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/open_file_dark_hovered.png" />
+            <BitmapImage
+                x:Key="BuildNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/build_mesh_dark_normal.png" />
+            <BitmapImage
+                x:Key="BuildHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/build_mesh_dark_hovered.png" />
+            <BitmapImage
+                x:Key="ImportFileNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/import_dark_normal.png" />
+            <BitmapImage
+                x:Key="ImportFileHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/import_dark_hovered.png" />
+            <BitmapImage
+                x:Key="TimerNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/timer_dark_normal.png" />
+            <BitmapImage
+                x:Key="TimerHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/timer_dark_hovered.png" />
+            <BitmapImage
+                x:Key="VisibilityNormal"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/visibility_dark_normal.png" />
+            <BitmapImage
+                x:Key="VisibilityHovered"
+                UriSource="pack://application:,,,/RSMaster;component/UI/Icons/visibility_dark_hovered.png" />
+            
+            <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+                <Setter Property="FontFamily" Value="Tahoma" />
+                <Setter Property="Foreground" Value="#FFFFFF" />
+            </Style>
+            <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
+                <Setter
+				    Property="BorderThickness"
+				    Value="1" />
+                <Setter
+				    Property="BorderBrush"
+				    Value="{DynamicResource ButtonBorderBrush}" />
+                <Setter
+				    Property="Background"
+				    Value="{DynamicResource WhiteBrush}" />
+                <Setter
+				    Property="Foreground"
+				    Value="#FFFFFF" />
+                <Setter
+				    Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate
+						    TargetType="{x:Type Button}">
+                            <Border
+							    BorderBrush="{TemplateBinding BorderBrush}"
+							    Padding="{TemplateBinding Padding}"
+							    BorderThickness="{TemplateBinding BorderThickness}"
+							    Background="{TemplateBinding Background}">
+                                <ContentPresenter
+								    HorizontalAlignment="Center"
+								    VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger
+					    Property="UIElement.IsMouseOver"
+					    Value="True">
+                        <Setter
+						    Property="Background"
+						    Value="{DynamicResource HoveredButtonBrush}" />
+                    </Trigger>
+                    <Trigger
+				        Property="IsPressed"
+				        Value="True">
+                        <Setter
+						    Property="Background"
+						    Value="{DynamicResource PressedButtonBrush}" />
+                        <Setter
+						    Property="Foreground"
+						    Value="{DynamicResource Text1Brush}" />
+                        <Setter
+						    Property="BorderBrush"
+						    Value="{DynamicResource ButtonBorderPressedBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="CellStyleWithPadding" TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
+                <Setter Property="Padding" Value="5" />
+            </Style>
+            <Style x:Key="CheckBoxStyle" TargetType="CheckBox" BasedOn="{StaticResource MetroCheckBox}">
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}" />
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="TabControlStyle" TargetType="{x:Type TabControl}">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabControl}">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TabPanel 
+                                    Name="HeaderPanel"
+                                    Grid.Row="1"
+                                    Panel.ZIndex="1" 
+                                    Margin="0" 
+                                    IsItemsHost="True"
+                                    KeyboardNavigation.TabIndex="1"
+                                    Background="{StaticResource WindowBackgroundBrush}" />
+                                <Border 
+                                    Name="Border" 
+                                    Grid.Row="0" 
+                                    Background="{StaticResource WindowBackgroundBrush}" 
+                                    CornerRadius="0"
+                                    KeyboardNavigation.TabNavigation="Local"
+                                    KeyboardNavigation.DirectionalNavigation="Contained"
+                                    KeyboardNavigation.TabIndex="2" 
+                                    BorderBrush="{StaticResource WindowBorderBrush}"
+                                    BorderThickness="0 0 0 1">
+                                    <ContentPresenter 
+                                        Name="PART_SelectedContentHost"
+                                        Margin="0"
+                                        ContentSource="SelectedContent" />
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{StaticResource WindowBackgroundBrush}" />
+                                    <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TabItemStyle" TargetType="TabItem">
+                <Setter Property="Foreground" Value="#FFF" />
+                <Setter Property="Height" Value="33" />
+                <Setter Property="Width" Value="auto" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel">
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="18, 2" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Panel" Property="Background" Value="#4a4f55" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Panel" Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,227 @@
+﻿<Controls:MetroWindow x:Class="RSMaster.UI.SchedulerWindow"
+        Title="Scheduler" 
+        WindowStartupLocation="CenterScreen"
+        Height="380" Width="400"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:RSMaster.UI"
+        mc:Ignorable="d"
+        BorderBrush="{DynamicResource WindowBorderBrush}" 
+        NonActiveBorderBrush="{DynamicResource WindowBorderBrush}"
+        WindowTitleBrush="{DynamicResource WindowBackgroundBrush}"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        WindowTransitionsEnabled="False"
+        ResizeMode="NoResize">
+
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
+    </Controls:MetroWindow.Resources>
+    <Grid Background="{DynamicResource DialogBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid
+            x:Name="TimeEventSettings"
+            Grid.Row="0">
+            <StackPanel 
+                Grid.Row="1" Margin="20">
+                <DockPanel
+                    Margin="0 0 0 12"
+                    FlowDirection="LeftToRight">
+                    <TextBlock 
+                        Width="120"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">Day of the Week</TextBlock>
+                    <ComboBox
+                        DisplayMemberPath="Value"
+                        SelectedValuePath="Key"
+                        SelectedValue="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="CmbBoxDayOfTheWeek"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}" 
+                        SelectionChanged="DayOfTheWeekDetailChange"/>
+                </DockPanel>
+
+                <DockPanel
+                    Margin="0 0 0 12"
+                    FlowDirection="LeftToRight">
+                    <TextBlock 
+                        Width="120"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">Time</TextBlock>
+                    <TextBlock 
+                        Width="46"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">From</TextBlock>
+                    <TextBox
+                        Controls:TextBoxHelper.Watermark="00:00"
+                        Width="70"
+                        HorizontalAlignment="Right"
+                        Text="{Binding BeginningTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="TxtBoxEventTimeBeginning"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                        TextChanged="TimeFromDetailChange"/>
+                    <TextBlock 
+                        Width="48"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">to </TextBlock>
+                    <TextBox
+                        Controls:TextBoxHelper.Watermark="00:00"
+                        Width="70"
+                        HorizontalAlignment="Right"
+                        Text="{Binding EndingTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="TxtBoxEventTimeEnding"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                        TextChanged="TimeToDetailChange" />
+                </DockPanel>
+
+                <DockPanel
+                    Margin="0 0 0 12"
+                    FlowDirection="LeftToRight">
+                    <TextBlock 
+                        Width="120"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">Set Script</TextBlock>
+                    <TextBox
+                        Width="140"
+                        HorizontalAlignment="Left"
+                        Controls:TextBoxHelper.Watermark="Empty for default"
+                        Text="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="TxtBoxAccountScript"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                        TextChanged="TimeEventDetailChange">
+                    </TextBox>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="33" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                <DockPanel Grid.Row="0">
+                    <Button 
+                         x:Name="ButtonAddEvent"
+                         Padding="0"
+                         Margin="1 0 0 0"
+                         BorderThickness="0"
+                         Height="29" Width="31"
+                         Controls:ButtonHelper.CornerRadius="0" 
+                         HorizontalAlignment="Left"
+                         ToolTip="Add New Event"
+                         Click="ButtonAddEvent_Click">
+                        <Image Stretch="Fill">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{StaticResource NewNormal}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Source" Value="{StaticResource NewHovered}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
+                    <Button 
+                        x:Name="ButtonDeleteEvent"
+                        Padding="0"
+                        Margin="1 0 0 0"
+                        BorderThickness="0"
+                        Height="29" Width="31"
+                        Controls:ButtonHelper.CornerRadius="0" 
+                        HorizontalAlignment="Left"
+                        ToolTip="Delete Event"
+                        Click="ButtonDeleteEvent_Click">
+                        <Image Stretch="Fill">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{StaticResource DeleteNormal}"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Source" Value="{StaticResource DeleteHovered}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
+                </DockPanel>
+            </Border>
+            <DataGrid 
+                Grid.Row="1" 
+                x:Name="EventsList"
+                ItemsSource="{Binding Path=TimeEventsList}"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" 
+                SelectionMode="Single" 
+                SelectionUnit="FullRow"
+                CanUserAddRows="False"
+                CanUserSortColumns="False"
+                AutoGenerateColumns="False"
+                ClipboardCopyMode="None"
+                BorderThickness="0"
+                Background="{DynamicResource DialogBackgroundBrush}"
+                Foreground="#F4F4F4"
+                HeadersVisibility="None"
+                CellStyle="{StaticResource CellStyleWithPadding}"
+                SelectedCellsChanged="EventsList_SelectedCellsChanged">
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="{DynamicResource DialogBackgroundBrush}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Active" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox 
+                                    HorizontalAlignment="Center"
+                                    x:Name="ChkBoxEnableEvent" 
+                                    Style="{DynamicResource CheckBoxStyle}"
+                                    IsChecked="{Binding Active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Checked="TimeEventActiveChange"
+                                    Unchecked="TimeEventActiveChange"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding DayName}" Header="DayName" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="100"/>
+                    <DataGridTextColumn Header="Times" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="100">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding StringFormat="{}{0} - {1}">
+                                <Binding Path="BeginningTime" />
+                                <Binding Path="EndingTime" />
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Script}" Header="Script" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow>

@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4EE6C8A7-9650-4274-8D23-EED79F8F6E3F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>RSMaster</RootNamespace>
+    <AssemblyName>RSMaster</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.109.2\lib\net451\System.Data.SQLite.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net462\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="UI\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AccountManager.cs" />
+    <Compile Include="Account.cs" />
+    <Compile Include="Cryptography\AES.cs" />
+    <Compile Include="Data\DataRequestFilter.cs" />
+    <Compile Include="Delegates\Global.cs" />
+    <Compile Include="Extensions\DataAttributes.cs" />
+    <Compile Include="Helpers\AntiCaptchaHelper.cs" />
+    <Compile Include="Helpers\CaptchaTwoHelper.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\OSBotHelper.cs" />
+    <Compile Include="Helpers\RSWebHelper.cs" />
+    <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="ScheduleManager.cs" />
+    <Compile Include="Security\AeonGuard.cs" />
+    <Compile Include="Security\AuthHandler.cs" />
+    <Compile Include="NetworkManager.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientBase.cs" />
+    <Compile Include="Network\Enums\ReceiveType.cs" />
+    <Compile Include="Network\Enums\SecurityProtocolType.cs" />
+    <Compile Include="Network\Packet.cs" />
+    <Compile Include="RuneScape\Models\RSAccountForm.cs" />
+    <Compile Include="Config\Settings.cs" />
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="Interfaces\IViewModel.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
+    <Compile Include="UI\AuthWindow.xaml.cs">
+      <DependentUpon>AuthWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\MessageDialog.xaml.cs">
+      <DependentUpon>MessageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Models\PairValueModel.cs" />
+    <Compile Include="UI\Models\TimeEvent.cs" />
+    <Compile Include="UI\SchedulerWindow.xaml.cs">
+      <DependentUpon>SchedulerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ServicesWindow.xaml.cs">
+      <DependentUpon>ServicesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Models\AccountModel.cs" />
+    <Compile Include="UI\Models\ProxyModel.cs" />
+    <Compile Include="UI\Models\TaskModel.cs" />
+    <Compile Include="UI\ProxyWindow.xaml.cs">
+      <DependentUpon>ProxyWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\SQLiteClient.cs" />
+    <Page Include="UI\AuthWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\LoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Dialogs\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SchedulerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ServicesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Styles\AppStyleDark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="UI\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UI\ProxyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Icons\acc_banned.png" />
+    <Resource Include="UI\Icons\acc_ingame.png" />
+    <Resource Include="UI\Icons\acc_loading.png" />
+    <Resource Include="UI\Icons\acc_offline.png" />
+    <Resource Include="UI\Icons\add_link_dark_hovered.png" />
+    <Resource Include="UI\Icons\add_link_dark_normal.png" />
+    <Resource Include="UI\Icons\add_link_dark_pressed.png" />
+    <Resource Include="UI\Icons\add_link_hovered.png" />
+    <Resource Include="UI\Icons\add_link_normal.png" />
+    <Resource Include="UI\Icons\add_link_pressed.png" />
+    <Resource Include="UI\Icons\add_point2_dark_disabled.png" />
+    <Resource Include="UI\Icons\add_point2_dark_hovered.png" />
+    <Resource Include="UI\Icons\add_point2_dark_normal.png" />
+    <Resource Include="UI\Icons\add_point2_dark_pressed.png" />
+    <Resource Include="UI\Icons\add_point2_disabled.png" />
+    <Resource Include="UI\Icons\add_point2_hovered.png" />
+    <Resource Include="UI\Icons\add_point2_normal.png" />
+    <Resource Include="UI\Icons\add_point2_pressed.png" />
+    <Resource Include="UI\Icons\add_point_dark_hovered.png" />
+    <Resource Include="UI\Icons\add_point_dark_normal.png" />
+    <Resource Include="UI\Icons\add_point_dark_pressed.png" />
+    <Resource Include="UI\Icons\add_point_hovered.png" />
+    <Resource Include="UI\Icons\add_point_normal.png" />
+    <Resource Include="UI\Icons\add_point_pressed.png" />
+    <Resource Include="UI\Icons\add_poly_dark_hovered.png" />
+    <Resource Include="UI\Icons\add_poly_dark_normal.png" />
+    <Resource Include="UI\Icons\add_poly_dark_pressed.png" />
+    <Resource Include="UI\Icons\add_poly_hovered.png" />
+    <Resource Include="UI\Icons\add_poly_normal.png" />
+    <Resource Include="UI\Icons\add_poly_pressed.png" />
+    <Resource Include="UI\Icons\build_mesh_dark_disabled.png" />
+    <Resource Include="UI\Icons\build_mesh_dark_hovered.png" />
+    <Resource Include="UI\Icons\build_mesh_dark_normal.png" />
+    <Resource Include="UI\Icons\build_mesh_dark_pressed.png" />
+    <Resource Include="UI\Icons\build_mesh_disabled.png" />
+    <Resource Include="UI\Icons\build_mesh_hovered.png" />
+    <Resource Include="UI\Icons\build_mesh_normal.png" />
+    <Resource Include="UI\Icons\build_mesh_pressed.png" />
+    <Resource Include="UI\Icons\change_link_dark_disabled.png" />
+    <Resource Include="UI\Icons\change_link_dark_hovered.png" />
+    <Resource Include="UI\Icons\change_link_dark_normal.png" />
+    <Resource Include="UI\Icons\change_link_dark_pressed.png" />
+    <Resource Include="UI\Icons\change_link_disabled.png" />
+    <Resource Include="UI\Icons\change_link_hovered.png" />
+    <Resource Include="UI\Icons\change_link_normal.png" />
+    <Resource Include="UI\Icons\change_link_pressed.png" />
+    <Resource Include="UI\Icons\change_poly_dark_disabled.png" />
+    <Resource Include="UI\Icons\change_poly_dark_hovered.png" />
+    <Resource Include="UI\Icons\change_poly_dark_normal.png" />
+    <Resource Include="UI\Icons\change_poly_dark_pressed.png" />
+    <Resource Include="UI\Icons\change_poly_disabled.png" />
+    <Resource Include="UI\Icons\change_poly_hovered.png" />
+    <Resource Include="UI\Icons\change_poly_normal.png" />
+    <Resource Include="UI\Icons\change_poly_pressed.png" />
+    <Resource Include="UI\Icons\copy_dark_disabled.png" />
+    <Resource Include="UI\Icons\copy_dark_hovered.png" />
+    <Resource Include="UI\Icons\copy_dark_normal.png" />
+    <Resource Include="UI\Icons\copy_dark_pressed.png" />
+    <Resource Include="UI\Icons\copy_disabled.png" />
+    <Resource Include="UI\Icons\copy_hovered.png" />
+    <Resource Include="UI\Icons\copy_normal.png" />
+    <Resource Include="UI\Icons\copy_pressed.png" />
+    <Resource Include="UI\Icons\cp.png" />
+    <Resource Include="UI\Icons\cut_dark_disabled.png" />
+    <Resource Include="UI\Icons\cut_dark_hovered.png" />
+    <Resource Include="UI\Icons\cut_dark_normal.png" />
+    <Resource Include="UI\Icons\cut_dark_pressed.png" />
+    <Resource Include="UI\Icons\cut_disabled.png" />
+    <Resource Include="UI\Icons\cut_hovered.png" />
+    <Resource Include="UI\Icons\cut_normal.png" />
+    <Resource Include="UI\Icons\cut_pressed.png" />
+    <Resource Include="UI\Icons\delete_dark_hovered.png" />
+    <Resource Include="UI\Icons\delete_dark_normal.png" />
+    <Resource Include="UI\Icons\delete_dark_pressed.png" />
+    <Resource Include="UI\Icons\delete_hovered.png" />
+    <Resource Include="UI\Icons\delete_link_dark_disabled.png" />
+    <Resource Include="UI\Icons\delete_link_dark_hovered.png" />
+    <Resource Include="UI\Icons\delete_link_dark_normal.png" />
+    <Resource Include="UI\Icons\delete_link_dark_pressed.png" />
+    <Resource Include="UI\Icons\delete_link_disabled.png" />
+    <Resource Include="UI\Icons\delete_link_hovered.png" />
+    <Resource Include="UI\Icons\delete_link_normal.png" />
+    <Resource Include="UI\Icons\delete_link_pressed.png" />
+    <Resource Include="UI\Icons\delete_normal.png" />
+    <Resource Include="UI\Icons\delete_point_dark_disabled.png" />
+    <Resource Include="UI\Icons\delete_point_dark_hovered.png" />
+    <Resource Include="UI\Icons\delete_point_dark_normal.png" />
+    <Resource Include="UI\Icons\delete_point_dark_pressed.png" />
+    <Resource Include="UI\Icons\delete_point_disabled.png" />
+    <Resource Include="UI\Icons\delete_point_hovered.png" />
+    <Resource Include="UI\Icons\delete_point_normal.png" />
+    <Resource Include="UI\Icons\delete_point_pressed.png" />
+    <Resource Include="UI\Icons\delete_poly_dark_disabled.png" />
+    <Resource Include="UI\Icons\delete_poly_dark_hovered.png" />
+    <Resource Include="UI\Icons\delete_poly_dark_normal.png" />
+    <Resource Include="UI\Icons\delete_poly_dark_pressed.png" />
+    <Resource Include="UI\Icons\delete_poly_disabled.png" />
+    <Resource Include="UI\Icons\delete_poly_hovered.png" />
+    <Resource Include="UI\Icons\delete_poly_normal.png" />
+    <Resource Include="UI\Icons\delete_poly_pressed.png" />
+    <Resource Include="UI\Icons\delete_pressed.png" />
+    <Resource Include="UI\Icons\gold.png" />
+    <Resource Include="UI\Icons\import_dark_disabled.png" />
+    <Resource Include="UI\Icons\import_dark_hovered.png" />
+    <Resource Include="UI\Icons\import_dark_normal.png" />
+    <Resource Include="UI\Icons\import_dark_pressed.png" />
+    <Resource Include="UI\Icons\import_disabled.png" />
+    <Resource Include="UI\Icons\import_hovered.png" />
+    <Resource Include="UI\Icons\import_normal.png" />
+    <Resource Include="UI\Icons\import_pressed.png" />
+    <Resource Include="UI\Icons\info_dark_hovered.png" />
+    <Resource Include="UI\Icons\info_dark_normal.png" />
+    <Resource Include="UI\Icons\info_dark_pressed.png" />
+    <Resource Include="UI\Icons\info_horeved.png" />
+    <Resource Include="UI\Icons\info_normal.png" />
+    <Resource Include="UI\Icons\info_pressed.png" />
+    <Resource Include="UI\Icons\labor.png" />
+    <Resource Include="UI\Icons\lamp_dark_hovered.png" />
+    <Resource Include="UI\Icons\lamp_dark_normal.png" />
+    <Resource Include="UI\Icons\lamp_dark_pressed.png" />
+    <Resource Include="UI\Icons\lamp_hovered.png" />
+    <Resource Include="UI\Icons\lamp_normal.png" />
+    <Resource Include="UI\Icons\lamp_pressed.png" />
+    <Resource Include="UI\Icons\list2_dark_hovered.png" />
+    <Resource Include="UI\Icons\list2_dark_normal.png" />
+    <Resource Include="UI\Icons\list2_dark_pressed.png" />
+    <Resource Include="UI\Icons\list2_hovered.png" />
+    <Resource Include="UI\Icons\list2_normal.png" />
+    <Resource Include="UI\Icons\list2_pressed.png" />
+    <Resource Include="UI\Icons\list_dark_hovered.png" />
+    <Resource Include="UI\Icons\list_dark_normal.png" />
+    <Resource Include="UI\Icons\list_dark_pressed.png" />
+    <Resource Include="UI\Icons\list_hovered.png" />
+    <Resource Include="UI\Icons\list_normal.png" />
+    <Resource Include="UI\Icons\list_pressed.png" />
+    <Resource Include="UI\Icons\mail_off.png" />
+    <Resource Include="UI\Icons\mail_on.png" />
+    <Resource Include="UI\Icons\move_down_dark_hovered.png" />
+    <Resource Include="UI\Icons\move_down_dark_normal.png" />
+    <Resource Include="UI\Icons\move_down_dark_pressed.png" />
+    <Resource Include="UI\Icons\move_down_hovered.png" />
+    <Resource Include="UI\Icons\move_down_normal.png" />
+    <Resource Include="UI\Icons\move_down_pressed.png" />
+    <Resource Include="UI\Icons\move_up_dark_hovered.png" />
+    <Resource Include="UI\Icons\move_up_dark_normal.png" />
+    <Resource Include="UI\Icons\move_up_dark_pressed.png" />
+    <Resource Include="UI\Icons\move_up_hovered.png" />
+    <Resource Include="UI\Icons\move_up_normal.png" />
+    <Resource Include="UI\Icons\move_up_pressed.png" />
+    <Resource Include="UI\Icons\new_dark_hovered.png" />
+    <Resource Include="UI\Icons\new_dark_normal.png" />
+    <Resource Include="UI\Icons\new_dark_pressed.png" />
+    <Resource Include="UI\Icons\new_hovered.png" />
+    <Resource Include="UI\Icons\new_normal.png" />
+    <Resource Include="UI\Icons\new_pressed.png" />
+    <Resource Include="UI\Icons\open_file_dark_hovered.png" />
+    <Resource Include="UI\Icons\open_file_dark_normal.png" />
+    <Resource Include="UI\Icons\open_file_dark_pressed.png" />
+    <Resource Include="UI\Icons\open_file_hovered.png" />
+    <Resource Include="UI\Icons\open_file_normal.png" />
+    <Resource Include="UI\Icons\open_file_pressed.png" />
+    <Resource Include="UI\Icons\paste_dark_disabled.png" />
+    <Resource Include="UI\Icons\paste_dark_hovered.png" />
+    <Resource Include="UI\Icons\paste_dark_normal.png" />
+    <Resource Include="UI\Icons\paste_dark_pressed.png" />
+    <Resource Include="UI\Icons\paste_disabled.png" />
+    <Resource Include="UI\Icons\paste_hovered.png" />
+    <Resource Include="UI\Icons\paste_normal.png" />
+    <Resource Include="UI\Icons\paste_pressed.png" />
+    <Resource Include="UI\Icons\play.png" />
+    <Resource Include="UI\Icons\player.png" />
+    <Resource Include="UI\Icons\play_dark_hovered.png" />
+    <Resource Include="UI\Icons\play_dark_normal.png" />
+    <Resource Include="UI\Icons\play_dark_pressed.png" />
+    <Resource Include="UI\Icons\play_hovered.png" />
+    <Resource Include="UI\Icons\play_normal.png" />
+    <Resource Include="UI\Icons\play_pressed.png" />
+    <Resource Include="UI\Icons\point.png" />
+    <Resource Include="UI\Icons\point_black.png" />
+    <Resource Include="UI\Icons\point_blue_die.png" />
+    <Resource Include="UI\Icons\point_green_die.png" />
+    <Resource Include="UI\Icons\point_hover.png" />
+    <Resource Include="UI\Icons\point_red.png" />
+    <Resource Include="UI\Icons\point_red_die.png" />
+    <Resource Include="UI\Icons\point_selected.png" />
+    <Resource Include="UI\Icons\point_yellow.png" />
+    <Resource Include="UI\Icons\point_yellow_die.png" />
+    <Resource Include="UI\Icons\point_yellow_die_with_drop.png" />
+    <Resource Include="UI\Icons\premium.png" />
+    <Resource Include="UI\Icons\premium_on.png" />
+    <Resource Include="UI\Icons\redo_dark_disabled.png" />
+    <Resource Include="UI\Icons\redo_dark_hovered.png" />
+    <Resource Include="UI\Icons\redo_dark_normal.png" />
+    <Resource Include="UI\Icons\redo_dark_pressed.png" />
+    <Resource Include="UI\Icons\redo_disabled.png" />
+    <Resource Include="UI\Icons\redo_hovered.png" />
+    <Resource Include="UI\Icons\redo_normal.png" />
+    <Resource Include="UI\Icons\redo_pressed.png" />
+    <Resource Include="UI\Icons\saveas_dark_disabled.png" />
+    <Resource Include="UI\Icons\saveas_dark_hovered.png" />
+    <Resource Include="UI\Icons\saveas_dark_normal.png" />
+    <Resource Include="UI\Icons\saveas_dark_pressed.png" />
+    <Resource Include="UI\Icons\saveas_file_disabled.png" />
+    <Resource Include="UI\Icons\saveas_file_hovered.png" />
+    <Resource Include="UI\Icons\saveas_file_normal.png" />
+    <Resource Include="UI\Icons\saveas_file_pressed.png" />
+    <Resource Include="UI\Icons\save_file_dark_disabled.png" />
+    <Resource Include="UI\Icons\save_file_dark_hovered.png" />
+    <Resource Include="UI\Icons\save_file_dark_normal.png" />
+    <Resource Include="UI\Icons\save_file_dark_pressed.png" />
+    <Resource Include="UI\Icons\save_file_disabled.png" />
+    <Resource Include="UI\Icons\save_file_hovered.png" />
+    <Resource Include="UI\Icons\save_file_normal.png" />
+    <Resource Include="UI\Icons\save_file_pressed.png" />
+    <Resource Include="UI\Icons\settings_dark_hovered.png" />
+    <Resource Include="UI\Icons\settings_dark_normal.png" />
+    <Resource Include="UI\Icons\settings_dark_pressed.png" />
+    <Resource Include="UI\Icons\settings_hovered.png" />
+    <Resource Include="UI\Icons\settings_normal.png" />
+    <Resource Include="UI\Icons\settings_pressed.png" />
+    <Resource Include="UI\Icons\show_grid_dark_hovered.png" />
+    <Resource Include="UI\Icons\show_grid_dark_normal.png" />
+    <Resource Include="UI\Icons\show_grid_dark_pressed.png" />
+    <Resource Include="UI\Icons\show_grid_hovered.png" />
+    <Resource Include="UI\Icons\show_grid_normal.png" />
+    <Resource Include="UI\Icons\show_grid_pressed.png" />
+    <Resource Include="UI\Icons\split_link_dark_disabled.png" />
+    <Resource Include="UI\Icons\split_link_dark_hovered.png" />
+    <Resource Include="UI\Icons\split_link_dark_normal.png" />
+    <Resource Include="UI\Icons\split_link_dark_pressed.png" />
+    <Resource Include="UI\Icons\split_link_disabled.png" />
+    <Resource Include="UI\Icons\split_link_hovered.png" />
+    <Resource Include="UI\Icons\split_link_normal.png" />
+    <Resource Include="UI\Icons\split_link_pressed.png" />
+    <Resource Include="UI\Icons\stop.png" />
+    <Resource Include="UI\Icons\stop_dark_hovered.png" />
+    <Resource Include="UI\Icons\stop_dark_normal.png" />
+    <Resource Include="UI\Icons\stop_dark_pressed.png" />
+    <Resource Include="UI\Icons\stop_hovered.png" />
+    <Resource Include="UI\Icons\stop_normal.png" />
+    <Resource Include="UI\Icons\stop_pressed.png" />
+    <Resource Include="UI\Icons\timer_dark_hovered.png" />
+    <Resource Include="UI\Icons\timer_dark_normal.png" />
+    <Resource Include="UI\Icons\timer_dark_pressed.png" />
+    <Resource Include="UI\Icons\timer_hovered.png" />
+    <Resource Include="UI\Icons\timer_normal.png" />
+    <Resource Include="UI\Icons\timer_pressed.png" />
+    <Resource Include="UI\Icons\undo_dark_disabled.png" />
+    <Resource Include="UI\Icons\undo_dark_hovered.png" />
+    <Resource Include="UI\Icons\undo_dark_normal.png" />
+    <Resource Include="UI\Icons\undo_dark_pressed.png" />
+    <Resource Include="UI\Icons\undo_disabled.png" />
+    <Resource Include="UI\Icons\undo_hovered.png" />
+    <Resource Include="UI\Icons\undo_normal.png" />
+    <Resource Include="UI\Icons\undo_pressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RSMaster.Utility\RSMaster.Utility.csproj">
+      <Project>{a68ee588-bd26-479e-9eb4-cb00c2e2894b}</Project>
+      <Name>RSMaster.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\names.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\emails.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Icons\visibility_dark_normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Icons\visibility_dark_hovered.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>rd /s /q "$(TargetDir)x64"
+copy "$(TargetDir)x86\SQLite.Interop.dll" "$(TargetDir)SQLite.Interop.dll" 
+rd /s /q "$(TargetDir)x86"
+del /S "$(TargetDir)*.config"
+del /S "$(TargetDir)*.pdb"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
