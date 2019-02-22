@@ -1,9 +1,13 @@
 image: Visual Studio 2017
+before_build:
+  - nuget restore
+configuration:
+  - Release
 build:
   parallel: true
   project: RSMaster.sln
-before_build:
-  - nuget restore
+after_build:
+  7z a RSMaster.zip %APPVEYOR_BUILD_FOLDER%\obj\Release\*.dll
 artifacts:
-  - path: RSMaster.zip
+  - path: \RSMaster.zip
     name: RSMaster
