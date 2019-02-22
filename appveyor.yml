@@ -8,11 +8,13 @@ build:
   project: RSMaster.sln
 after_build:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - rd /s /q "RSMaster\bin\Release\x64"
   - copy "RSMaster\bin\Release\x86\SQLite.Interop.dll" "RSMaster\bin\Release\SQLite.Interop.dll" 
+  - copy "Updater\bin\Release\Updater.exe" "RSMaster\bin\Release\Updater.exe" 
+  - rd /s /q "RSMaster\bin\Release\x64"
   - rd /s /q "RSMaster\bin\Release\x86"
   - del /S "RSMaster\bin\Release\*.config"
   - del /S "RSMaster\bin\Release\*.pdb"
+  - del /S "RSMaster\bin\Release\*.xml"
   - 7z a RSMaster.zip RSMaster\bin\Release
 artifacts:
   - path: RSMaster.zip
