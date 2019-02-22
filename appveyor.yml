@@ -7,7 +7,13 @@ build:
   parallel: true
   project: RSMaster.sln
 after_build:
-  7z a RSMaster.zip C:\projects\rsmaster\RSMaster\bin\Release
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - rd /s /q "RSMaster\bin\Release\x64"
+  - copy "RSMaster\bin\Release\x86\SQLite.Interop.dll" "RSMaster\bin\Release\SQLite.Interop.dll" 
+  - rd /s /q "RSMaster\bin\Release\x86"
+  - del /S "RSMaster\bin\Release\*.config"
+  - del /S "RSMaster\bin\Release\*.pdb"
+  - 7z a RSMaster.zip RSMaster\bin\Release
 artifacts:
-  - path: C:\RSMaster.zip
+  - path: RSMaster.zip
     name: RSMaster
