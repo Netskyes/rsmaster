@@ -1,6 +1,8 @@
-language: csharp
-solution: RSMaster.sln
-install:
-  - nuget restore RSMaster.sln
-deploy:
-  - skip_cleanup: true
+image: Visual Studio 2017
+platform: x86
+configuration: Release
+build:
+  parallel: true
+  project: RSMaster.sln
+before_build:
+  - nuget restore
