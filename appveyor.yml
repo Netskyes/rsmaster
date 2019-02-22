@@ -7,7 +7,7 @@ build:
   parallel: true
   project: RSMaster.sln
 after_build:
-  7z a RSMaster.zip %APPVEYOR_BUILD_FOLDER%\obj\Release\*.dll
+  7z a RSMaster.zip C:\projects\rsmaster\obj\Release\*.dll
 artifacts:
   - path: \RSMaster.zip
     name: RSMaster
