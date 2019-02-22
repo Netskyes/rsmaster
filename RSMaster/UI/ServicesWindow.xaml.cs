@@ -54,6 +54,7 @@ namespace RSMaster.UI
 
             ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(0, "Imported Accounts"));
             ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(1, "Email Prefix"));
+            ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(2, "Auto, In-Built Method"));
         }
 
         public void AddTask(TaskModel task)
@@ -172,8 +173,8 @@ namespace RSMaster.UI
                     QueueImportedAccounts();
                     break;
 
-                case 1:
-
+                case 2:
+                    GenerateAndQueueAccounts();
                     break;
             }
 
