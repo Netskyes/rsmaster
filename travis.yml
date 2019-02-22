@@ -1,2 +1,4 @@
 language: csharp
 solution: RSMaster.sln
+mono:
+  - latest
