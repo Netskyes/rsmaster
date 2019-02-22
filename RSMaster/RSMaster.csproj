@@ -485,10 +485,11 @@
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>rd /s /q "$(TargetDir)x64"
-copy "$(TargetDir)x86\SQLite.Interop.dll" "$(TargetDir)SQLite.Interop.dll" 
-rd /s /q "$(TargetDir)x86"
-del /S "$(TargetDir)*.config"
-del /S "$(TargetDir)*.pdb"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
