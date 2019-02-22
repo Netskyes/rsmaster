@@ -15,7 +15,7 @@ after_build:
   - del /S "RSMaster\bin\Release\*.config"
   - del /S "RSMaster\bin\Release\*.pdb"
   - del /S "RSMaster\bin\Release\*.xml"
-  - 7z a RSMaster.zip RSMaster\bin\Release
+  - 7z a RSMaster.zip RSMaster\bin\Release\
 artifacts:
   - path: RSMaster.zip
     name: RSMaster
