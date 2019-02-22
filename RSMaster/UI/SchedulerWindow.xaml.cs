@@ -51,7 +51,7 @@ namespace RSMaster.UI
             Host.Closed += Host_Closed;
             Account = account;
 
-            Title = account.Username;
+            Title = account.Username ?? account.Name;
 
             WeekDaysMap.Select(x => new PairValueModel(x.Key, x.Value)).ToList().ForEach(x => CmbBoxDayOfTheWeek.Items.Add(x));
 
