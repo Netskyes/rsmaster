@@ -74,7 +74,7 @@ namespace RSMaster.Helpers
 
         public async Task<string> GrabGoogleKey()
         {
-            var response = await Util.GetRequest(CreateAccountUrl);
+            var response = await httpHelper.GetRequest(CreateAccountUrl);
             var regex = new Regex("'sitekey'\\s+:\\s+'(.*)'");
             var match = regex.Match(response);
 
