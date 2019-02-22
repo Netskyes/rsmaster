@@ -4,3 +4,6 @@ build:
   project: RSMaster.sln
 before_build:
   - nuget restore
+artifacts:
+  - path: RSMaster.zip
+    name: RSMaster
