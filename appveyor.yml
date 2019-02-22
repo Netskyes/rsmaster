@@ -1,13 +1,13 @@
 image: Visual Studio 2017
-before_build:
-  - nuget restore
 configuration:
   - Release
+before_build:
+  - nuget restore
 build:
   parallel: true
   project: RSMaster.sln
 after_build:
-  7z a RSMaster.zip C:\projects\rsmaster\obj\Release\*.dll
+  7z a RSMaster.zip C:\projects\rsmaster\RSMaster\bin\Release
 artifacts:
-  - path: \RSMaster.zip
+  - path: C:\RSMaster.zip
     name: RSMaster
