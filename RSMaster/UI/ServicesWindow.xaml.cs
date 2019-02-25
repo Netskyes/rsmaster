@@ -46,8 +46,8 @@ namespace RSMaster.UI
                 { Source = host.accountsListItems }.View;
             AccountsImportList.Filter = (o) => ((o as AccountModel)?.Temporary ?? 0) > 0;
 
-            ComboBoxAccountDefaultProxy.DataContext = host;
             AccountCreationSettings.DataContext = MainWindow.Settings;
+            ComboBoxAccountDefaultProxy.ItemsSource = host.SocksProxyListItems;
 
             TasksList.DataContext = this;
             TaskListItems = CollectionViewSource.GetDefaultView(taskListItems);

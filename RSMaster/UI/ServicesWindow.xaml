@@ -346,7 +346,6 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBlockStyle}">Set Proxy</TextBlock>
                                     <ComboBox
-                                        ItemsSource="{Binding SocksProxyListItems}"
                                         DisplayMemberPath="Alias"
                                         SelectedValuePath="Alias"
                                         SelectedValue="{Binding AccountDefaultProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
