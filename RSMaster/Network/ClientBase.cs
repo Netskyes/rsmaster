@@ -26,6 +26,7 @@ namespace RSMaster.Network
         #region Fields
 
         private Socket handle;
+        private Server parent;
 
         private bool appendHeader;
 
@@ -58,7 +59,7 @@ namespace RSMaster.Network
         #region Event Handlers
 
         public event ClientStateEventHandler ClientState;
-        public delegate void ClientStateEventHandler(ClientBase client, bool isConnected);
+        public delegate void ClientStateEventHandler(Client client, bool isConnected);
 
         protected virtual void OnClientState(bool isConnected)
         {
@@ -66,29 +67,29 @@ namespace RSMaster.Network
                 return;
 
             Connected = isConnected;
-            ClientState?.Invoke(this, isConnected);
+            ClientState?.Invoke((Client)this, isConnected);
         }
 
         public event ClientRecvEventHandler ClientRecv;
-        public delegate void ClientRecvEventHandler(ClientBase client, Packet packet);
+        public delegate void ClientRecvEventHandler(Client client, Packet packet);
 
-        protected virtual void OnClientRecv(Packet packet, ClientBase client = null)
+        protected virtual void OnClientRecv(Packet packet, Client client = null)
         {
             if (packet is null)
                 return;
 
-            ClientRecv?.Invoke(client ?? (this), packet);
+            ClientRecv?.Invoke(client ?? (Client)(this), packet);
         }
 
         public event ClientSendEventHandler ClientSend;
-        public delegate void ClientSendEventHandler(ClientBase client, Packet packet);
+        public delegate void ClientSendEventHandler(Client client, Packet packet);
 
-        protected virtual void OnClientSend(Packet packet, ClientBase client = null)
+        protected virtual void OnClientSend(Packet packet, Client client = null)
         {
             if (packet is null)
                 return;
 
-            ClientSend?.Invoke(client ?? (this), packet);
+            ClientSend?.Invoke(client ?? (Client)(this), packet);
         }
 
         #endregion
@@ -96,6 +97,33 @@ namespace RSMaster.Network
 
         public ClientBase()
         {
+        }
+
+        public void BeginListen(Server server, Socket socket)
+        {
+            try
+            {
+                if (handle != null)
+                    DisposeHandle();
+
+                handle = socket;
+                parent = server;
+
+                ConnectedTime = DateTime.Now;
+                EndPoint = (IPEndPoint)socket.RemoteEndPoint;
+
+                OnClientState(true);
+
+
+                readBuffer = new byte[BUFFER_SIZE];
+                tempHeader = new byte[HEADER_SIZE];
+
+                handle.BeginReceive(readBuffer, 0, readBuffer.Length, SocketFlags.None, AsyncReceive, null);
+            }
+            catch (Exception)
+            {
+                Disconnect();
+            }
         }
 
         public void Connect(IPEndPoint endPoint)
@@ -415,7 +443,7 @@ namespace RSMaster.Network
                             {
                                 var payload = new Packet { Buffer = payloadBuffer };
 
-                                OnClientRecv(payload, this);
+                                OnClientRecv(payload, (Client)this);
                                 AsyncRecvProcess(payload);
                             }
 
