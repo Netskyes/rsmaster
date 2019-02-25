@@ -109,6 +109,7 @@ namespace RSMaster.UI
             ConsoleLog("HWID: " + Util.GetHWID());
 
             //ShowLoginDialog();
+            ScheduleManager.Begin();
         }
 
         private void LoadSettings()
