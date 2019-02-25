@@ -9,9 +9,11 @@ using System.Windows;
 namespace RSMaster
 {
     using Network;
+    using RSMaster.UI;
 
     internal class NetworkManager
     {
+        public Server Server { get; set; }
         public Client Client { get; set; }
         public DateTime LastHeartbeat { get; set; }
 
@@ -21,12 +23,24 @@ namespace RSMaster
 
         public NetworkManager()
         {
+            Server = new Server();
+            Server.ClientRecv += Server_ClientRecv;
+            Server.ClientState += Server_ClientState;
+            Server.Listen(8089);
+
             Client = new Client();
-            Client.ClientState += Client_ClientState;
-            Client.ClientSend += Client_ClientSend;
             Client.ClientRecv += Client_ClientRecv;
 
             Connect();
+        }
+
+        private void Server_ClientState(Server server, Client client, bool isConnected)
+        {
+            MainWindow.Log($"Client: {client.EndPoint} Connected: {isConnected}");
+        }
+
+        private void Server_ClientRecv(Server server, Client client, Packet packet)
+        {
         }
 
         public bool IsHeartBeating()
@@ -84,7 +98,7 @@ namespace RSMaster
             }
         }
 
-        private void Client_ClientRecv(ClientBase client, Packet packet)
+        private void Client_ClientRecv(Client client, Packet packet)
         {
             if (packet is null 
                 || packet.Buffer is null 
@@ -95,14 +109,6 @@ namespace RSMaster
             {
                 LastHeartbeat = DateTime.Now;
             }
-        }
-
-        private void Client_ClientSend(ClientBase client, Packet packet)
-        {
-        }
-
-        private void Client_ClientState(ClientBase client, bool isConnected)
-        {
         }
 
         private byte[] GetHeartbeatBytes()

@@ -300,16 +300,19 @@ namespace RSMaster.UI
                 }
             }
 
-            if (settings.AccountDefaultEnableProxy 
+            if (string.IsNullOrEmpty(accountModel.ProxyName)
                 && !string.IsNullOrEmpty(settings.AccountDefaultProxy))
             {
                 accountModel.ProxyName = settings.AccountDefaultProxy;
-                accountModel.ProxyEnabled = 1;
             }
 
-            if (!string.IsNullOrEmpty
-                (settings.AccountDefaultScript) 
-                && string.IsNullOrEmpty(accountModel.Script))
+            if (accountModel.ProxyEnabled < 0)
+            {
+                accountModel.ProxyEnabled = Convert.ToInt32(settings.AccountDefaultEnableProxy);
+            }
+
+            if (string.IsNullOrEmpty(accountModel.Script)
+                && !string.IsNullOrEmpty(settings.AccountDefaultScript))
             {
                 accountModel.Script = settings.AccountDefaultScript;
             }
