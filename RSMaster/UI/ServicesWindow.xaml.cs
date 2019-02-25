@@ -346,7 +346,11 @@ namespace RSMaster.UI
 
             if (settings.LaunchAccountOnCreate)
             {
-                Task.Run(async () => await Host.LaunchAccount(accountModel, true));
+                var item = MainWindow.AccountGetById(accountModel.Id);
+                if (item != null)
+                {
+                    Task.Run(async () => await Host.LaunchAccount(item, true));
+                }
             }
         }
 
