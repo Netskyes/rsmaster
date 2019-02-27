@@ -24,7 +24,6 @@ namespace RSMaster.UI
     {
         public IService Service { get; set; }
         public ICollectionView TaskListItems { get; set; }
-        public ICollectionView HttpsProxyListItems { get; set; }
         public ICollectionView AccountsImportList { get; set; }
 
         private MainWindow Host { get; set; }
@@ -38,15 +37,12 @@ namespace RSMaster.UI
             Host = host;
             Host.Closed += Host_Closed;
 
-            HttpsProxyListItems = new CollectionViewSource()
-                { Source = host.proxyListItems }.View;
-            HttpsProxyListItems.Filter = (o) => (o as ProxyModel)?.Type.Contains("HTTP") ?? false;
-
             AccountsImportList = new CollectionViewSource()
                 { Source = host.accountsListItems }.View;
             AccountsImportList.Filter = (o) => ((o as AccountModel)?.Temporary ?? 0) > 0;
 
             AccountCreationSettings.DataContext = MainWindow.Settings;
+            ComboBoxCreateAccountProxy.ItemsSource = host.ProxyListItems;
             ComboBoxAccountDefaultProxy.ItemsSource = host.SocksProxyListItems;
 
             TasksList.DataContext = this;
@@ -306,7 +302,7 @@ namespace RSMaster.UI
                 accountModel.ProxyName = settings.AccountDefaultProxy;
             }
 
-            if (accountModel.ProxyEnabled < 0)
+            if (accountModel.ProxyEnabled <= 0)
             {
                 accountModel.ProxyEnabled = Convert.ToInt32(settings.AccountDefaultEnableProxy);
             }

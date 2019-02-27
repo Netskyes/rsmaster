@@ -252,13 +252,13 @@
                                         DockPanel.Dock="Left"
                                         Width="120"
                                         VerticalAlignment="Center"
-                                        Style="{StaticResource TextBlockStyle}">HTTP(s) Proxy</TextBlock>
+                                        Style="{StaticResource TextBlockStyle}">HTTP/Socks5 Proxy</TextBlock>
                                     <ComboBox
                                         ItemsSource="{Binding HttpsProxyListItems, RelativeSource={RelativeSource AncestorType=Window}}"
                                         DisplayMemberPath="Alias"
                                         SelectedValuePath="Alias"
                                         SelectedValue="{Binding CreateAccountHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        x:Name="ComboBoxCreateAccountHttpProxy"
+                                        x:Name="ComboBoxCreateAccountProxy"
                                         Foreground="#FFFFFF" 
                                         Background="{DynamicResource TextBoxBackgroundBrush}"
                                         BorderBrush="{DynamicResource TextBoxBorderBrush}"

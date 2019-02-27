@@ -102,7 +102,7 @@ namespace RSMaster.UI
                                 Util.UpdateObjByProps(proxyDetails, item, false);
 
                                 Host.SocksProxyListItems.Refresh();
-                                MainWindow.ServicesWindow.HttpsProxyListItems.Refresh();
+                                Host.ProxyListItems.Refresh();
                             });
                         }
                     });

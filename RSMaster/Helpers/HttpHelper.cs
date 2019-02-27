@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Raindropz;
 
 namespace RSMaster.Helpers
 {
@@ -49,15 +50,24 @@ namespace RSMaster.Helpers
             client = new HttpClient();
         }
 
-        public HttpHelper(string proxyHost, int proxyPort, string proxyUser = null, string proxyPass = null)
+        public HttpHelper(bool socksProxy, string proxyHost, int proxyPort, string proxyUser = null, string proxyPass = null)
         {
             clientHandler = new HttpClientHandler();
-            var proxy = new WebProxy
+            IWebProxy proxy = null;
+
+            if (socksProxy)
             {
-                Address = new Uri($"{proxyHost}:{proxyPort}"),
-                BypassProxyOnLocal = false,
-                UseDefaultCredentials = false
-            };
+                proxy = new HttpToSocks5Proxy(proxyHost, proxyPort);
+            }
+            else
+            {
+                proxy = new WebProxy
+                {
+                    Address = new Uri($"{proxyHost}:{proxyPort}"),
+                    BypassProxyOnLocal = false,
+                    UseDefaultCredentials = false
+                };
+            }
 
             if (!Util.AnyStringNullOrEmpty(proxyUser, proxyPass))
             {

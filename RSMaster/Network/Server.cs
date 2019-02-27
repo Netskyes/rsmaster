@@ -114,7 +114,10 @@ namespace RSMaster.Network
 
         protected virtual Client OnSocketSuccess(Socket s)
         {
-            return new Client(this, s);
+            var client = new Client(this, s);
+            OnClientState(client, true);
+
+            return client;
         }
 
         private void AcceptClient(object sender, SocketAsyncEventArgs e)

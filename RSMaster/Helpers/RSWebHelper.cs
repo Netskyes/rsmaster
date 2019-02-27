@@ -30,7 +30,11 @@ namespace RSMaster.Helpers
                 if (proxy != null)
                 {
                     int.TryParse(proxy.Port, out int port);
-                    httpHelper = new HttpHelper($"{proxy.Type.ToLower()}://{proxy.Host}", port, proxy.Username, proxy.Password);
+                    var socksProxy = proxy.Type.Equals("SOCKS");
+                    var host = (socksProxy) ? proxy.Host : $"{proxy.Type.ToLower()}://{proxy.Host}";
+
+                    httpHelper = new HttpHelper
+                        (socksProxy, host, port, proxy.Username, proxy.Password);
                 }
             }
             

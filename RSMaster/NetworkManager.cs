@@ -36,11 +36,12 @@ namespace RSMaster
 
         private void Server_ClientState(Server server, Client client, bool isConnected)
         {
-            MainWindow.Log($"Client: {client.EndPoint} Connected: {isConnected}");
+
         }
 
         private void Server_ClientRecv(Server server, Client client, Packet packet)
         {
+            
         }
 
         public bool IsHeartBeating()
