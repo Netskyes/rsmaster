@@ -57,7 +57,14 @@ namespace RSMaster.Helpers
 
             if (socksProxy)
             {
-                proxy = new HttpToSocks5Proxy(proxyHost, proxyPort);
+                if (!Util.AnyStringNullOrEmpty(proxyUser, proxyPass))
+                {
+                    proxy = new HttpToSocks5Proxy(proxyHost, proxyPort, proxyUser, proxyPass);
+                }
+                else
+                {
+                    proxy = new HttpToSocks5Proxy(proxyHost, proxyPort);
+                }
             }
             else
             {
@@ -67,13 +74,13 @@ namespace RSMaster.Helpers
                     BypassProxyOnLocal = false,
                     UseDefaultCredentials = false
                 };
-            }
 
-            if (!Util.AnyStringNullOrEmpty(proxyUser, proxyPass))
-            {
-                proxy.Credentials = new NetworkCredential(proxyUser, proxyPass);
-                clientHandler.PreAuthenticate = true;
-                clientHandler.UseDefaultCredentials = false;
+                if (!Util.AnyStringNullOrEmpty(proxyUser, proxyPass))
+                {
+                    proxy.Credentials = new NetworkCredential(proxyUser, proxyPass);
+                    clientHandler.PreAuthenticate = true;
+                    clientHandler.UseDefaultCredentials = false;
+                }
             }
 
             clientHandler.Proxy = proxy;
