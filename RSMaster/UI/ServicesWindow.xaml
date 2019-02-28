@@ -254,7 +254,6 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBlockStyle}">HTTP/Socks5 Proxy</TextBlock>
                                     <ComboBox
-                                        ItemsSource="{Binding HttpsProxyListItems, RelativeSource={RelativeSource AncestorType=Window}}"
                                         DisplayMemberPath="Alias"
                                         SelectedValuePath="Alias"
                                         SelectedValue="{Binding CreateAccountHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -346,6 +345,7 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBlockStyle}">Set Proxy</TextBlock>
                                     <ComboBox
+                                        ItemsSource="{Binding SocksProxyListItems, RelativeSource={RelativeSource AncestorType=Window}}"
                                         DisplayMemberPath="Alias"
                                         SelectedValuePath="Alias"
                                         SelectedValue="{Binding AccountDefaultProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -25,6 +25,7 @@ namespace RSMaster.UI
         public IService Service { get; set; }
         public ICollectionView TaskListItems { get; set; }
         public ICollectionView AccountsImportList { get; set; }
+        public ICollectionView SocksProxyListItems { get; set; }
 
         private MainWindow Host { get; set; }
         private ObservableCollection<TaskModel> taskListItems = new ObservableCollection<TaskModel>();
@@ -41,9 +42,12 @@ namespace RSMaster.UI
                 { Source = host.accountsListItems }.View;
             AccountsImportList.Filter = (o) => ((o as AccountModel)?.Temporary ?? 0) > 0;
 
+            SocksProxyListItems = new CollectionViewSource()
+                { Source = host.proxyListItems }.View;
+            SocksProxyListItems.Filter = (o) => (o as ProxyModel)?.Type.Equals("SOCKS") ?? false;
+
             AccountCreationSettings.DataContext = MainWindow.Settings;
             ComboBoxCreateAccountProxy.ItemsSource = host.ProxyListItems;
-            ComboBoxAccountDefaultProxy.ItemsSource = host.SocksProxyListItems;
 
             TasksList.DataContext = this;
             TaskListItems = CollectionViewSource.GetDefaultView(taskListItems);
