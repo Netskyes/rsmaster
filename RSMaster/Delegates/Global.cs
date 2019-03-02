@@ -9,4 +9,5 @@ namespace RSMaster
     internal delegate AccountModel GetSelectedAccountDelegate();
     internal delegate AccountModel GetAccountByIdDelegate(int accountId);
     internal delegate void UpdateAccountDelegate(AccountModel accountModel);
+    internal delegate GroupModel GetGroupByIdDelegate(int groupId);
 }

@@ -560,6 +560,31 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
+
+            <TabItem 
+                Header="Unlocker" 
+                x:Name="UnlockerTab"
+                Style="{DynamicResource TabItemStyle}">
+                <Grid Background="{DynamicResource BrightBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Button
+				            Name="ButtonTest"
+				            Height="27"
+				            FontFamily="Tahoma"
+				            FontWeight="Bold"
+				            FontSize="11"
+				            Padding="20,0,20,0"
+				            Content="Register"
+				            Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
+                            Click="ButtonTest_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Controls:MetroWindow>

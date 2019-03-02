@@ -18,6 +18,7 @@ namespace RSMaster.UI.Models
         private int? world;
         private int? pid;
         private int temporary;
+        private int? groupId;
         private bool visible;
 
         #endregion
@@ -124,6 +125,16 @@ namespace RSMaster.UI.Models
             }
         }
 
+        public int? GroupId
+        {
+            get => groupId;
+            set
+            {
+                groupId = value;
+                NotifyPropertyChanged("GroupId");
+            }
+        }
+
         [PropUpdateIgnore, PropInsertIgnore]
         public int? PID
         {
@@ -170,5 +181,7 @@ namespace RSMaster.UI.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        public void GroupUpdated() => NotifyPropertyChanged("GroupId");
     }
 }

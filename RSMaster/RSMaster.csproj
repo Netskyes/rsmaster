@@ -114,12 +114,17 @@
     <Compile Include="UI\AuthWindow.xaml.cs">
       <DependentUpon>AuthWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Converters\GroupValueConverter.cs" />
     <Compile Include="UI\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\GroupsWindow.xaml.cs">
+      <DependentUpon>GroupsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Models\GroupModel.cs" />
     <Compile Include="UI\Models\PairValueModel.cs" />
     <Compile Include="UI\Models\TimeEvent.cs" />
     <Compile Include="UI\SchedulerWindow.xaml.cs">
@@ -144,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Dialogs\MessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\GroupsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -484,6 +493,7 @@
     <Resource Include="UI\Icons\visibility_dark_hovered.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Schema.cs" />
     <Content Include="Libs\HttpSocksProxy.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

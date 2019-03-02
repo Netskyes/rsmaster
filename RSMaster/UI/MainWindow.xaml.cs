@@ -50,16 +50,19 @@ namespace RSMaster.UI
         internal static UpdateAccountDelegate AccountUpdate;
         internal static GetSelectedAccountDelegate AccountGetSelected;
         internal static LaunchAccountDelegate AccountLaunch;
+        internal static GetGroupByIdDelegate GroupGetById;
 
         #endregion
 
         public ICollectionView AccountsListItems { get; set; }
         public ICollectionView ProxyListItems { get; set; }
         public ICollectionView SocksProxyListItems { get; set; }
+        public ICollectionView GroupListItems { get; set; }
         public AccountModel AccountOpen { get; set; } = new AccountModel();
 
         internal ObservableCollection<AccountModel> accountsListItems = new ObservableCollection<AccountModel>();
         internal ObservableCollection<ProxyModel> proxyListItems = new ObservableCollection<ProxyModel>();
+        internal ObservableCollection<GroupModel> groupListItems = new ObservableCollection<GroupModel>();
         private bool accountLoading;
         private bool updatesRequest;
 
@@ -76,6 +79,7 @@ namespace RSMaster.UI
             AccountGetSelected = GetSelectedAccount;
             AccountUpdate = UpdateAccount;
             AccountLaunch = LaunchAccount;
+            GroupGetById = GetGroupById;
 
             #endregion
 
@@ -85,6 +89,7 @@ namespace RSMaster.UI
 
             // Default Views
             ProxyListItems = CollectionViewSource.GetDefaultView(proxyListItems);
+            GroupListItems = CollectionViewSource.GetDefaultView(groupListItems);
             AccountsListItems = CollectionViewSource.GetDefaultView(accountsListItems);
             AccountsListItems.Filter = (o) => 
                 ((o as AccountModel)?.Temporary ?? 0) < 1;
@@ -98,7 +103,9 @@ namespace RSMaster.UI
             AccountTabDetails.DataContext = AccountOpen;
 
             LoadAccounts();
+            LoadGroups();
             LoadProxies();
+
             LoadSettings();
         }
 
@@ -133,6 +140,15 @@ namespace RSMaster.UI
             ScheduleManager.Begin();
         }
 
+        internal void LoadGroups()
+        {
+            Invoke(() =>
+            {
+                groupListItems.Clear();
+                DataProvider.GetModels<GroupModel>("groups").ToList().ForEach(x => groupListItems.Add(x));
+            });
+        }
+
         internal void LoadAccounts()
         {
             Invoke(() =>
@@ -164,8 +180,11 @@ namespace RSMaster.UI
         }
 
         #region Helpers
-
-        public void AddAccountToList(AccountModel account) => Invoke(() => accountsListItems.Add(account));
+        
+        private GroupModel GetGroupById(int groupId)
+        {
+            return Invoke(() => groupListItems.FirstOrDefault(x => x.Id == groupId));
+        }
 
         private AccountModel GetAccountById(int accountId)
         {
@@ -188,6 +207,8 @@ namespace RSMaster.UI
                 }
             });
         }
+
+        public void AddAccountToList(AccountModel account) => Invoke(() => accountsListItems.Add(account));
 
         public async Task<bool> ShowMessageDialog
             (string title, string description, MessageDialogStyle messageDialogStyle = MessageDialogStyle.AffirmativeAndNegative)
@@ -376,7 +397,7 @@ namespace RSMaster.UI
                 }
             });
         }
-
+         
         private void ButtonAccountSettings_Click(object sender, RoutedEventArgs e)
         {
             accountLoading = true;
@@ -639,11 +660,29 @@ namespace RSMaster.UI
             }
         }
 
-        #endregion
-
         private async void ButtonImportExistingAccounts_Click(object sender, RoutedEventArgs e)
         {
             await ImportAccounts(false);
         }
+
+        private void ButtonAccountGroups_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new GroupsWindow(this);
+            dialog.ShowDialog();
+        }
+
+        private void AccountsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Invoke(() =>
+            {
+                var item = GetSelectedAccount();
+                if (AccountTab.Visibility == Visibility.Visible && item != AccountOpen)
+                {
+                    ButtonAccountSettings_Click(null, null);
+                }
+            });
+        }
+
+        #endregion
     }
 }

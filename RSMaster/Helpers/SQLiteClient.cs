@@ -33,44 +33,17 @@ namespace RSMaster
 
             if (IsConnectionOpen())
             {
-                string table1 = "CREATE TABLE IF NOT EXISTS accounts (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "name VARCHAR (100) NOT NULL," +
-                    "username VARCHAR (200) NULL UNIQUE," +
-                    "password VARCHAR (200) NULL," +
-                    "world INTEGER NULL," +
-                    "script VARCHAR (100) NULL," +
-                    "proxyname VARCHAR (100) NULL," +
-                    "proxyenabled INTEGER DEFAULT 0," +
-                    "bankpin VARCHAR (10) NULL DEFAULT '0000'," +
-                    "temporary INTEGER DEFAULT 0," +
-                    "created DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP))" +
-                ");";
-
-                string table2 = "CREATE TABLE IF NOT EXISTS proxies (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "alias VARCHAR(100) NOT NULL," +
-                    "host VARCHAR(100) NOT NULL," +
-                    "port VARCHAR(100) NOT NULL," +
-                    "username VARCHAR(140)," +
-                    "password VARCHAR(140)," +
-                    "type VARCHAR(100) NOT NULL," + 
-                    "created DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP))" +
-                ");";
-
-                string table3 = "CREATE TABLE IF NOT EXISTS schedule (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "accountid INTEGER NOT NULL," +
-                    "script VARCHAR (100) NULL," +
-                    "day INTEGER NULL," +
-                    "beginningTime VARCHAR (10) NULL," +
-                    "endingTime VARCHAR (10) NULL," +
-                    "active INTEGER DEFAULT 0" +
-                ");";
-
-                Execute(Command(table1));
-                Execute(Command(table2));
-                Execute(Command(table3));
+                foreach (var schema in Data.SchemaProvider.Schemas)
+                {
+                    try
+                    {
+                        Execute(Command(schema));
+                    }
+                    catch (Exception e)
+                    {
+                        Util.LogException(e);
+                    }
+                }
             }
         }
 

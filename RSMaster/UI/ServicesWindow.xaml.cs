@@ -246,7 +246,7 @@ namespace RSMaster.UI
                 var email = emails[getRandom(0, emails.Length)];
 
                 var salt = Util.RandomString(getRandom(2, 4));
-                var password = Util.RandomString(getRandom(7, 14));
+                var password = Util.RandomString(getRandom(7, 14)).ToLower();
 
                 var username = ((name + salt).Shuffle() + "@" + email).ToLower();
                 var account = new RSAccountForm()
@@ -374,5 +374,11 @@ namespace RSMaster.UI
         }
 
         #endregion
+
+        private void ButtonTest_Click(object sender, RoutedEventArgs e)
+        {
+            var helper = new HttpHelper();
+            
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace RSMaster.Helpers
             clientHandler.UseCookies = true;
             clientHandler.CookieContainer = cookies;
             clientHandler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            clientHandler.AllowAutoRedirect = true;
 
             client = new HttpClient(clientHandler);
             client.DefaultRequestHeaders.Add("Host", "secure.runescape.com");
