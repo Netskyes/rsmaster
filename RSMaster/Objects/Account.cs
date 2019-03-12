@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 
-namespace RSMaster
+namespace RSMaster.Objects
 {
-    public class Account
+    internal class Account
     {
         public Process Process { get; set; }
         public Bitmap ScreenImage { get; set; }

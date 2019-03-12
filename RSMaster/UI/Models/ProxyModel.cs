@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
-using RSMaster.Extensions;
 
 namespace RSMaster.UI.Models
 {
+    using Data;
+
     public class ProxyModel : IViewModel, INotifyPropertyChanged
     {
         #region Fields

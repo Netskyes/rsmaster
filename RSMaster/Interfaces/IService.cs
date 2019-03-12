@@ -2,7 +2,7 @@
 
 namespace RSMaster.Interfaces
 {
-    public interface IService
+    internal interface IService
     {
         string Name { get; set; }
         string Description { get; set; }

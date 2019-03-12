@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace RSMaster.Network
 {
-    public class Client : ClientBase
+    internal class Client : ClientBase
     {
         public int ID { get; set; }
 

@@ -11,8 +11,6 @@ namespace Updater
 {
     public partial class App : Application
     {
-        public static readonly string TargetBot = "DreamBot";
-
         private Mutex mutex;
         private string mutexHash = "c9cb85745bee424e9cd534feec6cb87f";
 

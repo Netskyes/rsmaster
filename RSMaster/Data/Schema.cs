@@ -3,16 +3,21 @@ using System.Collections.Generic;
 
 namespace RSMaster.Data
 {
-    public static class SchemaProvider
+    internal static class SchemaProvider
     {
-        public static List<string> Schemas = new List<string>()
+        public static List<string> Schemas = new List<string>();
+
+        static SchemaProvider()
         {
-            Accounts(),
-            AccountsAlter(),
-            Proxies(),
-            Schedule(),
-            Groups()
-        };
+            Schemas.Add(Groups());
+            Schemas.Add(Accounts());
+            Schemas.Add("ALTER TABLE accounts ADD COLUMN groupId INTEGER NULL");
+            Schemas.Add("ALTER TABLE accounts ADD COLUMN comments TEXT NULL");
+            Schemas.Add(Proxies());
+            Schemas.Add(Schedule());
+            Schemas.Add(Unlocks());
+            Schemas.Add("ALTER TABLE unlocks ADD COLUMN subemail INTEGER NULL");
+        }
 
         private static string Groups()
         {
@@ -42,11 +47,6 @@ namespace RSMaster.Data
                 ");";
         }
 
-        private static string AccountsAlter()
-        {
-            return "ALTER TABLE accounts ADD COLUMN groupId INTEGER NULL";
-        }
-
         private static string Proxies()
         {
             return "CREATE TABLE IF NOT EXISTS proxies (" +
@@ -71,6 +71,19 @@ namespace RSMaster.Data
                     "beginningTime VARCHAR (10) NULL," +
                     "endingTime VARCHAR (10) NULL," +
                     "active INTEGER DEFAULT 0" +
+                ");";
+        }
+
+        private static string Unlocks()
+        {
+            return "CREATE TABLE IF NOT EXISTS unlocks (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "email VARCHAR (100) NOT NULL," +
+                    "emailpassword VARCHAR(140) NOT NULL," +
+                    "password VARCHAR(140) NOT NULL," +
+                    "newpassword VARCHAR(140) NOT NULL," +
+                    "emailprovider VARCHAR(40) NOT NULL," +
+                    "created DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP))" +
                 ");";
         }
     }

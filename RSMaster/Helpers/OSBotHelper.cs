@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.IO.Compression;
+using Microsoft.Win32;
 
 namespace RSMaster.Helpers
 {
@@ -32,7 +33,7 @@ namespace RSMaster.Helpers
         public static string GetLocalBotVersion()
         {
             if (!LocalBotExists())
-                return string.Empty;
+                return null;
 
             try
             {
@@ -61,7 +62,50 @@ namespace RSMaster.Helpers
                 Util.LogException(e);
             }
 
-            return string.Empty;
+            return null;
+        }
+        
+        public static void SetJavaSystemPath(string path)
+        {
+            var paths = Environment.GetEnvironmentVariable("PATH");
+            var separates = paths.EndsWith(";", StringComparison.InvariantCulture);
+
+            Environment.SetEnvironmentVariable("PATH", (!separates) ? paths + ";" + path : paths + path);
+        }
+
+        public static bool JavaInstalled()
+            => (GetJavaInstallPath() != null);
+
+        public static bool JavaInPath()
+        {
+            return Environment.GetEnvironmentVariable("PATH").Contains("Java");
+        }
+
+        public static string GetJavaInstallPath()
+        {
+            string javaHomePath = Environment.GetEnvironmentVariable("JAVA_HOME");
+            if (!string.IsNullOrEmpty(javaHomePath))
+            {
+                return javaHomePath;
+            }
+
+            var javaKey = @"SOFTWARE\JavaSoft\Java Runtime Environment\";
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(javaKey))
+            {
+                if (rk != null)
+                {
+                    var currentVersion = rk.GetValue("CurrentVersion")?.ToString() ?? null;
+                    if (currentVersion != null)
+                    {
+                        using (RegistryKey key = rk.OpenSubKey(currentVersion))
+                        {
+                            return key.GetValue("JavaHome")?.ToString();
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

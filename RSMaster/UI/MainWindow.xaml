@@ -30,6 +30,8 @@
             <Button Content="Proxies" x:Name="ButtonProxySettings" Click="ButtonProxySettings_Click" />
             <Button Content="Settings" x:Name="ButtonBotSettings" Click="ButtonBotSettings_Click" />
             <Button Content="Client Options" x:Name="ButtonClientOptions" Click="ButtonClientOptions_Click" />
+            <Button Content="Discord" x:Name="ButtonOpenDiscord" Click="ButtonOpenDiscord_Click" />
+            <Button Content="Donate" x:Name="ButtonOpenDonate" Click="ButtonOpenDonate_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.LeftWindowCommands>
     
@@ -875,6 +877,19 @@
                                     Checked="AccountDetails_Changed"
                                     Unchecked="AccountDetails_Changed"/>
                             </DockPanel>
+
+                            <TextBox
+                                Height="auto"
+                                TextWrapping="Wrap"
+                                AcceptsReturn="True"
+                                Text="{Binding Comments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Controls:TextBoxHelper.Watermark="Account Notes"
+                                DockPanel.Dock="Right"
+                                x:Name="TxtBoxAccountWxorld"
+                                Foreground="#FFFFFF" 
+                                Background="{DynamicResource TextBoxBackgroundBrush}"
+                                BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                LostFocus="AccountDetails_Changed" />
                         </StackPanel>
 
                         <StackPanel 
@@ -924,6 +939,17 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
+                    </TabItem>
+                    <TabItem 
+                        Header="Bridge" 
+                        x:Name="BridgeTab"
+                        Style="{DynamicResource TabItemStyle}">
+                        <Grid Background="{DynamicResource DialogBackgroundBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
                     </TabItem>
                     <!--<TabItem 
                         Header="Services" 

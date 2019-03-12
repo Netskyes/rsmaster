@@ -39,8 +39,8 @@
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="33" />
-                            <RowDefinition />
-                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
@@ -103,11 +103,11 @@
                                     DockPanel.Dock="Left"
                                     Width="120"
                                     VerticalAlignment="Center"
-                                    Style="{StaticResource TextBlockStyle}">Creation Method</TextBlock>
+                                    Style="{StaticResource TextBlockStyle}">Sevice Action</TextBlock>
                                 <ComboBox
                                     DisplayMemberPath="Value"
                                     SelectedValuePath="Key"
-                                    x:Name="ComboBoxAccountCreationMethod"
+                                    x:Name="ComboBoxServiceAction"
                                     Foreground="#FFFFFF" 
                                     Background="{DynamicResource TextBoxBackgroundBrush}"
                                     BorderBrush="{DynamicResource TextBoxBorderBrush}"
@@ -127,8 +127,8 @@
                                     Controls:TextBoxHelper.Watermark="Unlimited"
                                     Width="80"
                                     HorizontalAlignment="Left"
-                                    Text="{Binding AccountCreateQueueLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    x:Name="TxtBoxCreateAccountsQueueLimit"
+                                    Text="{Binding AccountServiceQueueLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountsServiceQueueLimit"
                                     Foreground="#FFFFFF" 
                                     Background="{DynamicResource TextBoxBackgroundBrush}"
                                     BorderBrush="{DynamicResource TextBoxBorderBrush}"
@@ -148,8 +148,8 @@
                                     Controls:TextBoxHelper.Watermark="None"
                                     Width="80"
                                     HorizontalAlignment="Left"
-                                    Text="{Binding AccountCreateBreakTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    x:Name="TxtBoxCreateAccountsDelay"
+                                    Text="{Binding AccountServiceBreakTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountsServiceDelay"
                                     Foreground="#FFFFFF" 
                                     Background="{DynamicResource TextBoxBackgroundBrush}"
                                     BorderBrush="{DynamicResource TextBoxBorderBrush}"
@@ -169,8 +169,8 @@
                                     Controls:TextBoxHelper.Watermark="Unlimited"
                                     Width="80"
                                     HorizontalAlignment="Left"
-                                    Text="{Binding AccountCreateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    x:Name="TxtBoxCreateAccountsLimit"
+                                    Text="{Binding AccountServiceLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountsServiceLimit"
                                     Foreground="#FFFFFF" 
                                     Background="{DynamicResource TextBoxBackgroundBrush}"
                                     BorderBrush="{DynamicResource TextBoxBorderBrush}"
@@ -182,23 +182,74 @@
                             Grid.Row="2" 
                             BorderThickness="0 1 0 0" 
                             BorderBrush="{DynamicResource WindowBorderBrush}">
-                            <TextBox
-                                x:Name="Console" 
-                                TextWrapping="Wrap" 
-                                HorizontalAlignment="Stretch" 
-                                VerticalAlignment="Stretch" 
-                                BorderThickness="0"
-                                Padding="12"
-                                IsReadOnly="True"
-                                Background="{DynamicResource BrightBrush}"
-                                VerticalScrollBarVisibility="Auto">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="Foreground" Value="#f4f4f4" />
-                                        <Setter Property="FontFamily" Value="Tahoma" />
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
+                            <StackPanel 
+                                Margin="20" 
+                                Grid.Row="2">
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        Width="120"
+                                        DockPanel.Dock="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}"
+                                        ToolTip="The prefix to use for specified email provider (name+1@provider.com)">Email Prefix</TextBlock>
+                                    <TextBox
+                                        Controls:TextBoxHelper.Watermark="email.name+"
+                                        x:Name="TxtBoxEmailPrefix"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed" />
+                                </DockPanel>
+                                
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Email Provider</TextBlock>
+                                    <TextBox
+                                        Controls:TextBoxHelper.Watermark="@gmail.com"
+                                        x:Name="TxtBoxEmailProvider"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed" />
+                                </DockPanel>
+                                
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        Width="120"
+                                        DockPanel.Dock="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}"
+                                        ToolTip="From which number to start incrementing the prefix">Increment Range</TextBlock>
+                                    <TextBox
+                                        Width="50"
+                                        HorizontalAlignment="Left"
+                                        Controls:TextBoxHelper.Watermark="1"
+                                        x:Name="TxtBoxIncrementLow"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed" />
+                                    <TextBox
+                                        Width="50"
+                                        Margin="6 0 0 0"
+                                        HorizontalAlignment="Left"
+                                        Controls:TextBoxHelper.Watermark="100"
+                                        x:Name="TxtBoxIncrementHigh"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        TextChanged="Settings_Changed" />
+                                </DockPanel>
+                            </StackPanel>
                         </Border>
                     </Grid>
 
@@ -240,7 +291,7 @@
                                     <CheckBox 
                                         x:Name="ChkBoxCreateAccountUseHttpProxy" 
                                         Style="{DynamicResource CheckBoxStyle}"
-                                        IsChecked="{Binding CreateAccountUseHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IsChecked="{Binding CreateAccountUseProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Checked="Settings_Changed"
                                         Unchecked="Settings_Changed"/>
                                 </DockPanel>
@@ -256,12 +307,29 @@
                                     <ComboBox
                                         DisplayMemberPath="Alias"
                                         SelectedValuePath="Alias"
-                                        SelectedValue="{Binding CreateAccountHttpProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        SelectedValue="{Binding CreateAccountProxyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         x:Name="ComboBoxCreateAccountProxy"
                                         Foreground="#FFFFFF" 
                                         Background="{DynamicResource TextBoxBackgroundBrush}"
                                         BorderBrush="{DynamicResource TextBoxBorderBrush}"
                                         SelectionChanged="Settings_Changed"/>
+                                </DockPanel>
+
+                                <DockPanel 
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}"
+                                        ToolTip="Use Proxy associated with imported account if exists">Set Imported Proxy</TextBlock>
+                                    <CheckBox 
+                                        x:Name="ChkBoxAccountDefaultEnableProxy" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding CreateAccountUseImportedProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
                                 </DockPanel>
                             </StackPanel>
 
@@ -320,7 +388,7 @@
                                     </TextBox>
                                 </DockPanel>
 
-                                <DockPanel
+                                <!--<DockPanel
                                     Margin="0 0 0 12"
                                     FlowDirection="LeftToRight">
                                     <TextBlock 
@@ -354,6 +422,26 @@
                                         Background="{DynamicResource TextBoxBackgroundBrush}"
                                         BorderBrush="{DynamicResource TextBoxBorderBrush}"
                                         SelectionChanged="Settings_Changed"/>
+                                </DockPanel>-->
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Set Group</TextBlock>
+                                    <ComboBox
+                                        DockPanel.Dock="Right"
+                                        DisplayMemberPath="Name"
+                                        SelectedValuePath="Id"
+                                        SelectedValue="{Binding AccountDefaultGroupId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        x:Name="ComboBoxAccountDefaultGroup"
+                                        Foreground="#FFFFFF" 
+                                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                                        BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                        SelectionChanged="Settings_Changed"/>
                                 </DockPanel>
                             </StackPanel>
                         </Grid>
@@ -375,14 +463,14 @@
                     <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
                         <DockPanel Grid.Row="0">
                             <Button x:Name="ButtonImportList"
-                                    Padding="0"
-                                    Margin="1 0 0 0"
-                                    BorderThickness="0"
-                                    Height="29" Width="31"
-                                    Controls:ButtonHelper.CornerRadius="0" 
-                                    HorizontalAlignment="Left"
-                                    Click="ButtonImportList_Click"
-                                    ToolTip="Import Accounts List">
+                                Padding="0"
+                                Margin="1 0 0 0"
+                                BorderThickness="0"
+                                Height="29" Width="31"
+                                Controls:ButtonHelper.CornerRadius="0" 
+                                HorizontalAlignment="Left"
+                                Click="ButtonImportList_Click"
+                                ToolTip="Import Accounts List">
                                 <Image Stretch="Fill">
                                     <Image.Style>
                                         <Style TargetType="Image">
@@ -454,9 +542,9 @@
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Name}" Header="Name" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="80"/>
-                            <DataGridTextColumn Binding="{Binding Username}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
-                            <DataGridTextColumn Binding="{Binding Script}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
-                            <DataGridTextColumn Binding="{Binding World}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="80"/>
+                            <DataGridTextColumn Binding="{Binding Username}" Header="Username" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Script}" Header="Script" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
+                            <DataGridTextColumn Binding="{Binding World}" Header="World" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="80"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -471,8 +559,138 @@
                             IsReadOnly="True"
                             Background="{DynamicResource BrightBrush}"
                             VerticalScrollBarVisibility="Auto"
-                            Text="Import format: username/password/bankpin/script:params/world or replace value with /null/ to ignore
-                            Only username/password params are mandatory"
+                            Text="Import format: username / password / bankpin / script:params / world / proxyname, use /null/ to ignore
+                            Do not use spaces in between /. Only username / password params are mandatory"
+                            Foreground="#CCC">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="#f4f4f4" />
+                                    <Setter Property="FontFamily" Value="Tahoma" />
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem
+                Header="Unlocks"
+                x:Name="UnlocksTab"
+                Style="{DynamicResource TabItemStyle}">
+                <Grid Background="{DynamicResource BrightBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33" />
+                        <RowDefinition />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <DockPanel Grid.Row="0">
+                            <Button x:Name="ButtonImportAccountUnlock"
+                                Padding="0"
+                                Margin="1 0 0 0"
+                                BorderThickness="0"
+                                Height="29" Width="31"
+                                Controls:ButtonHelper.CornerRadius="0" 
+                                HorizontalAlignment="Left"
+                                Click="ButtonImportAccountUnlock_Click"
+                                ToolTip="Import Accounts Unlock List">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource ImportFileNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource ImportFileHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                            <Button x:Name="ButtonDeleteAccountUnlock"
+                                    Padding="0"
+                                    Margin="1 0 0 0"
+                                    BorderThickness="0"
+                                    Height="29" Width="31"
+                                    Controls:ButtonHelper.CornerRadius="0" 
+                                    HorizontalAlignment="Left"
+                                    Click="ButtonDeleteAccountUnlock_Click"
+                                    ToolTip="Delete Imported Account">
+                                <Image Stretch="Fill">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{StaticResource DeleteNormal}"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Source" Value="{StaticResource DeleteHovered}"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Button>
+                        </DockPanel>
+                    </Border>
+
+                    <DataGrid 
+                        Grid.Row="1" 
+                        x:Name="UnlocksList"
+                        ItemsSource="{Binding AccountsUnlockList, RelativeSource={RelativeSource AncestorType=Window}}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        SelectionMode="Single" 
+                        SelectionUnit="FullRow"
+                        CanUserAddRows="False"
+                        CanUserSortColumns="False"
+                        AutoGenerateColumns="False"
+                        ClipboardCopyMode="None"
+                        BorderThickness="0"
+                        Background="{DynamicResource DialogBackgroundBrush}"
+                        Foreground="#F4F4F4"
+                        HeadersVisibility="None"
+                        CellStyle="{StaticResource CellStyleWithPadding}">
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{DynamicResource DialogBackgroundBrush}" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding EmailProvider}" Header="EmailProvider" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="60"/>
+                            <DataGridTextColumn Binding="{Binding Email}" Header="Email" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
+                            <DataGridTextColumn Header="Passwords" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} -> {1}">
+                                        <Binding Path="Password" />
+                                        <Binding Path="NewPassword" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="2">
+                        <TextBox
+                            x:Name="UnlockHelpNote" 
+                            TextWrapping="Wrap" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            BorderThickness="0"
+                            Padding="12"
+                            IsReadOnly="True"
+                            Background="{DynamicResource BrightBrush}"
+                            VerticalScrollBarVisibility="Auto"
+                            Text="Import format: email / email password / rs password / rs new password / provider (gmail, yahoo) / sub
+                            Do not use spaces in between /"
                             Foreground="#CCC">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
@@ -486,13 +704,14 @@
             </TabItem>
             
             <TabItem 
-                Header="Status" 
-                x:Name="StatusTab"
+                Header="Queue" 
+                x:Name="QueueTab"
                 Style="{DynamicResource TabItemStyle}">
                 <Grid Background="{DynamicResource BrightBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="33" />
                         <RowDefinition />
+                        <RowDefinition Height="80" />
                     </Grid.RowDefinitions>
 
                     <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
@@ -521,7 +740,7 @@
                             </Button>
                         </DockPanel>
                     </Border>
-                    
+
                     <DataGrid 
                         Grid.Row="1" 
                         x:Name="TasksList"
@@ -558,31 +777,28 @@
                             <DataGridTextColumn Binding="{Binding Description}" Header="Description" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                </Grid>
-            </TabItem>
-
-            <TabItem 
-                Header="Unlocker" 
-                x:Name="UnlockerTab"
-                Style="{DynamicResource TabItemStyle}">
-                <Grid Background="{DynamicResource BrightBrush}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="33" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0">
-                        <Button
-				            Name="ButtonTest"
-				            Height="27"
-				            FontFamily="Tahoma"
-				            FontWeight="Bold"
-				            FontSize="11"
-				            Padding="20,0,20,0"
-				            Content="Register"
-				            Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
-                            Click="ButtonTest_Click"/>
-                    </Grid>
+                    <Border
+                        Grid.Row="2" 
+                        BorderThickness="0 1 0 0" 
+                        BorderBrush="{DynamicResource WindowBorderBrush}">
+                        <TextBox
+                            x:Name="Console" 
+                            TextWrapping="Wrap" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            BorderThickness="0"
+                            Padding="12"
+                            IsReadOnly="True"
+                            Background="{DynamicResource BrightBrush}"
+                            VerticalScrollBarVisibility="Auto">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="#f4f4f4" />
+                                    <Setter Property="FontFamily" Value="Tahoma" />
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Border>
                 </Grid>
             </TabItem>
         </TabControl>

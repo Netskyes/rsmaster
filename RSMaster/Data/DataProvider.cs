@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 
-namespace RSMaster
+namespace RSMaster.Data
 {
     using Utility;
 
@@ -85,7 +85,7 @@ namespace RSMaster
         public static bool SaveModel(IViewModel model, string tableName)
         {
             var data = model.GetType().GetProperties().Where
-                (x => !Attribute.IsDefined(x, typeof(Extensions.PropInsertIgnore))).ToDictionary
+                (x => !Attribute.IsDefined(x, typeof(PropInsertIgnore))).ToDictionary
                 (x => x.Name, x => x.GetValue(model));
 
             var columns = data.Keys.Select(x => x).ToList();
@@ -106,7 +106,7 @@ namespace RSMaster
         public static bool UpdateModel(IViewModel model, string tableName)
         {
             var data = model.GetType().GetProperties().Where
-                (x => !Attribute.IsDefined(x, typeof(Extensions.PropUpdateIgnore))).ToDictionary
+                (x => !Attribute.IsDefined(x, typeof(PropUpdateIgnore))).ToDictionary
                 (x => x.Name, x => x.GetValue(model));
 
             var query = string.Format("UPDATE {0} SET {1} WHERE {2}", 

@@ -6,8 +6,7 @@ using System.Text;
 
 namespace RSMaster.UI.Models
 {
-    using Helpers;
-    using Extensions;
+    using Data;
 
     public class TimeEvent : IViewModel, INotifyPropertyChanged
     {

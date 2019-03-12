@@ -36,15 +36,12 @@ namespace RSMaster.UI
                 Application.Current.Shutdown();
             }
 
-            #if !DEBUG
-
-            if (e.Args.Length < 1
-                || e.Args[0] != "Raindropz")
+#if (RELEASE)
+            if (e.Args.Length < 1 || e.Args[0] != "Raindropz")
             {
                 Current.Shutdown();
             }
-
-            #endif
+#endif
         }
     }
 }

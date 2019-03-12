@@ -2,7 +2,7 @@
 
 namespace RSMaster.Network
 {
-    public class Packet
+    internal class Packet
     {
         public byte[] Buffer { get; set; }
         public IPEndPoint EndPoint { get; set; }

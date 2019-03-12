@@ -1,6 +1,6 @@
 ﻿namespace RSMaster.Network.Enums
 {
-    public enum SecurityProtocolType
+    internal enum SecurityProtocolType
     {
         SSLv3 = 0x00,
         TLSv1 = 0x01,

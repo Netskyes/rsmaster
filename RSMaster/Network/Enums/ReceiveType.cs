@@ -1,6 +1,6 @@
 ﻿namespace RSMaster.Network.Enums
 {
-    public enum ReceiveType
+    internal enum ReceiveType
     {
         Header = 0,
         Payload = 1

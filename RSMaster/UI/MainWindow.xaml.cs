@@ -23,6 +23,7 @@ using System.Windows.Forms;
 
 namespace RSMaster.UI
 {
+    using Data;
     using Config;
     using Models;
     using Utility;
@@ -42,18 +43,6 @@ namespace RSMaster.UI
         internal static Dialogs.LoginDialog LoginDialog { get; set; }
         internal static SchedulerWindow SchedulerWindow { get; set; }
 
-        #region Delegates
-
-        internal static LogDelegate Log;
-        internal static ShutdownDelegate Shutdown;
-        internal static GetAccountByIdDelegate AccountGetById;
-        internal static UpdateAccountDelegate AccountUpdate;
-        internal static GetSelectedAccountDelegate AccountGetSelected;
-        internal static LaunchAccountDelegate AccountLaunch;
-        internal static GetGroupByIdDelegate GroupGetById;
-
-        #endregion
-
         public ICollectionView AccountsListItems { get; set; }
         public ICollectionView ProxyListItems { get; set; }
         public ICollectionView SocksProxyListItems { get; set; }
@@ -71,15 +60,15 @@ namespace RSMaster.UI
             InitializeComponent();
             Cryptography.AES.SetDefaultKey("ukjdpxw6");
 
-            #region Delegates
+            #region Assign Callbacks
 
-            Log = ConsoleLog;
-            Shutdown = AppShutdown;
-            AccountGetById = GetAccountById;
-            AccountGetSelected = GetSelectedAccount;
-            AccountUpdate = UpdateAccount;
-            AccountLaunch = LaunchAccount;
-            GroupGetById = GetGroupById;
+            LogHandler = Log;
+            ShutdownHandler = AppShutdown;
+            GetSelectedAccountHandler = GetSelectedAccount;
+            GetGroupByIdHandler = GetGroupById;
+            UpdateAccountHandler = UpdateAccount;
+            LaunchAccountHandler = LaunchAccount;
+            GetAccountsHandler = GetLoadedAccounts;
 
             #endregion
 
@@ -111,12 +100,31 @@ namespace RSMaster.UI
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            ConsoleLog("RS Master 1.0.0");
-            ConsoleLog("OSBot Version: " + OSBotHelper.GetLocalBotVersion());
-            ConsoleLog("HWID: " + Util.GetHWID());
+            Log("RS Master 1.0.0");
+            Log("OSBot Version: " + (OSBotHelper.GetLocalBotVersion() ?? "Unknown"));
+            Log("HWID: " + Util.GetHWID());
+            CheckJavaExists();
 
-            //ShowLoginDialog();
             ScheduleManager.Begin();
+        }
+
+        private void CheckJavaExists()
+        {
+            if (OSBotHelper.JavaInPath())
+                return;
+
+            if (!OSBotHelper.JavaInstalled())
+            {
+                Log("Warning: Java doesn't seem to be installed on your system, please install it to ensure full functionality.");
+                return;
+            }
+
+            var javaPath = OSBotHelper.GetJavaInstallPath();
+            if (javaPath != null)
+            {
+                OSBotHelper.SetJavaSystemPath(javaPath);
+                Log("Notice: Java path was not set in your system env, automatically set.");
+            }
         }
 
         private void LoadSettings()
@@ -167,7 +175,7 @@ namespace RSMaster.UI
             });
         }
 
-        private void ConsoleLog(string text)
+        private void Log(string text)
         {
             var dateTime = DateTime.Now.ToString("HH:mm:ss");
             Invoke(() => Console.AppendText(dateTime + ": " + text + Environment.NewLine));
@@ -180,15 +188,13 @@ namespace RSMaster.UI
         }
 
         #region Helpers
-        
+
+        private IEnumerable<AccountModel> GetLoadedAccounts()
+            => Invoke(() => accountsListItems);
+
         private GroupModel GetGroupById(int groupId)
         {
             return Invoke(() => groupListItems.FirstOrDefault(x => x.Id == groupId));
-        }
-
-        private AccountModel GetAccountById(int accountId)
-        {
-            return Invoke(() => accountsListItems.FirstOrDefault(x => x.Id == accountId));
         }
 
         private AccountModel GetSelectedAccount()
@@ -208,26 +214,20 @@ namespace RSMaster.UI
             });
         }
 
-        public void AddAccountToList(AccountModel account) => Invoke(() => accountsListItems.Add(account));
-
-        public async Task<bool> ShowMessageDialog
-            (string title, string description, MessageDialogStyle messageDialogStyle = MessageDialogStyle.AffirmativeAndNegative)
+        private void AppShutdown()
         {
-            var dialog = new Dialogs.MessageDialog(this, title, description, messageDialogStyle);
-            await this.ShowMetroDialogAsync(dialog);
-            await 
-                dialog.WaitUntilUnloadedAsync();
-
-            return dialog.Result;
+            Invoke(Application.Current.Shutdown);
         }
 
-        public async Task LaunchAccount(AccountModel account, bool autoLaunch = false)
+        internal void AddAccountToList(AccountModel account) => Invoke(() => accountsListItems.Insert(0, account));
+
+        internal async Task LaunchAccount(AccountModel account, bool autoLaunch = false)
         {
             #region Validation
 
             if (!OSBotHelper.LocalBotExists())
             {
-                ConsoleLog("Cannot find local OSBot Jar, please run updater to obtain the latest.");
+                Log("Cannot find local OSBot Jar, please run updater to obtain the latest.");
 
                 return;
             }
@@ -235,14 +235,14 @@ namespace RSMaster.UI
             if (Util.AnyStringNullOrEmpty
                 (account.Username, account.Password, Settings.Username, Settings.Password))
             {
-                ConsoleLog("Missing OSBot client or accounts details.");
+                Log("Missing OSBot client or accounts details.");
 
                 return;
             }
 
             #endregion
 
-            if (account.ProxyEnabled != 0 
+            if (account.ProxyEnabled != 0
                 && !string.IsNullOrEmpty(account.ProxyName))
             {
                 account.Proxy = Invoke(() => proxyListItems.FirstOrDefault(x => x.Alias == account.ProxyName));
@@ -251,7 +251,7 @@ namespace RSMaster.UI
             var result = await AccountManager.LaunchAccount(account, autoLaunch);
             if (result.success)
             {
-                ConsoleLog("Account launched!");
+                Log("Account launched!");
                 return;
             }
 
@@ -273,28 +273,39 @@ namespace RSMaster.UI
                     }
                     else
                     {
-                        ConsoleLog("Your OSBot client is out of date, please close the program and run updater.");
+                        Log("Your OSBot client is out of date, please close the program and run updater.");
                     }
 
                     break;
 
                 case 3:
-                    ConsoleLog("Invalid OSBot client username or password!");
+                    Log("Invalid OSBot client username or password!");
                     break;
 
                 case 5:
-                    ConsoleLog("Web Walking has been updated, please manually run osbot.jar and install it through Boot UI.");
+                    Log("Web Walking has been updated, please manually run osbot.jar and install it through Boot UI.");
                     break;
 
                 default:
-                    ConsoleLog("Launching account " + account.Username + " timed out!");
+                    Log("Launching account " + account.Username + " timed out!");
                     break;
             }
 
             #endregion
         }
 
-        public async Task ImportAccounts(bool temporary)
+        internal async Task<bool> ShowMessageDialog
+            (string title, string description, MessageDialogStyle messageDialogStyle = MessageDialogStyle.AffirmativeAndNegative)
+        {
+            var dialog = new Dialogs.MessageDialog(this, title, description, messageDialogStyle);
+            await this.ShowMetroDialogAsync(dialog);
+            await 
+                dialog.WaitUntilUnloadedAsync();
+
+            return dialog.Result;
+        }
+
+        internal async Task<string[]> RequestImportDialog()
         {
             var dialog = new OpenFileDialog
             {
@@ -304,61 +315,90 @@ namespace RSMaster.UI
             };
 
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                return;
+                return null;
 
             try
             {
-                await Task.Run(() =>
-                {
-                    var lines = File.ReadAllLines(dialog.FileName);
-                    foreach (var line in lines)
-                    {
-                        var args = line.Split('/');
-                        var account = new AccountModel
-                        {
-                            Name = "Imported",
-                            Temporary = Convert.ToInt32(temporary),
-                            Username = args[0],
-                            Password = args[1]
-                        };
-
-                        if (args.Length > 2 && args[2] != "null")
-                            account.BankPIN = args[2];
-
-                        if (args.Length > 3 && args[3] != "null")
-                            account.Script = args[3];
-
-                        if (args.Length > 4 && args[4] != "null")
-                        {
-                            int.TryParse(args[4], out int accountWorld);
-                            if (accountWorld > 0)
-                            {
-                                account.World = accountWorld;
-                            }
-                        }
-
-                        var existingAccount = DataProvider.GetAccounts().FirstOrDefault(x => x.Username == account.Username);
-                        if (existingAccount is null 
-                            && DataProvider.SaveAccount(account))
-                        {
-                            account = DataProvider.GetAccounts().FirstOrDefault();
-                            if (account != null)
-                            {
-                                AddAccountToList(account);
-                            }
-                        }
-                    }
-                });
+                return (await Task.Run(() => File.ReadAllLines(dialog.FileName)));
             }
             catch (Exception ex)
             {
                 Util.LogException(ex);
             }
+
+            return null;
         }
 
-        private void AppShutdown()
+        internal async Task ImportAccounts(bool temporary = false)
         {
-            Invoke(Application.Current.Shutdown);
+            var lines = await RequestImportDialog();
+            if (lines != null)
+            {
+                foreach (var line in lines)
+                {
+                    try
+                    {
+                        ImportAccount(line.Split('/'), temporary);
+                    }
+                    catch (Exception e)
+                    {
+                        Util.LogException(e);
+                    }
+                }
+            }
+        }
+
+        private void ImportAccount(string[] args, bool temporary = false)
+        {
+            var account = new AccountModel
+            {
+                Name = "Imported",
+                Temporary = Convert.ToInt32(temporary),
+                Username = args[0],
+                Password = args[1]
+            };
+
+            if (args.Length > 2 && args[2] != "null")
+                account.BankPIN = args[2];
+
+            if (args.Length > 3 && args[3] != "null")
+                account.Script = args[3];
+
+            if (args.Length > 4 && args[4] != "null")
+            {
+                int.TryParse(args[4], out int accountWorld);
+                if (accountWorld > 0)
+                {
+                    account.World = accountWorld;
+                }
+            }
+
+            if (args.Length > 5 && args[5] != "null")
+            {
+                var proxy = DataProvider.GetModels<ProxyModel>
+                    ("proxies", new DataRequestFilter
+                {
+                    Conditions = new Dictionary<string, object> { { "Alias", args[5] } }
+
+                }).FirstOrDefault();
+
+                if (proxy != null)
+                {
+                    account.ProxyEnabled = 1;
+                    account.ProxyName = proxy.Alias;
+                }
+            }
+
+            var existingAccount = DataProvider.GetAccounts().FirstOrDefault(x => x.Username == account.Username);
+            if (existingAccount is null
+                && DataProvider.SaveAccount(account))
+            {
+                account = DataProvider.GetAccounts().FirstOrDefault();
+                if (account != null)
+                {
+                    AddAccountToList(account);
+                }
+            }
         }
 
         private void Invoke(Action action) => Dispatcher.Invoke(action);
@@ -370,9 +410,9 @@ namespace RSMaster.UI
             return result;
         }
 
-        #endregion
+#endregion
 
-        #region UI Event Handlers
+#region UI Event Handlers
 
         private void ButtonBotSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -517,7 +557,7 @@ namespace RSMaster.UI
 
         private async void MetroWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (ShutdownInProgress)
+            if (ShutdownInProgress || !this.IsVisible)
                 return;
 
             e.Cancel = true;
@@ -662,7 +702,7 @@ namespace RSMaster.UI
 
         private async void ButtonImportExistingAccounts_Click(object sender, RoutedEventArgs e)
         {
-            await ImportAccounts(false);
+            await ImportAccounts();
         }
 
         private void ButtonAccountGroups_Click(object sender, RoutedEventArgs e)
@@ -683,6 +723,16 @@ namespace RSMaster.UI
             });
         }
 
-        #endregion
+        private void ButtonOpenDiscord_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://discord.gg/YfCwH6D");
+        }
+
+        private void ButtonOpenDonate_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.paypal.me/netskyes");
+        }
+
+#endregion
     }
 }

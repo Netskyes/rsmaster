@@ -5,6 +5,7 @@ using MahApps.Metro.Controls;
 
 namespace RSMaster.UI
 {
+    using Data;
     using Utility;
     using UI.Models;
 

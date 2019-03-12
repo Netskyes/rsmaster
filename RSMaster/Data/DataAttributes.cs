@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace RSMaster.Extensions
+namespace RSMaster.Data
 {
     [AttributeUsage(AttributeTargets.Property, Inherited = false)]
-    public class PropInsertIgnore : Attribute
+    internal class PropInsertIgnore : Attribute
     {
     }
 
     [AttributeUsage(AttributeTargets.Property, Inherited = false)]
-    public class PropUpdateIgnore : Attribute
+    internal class PropUpdateIgnore : Attribute
     {
     }
 }

@@ -16,8 +16,7 @@ namespace RSMaster.Config
         public string CaptchaApiKey { get; set; }
         public string ClientMemory { get; set; }
         public string AccountDefaultScript { get; set; }
-        public string AccountDefaultProxy { get; set; }
-        public string CreateAccountHttpProxy { get; set; }
+        public string CreateAccountProxyName { get; set; }
         public bool ClientDataCollection { get; set; }
         public bool ClientReflection { get; set; }
         public bool ClientLowCPU { get; set; }
@@ -27,16 +26,17 @@ namespace RSMaster.Config
         public bool ClientNoRandoms { get; set; }
         public bool ClientLaunchHidden { get; set; }
         public bool LaunchAccountOnCreate { get; set; }
-        public bool CreateAccountUseHttpProxy { get; set; }
-        public bool AccountDefaultEnableProxy { get; set; }
+        public bool CreateAccountUseProxy { get; set; }
+        public bool CreateAccountUseImportedProxy { get; set; }
         public bool RememberLoginDetails { get; set; }
         public bool KillClientsOnExit { get; set; }
         public bool DebugMode { get; set; }
 
         public int AccountDefaultWorld { get; set; }
-        public int AccountCreateQueueLimit { get; set; }
-        public int AccountCreateBreakTime { get; set; }
-        public int AccountCreateLimit { get; set; }
+        public int AccountServiceQueueLimit { get; set; }
+        public int AccountServiceBreakTime { get; set; }
+        public int AccountServiceLimit { get; set; }
+        public int AccountDefaultGroupId { get; set; }
 
         public void Save()
         {

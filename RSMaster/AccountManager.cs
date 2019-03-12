@@ -15,6 +15,7 @@ using System.IO;
 
 namespace RSMaster
 {
+    using Objects;
     using Helpers;
     using Utility;
 
@@ -65,7 +66,7 @@ namespace RSMaster
             {
             }
 
-            MainWindow.Log("Launching account: " + account.Username);
+            MainWindow.LogHandler("Launching account: " + account.Username);
             launching.Add(account.Username);
 
             var launchResponse = await Task.Run(() =>
@@ -85,7 +86,7 @@ namespace RSMaster
 
             if (MainWindow.Settings.DebugMode)
             {
-                MainWindow.Log("DEBUG: " + launchResponse);
+                MainWindow.LogHandler("DEBUG: " + launchResponse);
             }
 
             if (launchResponse.Contains("Your OSBot Client is out of date"))
@@ -140,8 +141,14 @@ namespace RSMaster
                     accountsRunning.Add(account.Username, new Account(instance));
                 }
 
+                var title = "RSMaster - " + account.Username;
+                if (account.ProxyEnabled > 0 && account.Proxy != null)
+                {
+                    title += $" - Proxy: {account.Proxy.Alias} [{account.Proxy.Host}]";
+                }
+
                 WinAPI.SetWindowText
-                    (instance.MainWindowHandle, account.Username);
+                    (instance.MainWindowHandle, title);
 
                 if (MainWindow.Settings.ClientLaunchHidden)
                 {

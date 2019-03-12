@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 namespace RSMaster.Helpers
 {
     using UI;
+    using Data;
+    using Interfaces;
     using UI.Models;
-    using RuneScape.Models;
-    using Utility;
 
-    internal class RsWebHelper
+    internal class RsWebHelper : IDisposable
     {
-        private HttpHelper httpHelper;
-        private readonly string CreateAccountUrl = "https://secure.runescape.com/m=account-creation/create_account";
+        private readonly HttpHelper httpHelper;
 
-        public RsWebHelper()
+        public RsWebHelper(string proxyName = null)
         {
             var settings = MainWindow.Settings;
 
-            if (settings.CreateAccountUseHttpProxy 
-                && !string.IsNullOrEmpty(settings.CreateAccountHttpProxy))
+            if (settings.CreateAccountUseProxy 
+                && (!string.IsNullOrEmpty(settings.CreateAccountProxyName) 
+                || (!string.IsNullOrEmpty(proxyName) && settings.CreateAccountUseImportedProxy)))
             {
                 var proxy = DataProvider.GetModels<ProxyModel>("proxies").FirstOrDefault
-                    (x => x.Alias == settings.CreateAccountHttpProxy);
+                    (x => x.Alias == (proxyName ?? settings.CreateAccountProxyName));
                 if (proxy != null)
                 {
                     int.TryParse(proxy.Port, out int port);
@@ -45,44 +45,20 @@ namespace RSMaster.Helpers
             httpHelper.InitRsWebSupport();
         }
 
-        public async Task<string> PostCreateAccount(RSAccountForm account, string captchaResult)
+        public async Task<string> PostRequest(IRuneScapeForm requestForm)
         {
-            var requestForm = account.Build(captchaResult);
-            return await httpHelper.PostRequest
-                (CreateAccountUrl, new FormUrlEncodedContent(requestForm));
+            var webForms = requestForm.Build();
+            return await httpHelper.PostRequest(requestForm.RequestUrl, new FormUrlEncodedContent(webForms));
         }
 
-        public async Task<string> RequestSolveCaptcha()
+        public async Task<(string message, HttpResponseMessage response)> GetRequest(string requestUri)
         {
-            var googleKey = await GrabGoogleKey();
-            if (googleKey == "")
-            {
-                return "NO_GOOGLE_KEY";
-            }
-
-            // Logic for 2captcha or Anticaptcha
-            return await CaptchaTwoHelper.RequestSolveCaptcha(googleKey, CreateAccountUrl);
+            return await httpHelper.GetRequest(requestUri);
         }
 
-        public async Task<string> GetSolveResult(string captchaId)
+        public void Dispose()
         {
-            // Logic for 2captcha or Anticaptcha
-            return await CaptchaTwoHelper.GetSolveResult(captchaId);
-        }
-
-        public static async Task<string> GetCaptchaBalance()
-        {
-            // Logic for 2captcha or Anticaptcha
-            return await CaptchaTwoHelper.GetCaptchaBalance();
-        }
-
-        public async Task<string> GrabGoogleKey()
-        {
-            var response = await httpHelper.GetRequest(CreateAccountUrl);
-            var regex = new Regex("'sitekey'\\s+:\\s+'(.*)'");
-            var match = regex.Match(response);
-
-            return (match.Success) ? match.Groups[1].Value : string.Empty;
+            if (httpHelper != null) httpHelper.Dispose();
         }
     }
 }

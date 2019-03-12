@@ -1,9 +1,10 @@
-﻿using RSMaster.Extensions;
-using System;
+﻿using System;
 using System.ComponentModel;
 
 namespace RSMaster.UI.Models
 {
+    using Data;
+
     public class GroupModel : IViewModel, INotifyPropertyChanged
     {
         #region Fields

@@ -11,7 +11,7 @@ namespace RSMaster.Helpers
 {
     using Utility;
 
-    public class HttpHelper
+    internal class HttpHelper : IDisposable
     {
         private HttpClient client;
         private HttpClientHandler clientHandler;
@@ -33,7 +33,7 @@ namespace RSMaster.Helpers
             clientHandler.UseCookies = true;
             clientHandler.CookieContainer = cookies;
             clientHandler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            clientHandler.AllowAutoRedirect = true;
+            //clientHandler.AllowAutoRedirect = true;
 
             client = new HttpClient(clientHandler);
             client.DefaultRequestHeaders.Add("Host", "secure.runescape.com");
@@ -89,18 +89,19 @@ namespace RSMaster.Helpers
             client = new HttpClient(clientHandler);
         }
 
-        public async Task<string> GetRequest(string requestUri)
+        public async Task<(string message, HttpResponseMessage response)> GetRequest(string requestUri)
         {
             try
             {
                 var response = await client.GetAsync(requestUri);
-                return await
-                    response.Content.ReadAsStringAsync();
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                return (responseString, response);
             }
             catch (Exception e)
             {
                 Util.LogException(e);
-                return string.Empty;
+                return (string.Empty, null);
             }
         }
 
@@ -117,6 +118,11 @@ namespace RSMaster.Helpers
                 Util.LogException(e);
                 return string.Empty;
             }
+        }
+
+        public void Dispose()
+        {
+            if (client != null) client.Dispose();
         }
     }
 }

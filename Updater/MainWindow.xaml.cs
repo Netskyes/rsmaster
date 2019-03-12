@@ -190,7 +190,6 @@ namespace Updater
             }
             catch
             {
-                return;
             }
         }
 

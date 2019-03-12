@@ -1,6 +1,4 @@
-﻿using RSMaster.UI;
-using RSMaster.UI.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace RSMaster
 {
+    using UI;
+    using UI.Models;
+    using Data;
+
     internal class ScheduleManager
     {
         private List<TimeEvent> timeEvents = new List<TimeEvent>();
@@ -68,7 +70,8 @@ namespace RSMaster
 
             var (bHour, bMinute, eHour, eMinute) = ConvertBeginEndTime(timeEvent.BeginningTime, timeEvent.EndingTime);
             var manager = MainWindow.AccountManager;
-            var account = MainWindow.AccountGetById(timeEvent.AccountId);
+            var account = MainWindow.GetAccountsHandler().FirstOrDefault
+                (x => x.Id == timeEvent.AccountId);
             if (account is null)
                 return;
 
@@ -84,7 +87,7 @@ namespace RSMaster
                         account.Script = timeEvent.Script;
                     }
 
-                    MainWindow.AccountLaunch(account, true);
+                    MainWindow.LaunchAccountHandler(account, true);
                 }
             }
             else if (account.AutoLaunched && manager.IsRunning(account.Username))

@@ -10,27 +10,34 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using MahApps.Metro.Controls;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace RSMaster.UI
 {
+    using Data;
+    using Enums;
     using Models;
     using Services;
-    using RuneScape.Models;
     using Utility;
     using Interfaces;
     using Helpers;
+    using Objects;
+    using Extensions;
 
     public partial class ServicesWindow : MetroWindow
     {
-        public IService Service { get; set; }
         public ICollectionView TaskListItems { get; set; }
         public ICollectionView AccountsImportList { get; set; }
+        public ICollectionView AccountsUnlockList { get; set; }
         public ICollectionView SocksProxyListItems { get; set; }
 
         private MainWindow Host { get; set; }
+        private ObservableCollection<UnlockModel> unlocksListItems = new ObservableCollection<UnlockModel>();
         private ObservableCollection<TaskModel> taskListItems = new ObservableCollection<TaskModel>();
         private readonly object taskListItemsLock = new object();
-        private RsWebHelper RsWebHelper { get; set; }
+
+        internal IService Service { get; set; }
+        internal RsWebHelper RsWebHelper { get; set; }
 
         public ServicesWindow(MainWindow host)
         {
@@ -46,15 +53,36 @@ namespace RSMaster.UI
                 { Source = host.proxyListItems }.View;
             SocksProxyListItems.Filter = (o) => (o as ProxyModel)?.Type.Equals("SOCKS") ?? false;
 
+            AccountsUnlockList = CollectionViewSource.GetDefaultView(unlocksListItems);
+
             AccountCreationSettings.DataContext = MainWindow.Settings;
             ComboBoxCreateAccountProxy.ItemsSource = host.ProxyListItems;
+            ComboBoxAccountDefaultGroup.ItemsSource = host.GroupListItems;
 
             TasksList.DataContext = this;
             TaskListItems = CollectionViewSource.GetDefaultView(taskListItems);
 
-            ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(0, "Imported Accounts"));
-            ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(1, "Email Prefix"));
-            ComboBoxAccountCreationMethod.Items.Add(new PairValueModel(2, "Auto, In-Built Method"));
+            ComboBoxServiceAction.Items.Add(new PairValueModel(0, "Create - Imported Accounts"));
+            ComboBoxServiceAction.Items.Add(new PairValueModel(1, "Create - Email Prefix"));
+            ComboBoxServiceAction.Items.Add(new PairValueModel(2, "Create - In-Built Method"));
+#if !RELEASE
+            ComboBoxServiceAction.Items.Add(new PairValueModel(3, "Unlock Accounts"));
+#endif
+
+            LoadUnlockList();
+
+#if RELEASE
+            UnlocksTab.Visibility = Visibility.Hidden;
+#endif
+        }
+
+        internal void LoadUnlockList()
+        {
+            Invoke(() =>
+            {
+                unlocksListItems.Clear();
+                DataProvider.GetModels<UnlockModel>("unlocks").ToList().ForEach(x => unlocksListItems.Add(x));
+            });
         }
 
         public void AddTask(TaskModel task)
@@ -80,49 +108,65 @@ namespace RSMaster.UI
             }
         }
 
-        #region Account Creation Event Handler
+#region Account Service Event Handler
 
-        private void AccountService_OnStatusUpdate(CreationStatusCode statusCode, RSAccountForm account = null, string message = null)
+        private void AccountService_OnStatusUpdate(ServiceStatusCode statusCode, IRuneScapeForm form = null, string message = null)
         {
-            if (statusCode == CreationStatusCode.Updated)
+            if (statusCode == ServiceStatusCode.Updated)
             {
                 Invoke(() =>
                 {
-                    var task = taskListItems.FirstOrDefault(x => x.GUID == account.RequestId);
+                    var task = taskListItems.FirstOrDefault(x => x.GUID == form.RequestId);
                     if (task != null)
                     {
                         task.Description = message;
                     }
                 });
             }
-            else if (statusCode == CreationStatusCode.Started)
+            else if (statusCode == ServiceStatusCode.Started)
             {
                 AddTask(new TaskModel()
                 {
-                    GUID = account.RequestId,
-                    Name = account.Email,
+                    GUID = form.RequestId,
+                    Name = form.Email,
                     Description = "Awaiting...",
                     IsRunning = true
                 });
             }
-            else if (statusCode == CreationStatusCode.Created)
+            else if (statusCode == ServiceStatusCode.Success)
             {
-                var task = Invoke(() => taskListItems.FirstOrDefault(x => x.GUID == account.RequestId));
+                var task = Invoke(() => taskListItems.FirstOrDefault(x => x.GUID == form.RequestId));
                 if (task != null)
                 {
                     task.Description = "Complete";
-                    HandleCreate(account);
+
+                    var service = (Service as AccountService);
+                    if (service.AccountServiceType == AccountServiceType.Creation)
+                    {
+                        HandleCreate(form as RSAccountForm);
+                    }
+                    else
+                    {
+                        Invoke(() =>
+                        {
+                            var item = unlocksListItems.FirstOrDefault(x => x.Email == form.Email);
+                            if (item != null)
+                            {
+                                unlocksListItems.Remove(item);
+                            }
+                        });
+                    }
                 }
             }
-            else if (statusCode == CreationStatusCode.Complete)
+            else if (statusCode == ServiceStatusCode.Complete)
             {
-                ConsoleLog("Completed");
+                ConsoleLog("Stopped");
             }
         }
 
-        #endregion
+#endregion
 
-        #region Event Handlers
+#region Event Handlers
 
         private void Host_Closed
             (object sender, EventArgs e) => Close();
@@ -136,7 +180,7 @@ namespace RSMaster.UI
 
             if (!(Service is null) && Service.IsRunning)
             {
-                ConsoleLog("Account creation in progress...");
+                ConsoleLog($"{Service.Name} is already running...");
 
                 return;
             }
@@ -148,9 +192,7 @@ namespace RSMaster.UI
                 return;
             }
 
-            RsWebHelper = new RsWebHelper();
-
-            var balanceResult = await RsWebHelper.GetCaptchaBalance();
+            var balanceResult = await CaptchaHelper.GetCaptchaBalance();
             if (balanceResult == "ERROR_ZERO_BALANCE")
             {
                 ConsoleLog("Not enough balance to perform 2captcha operations");
@@ -158,23 +200,30 @@ namespace RSMaster.UI
                 return;
             }
 
-            var item = Invoke(() =>
-                ComboBoxAccountCreationMethod.SelectedItem) as PairValueModel;
-            if (item is null)
+            var servActionId = (int)(Invoke(() => ComboBoxServiceAction.SelectedItem as PairValueModel)?.Key ?? -1);
+            if (servActionId < 0)
                 return;
 
-            var accountService = (Service = new AccountService(this)) as AccountService;
-            accountService.RsWebHelper = RsWebHelper;
+            var accountService = (Service = new AccountService()) as AccountService;
             accountService.OnStatusUpdate += AccountService_OnStatusUpdate;
 
-            switch ((int)item.Key)
+            switch (servActionId)
             {
                 case 0:
                     QueueImportedAccounts();
                     break;
 
+                case 1:
+                    GenerateQueuePrefixEmails();
+                    break;
+
                 case 2:
                     GenerateAndQueueAccounts();
+                    break;
+
+                case 3:
+                    QueueUnlockAccounts();
+                    accountService.AccountServiceType = AccountServiceType.Unlocking;
                     break;
             }
 
@@ -182,13 +231,11 @@ namespace RSMaster.UI
             if (!result)
             {
                 ConsoleLog(Service.LastError);
-
                 return;
             }
 
-            ConsoleLog("Started creating accounts!");
-            Invoke(() => 
-                ServiceTabs.SelectedIndex = 2);
+            ConsoleLog($"{Service.Name} started!");
+            Invoke(() => ServiceTabs.SelectedIndex = 3);
         }
 
         private void ButtonStopService_Click(object sender, RoutedEventArgs e)
@@ -227,14 +274,84 @@ namespace RSMaster.UI
             Invoke(() => taskListItems.Clear());
         }
 
-        #endregion
+        private async void ButtonImportAccountUnlock_Click(object sender, RoutedEventArgs e)
+        {
+            var lines = await Host.RequestImportDialog();
+            if (lines != null)
+            {
+                foreach (var line in lines)
+                {
+                    try
+                    {
+                        ImportUnlock(line.Split('/'));
+                    }
+                    catch (Exception ex)
+                    {
+                        Util.LogException(ex);
+                    }
+                }
+            }
+        }
+
+        private void ButtonDeleteAccountUnlock_Click(object sender, RoutedEventArgs e)
+        {
+            var item = Invoke(() => UnlocksList.SelectedItem) as UnlockModel;
+            if (item != null)
+            {
+                if (DataProvider.DeleteModel(item.Id, "unlocks"))
+                {
+                    Invoke(() => unlocksListItems.Remove(item));
+                }
+            }
+        }
+
+#endregion
+
+        private void GenerateQueuePrefixEmails()
+        {
+            var (provider, prefix, min, max) = GetPrefixDetails();
+            var random = new Random();
+
+            for (int i = min; i <= max; i++)
+            {
+                var account = new RSAccountForm()
+                {
+                    Email = prefix + i + provider,
+                    Password = Util.RandomString(random.Next(7, 14)).ToLower()
+                };
+
+                (Service as AccountService).QueueReqForm(account);
+            }
+        }
+
+        private void QueueUnlockAccounts()
+        {
+            var unlocks = Invoke(() => AccountsUnlockList).OfType<UnlockModel>();
+            if (unlocks.Count() < 1)
+                return;
+
+            foreach (var unlock in unlocks)
+            {
+                var masterEmail = (unlock.SubEmail.HasValue 
+                    && unlock.SubEmail == 1) ? Regex.Replace(unlock.Email, @"\+.*(?=\@)", "") : null;
+                
+                (Service as AccountService).QueueReqForm(new RSRecoveryForm
+                {
+                    Email = unlock.Email,
+                    EmailPassword = unlock.EmailPassword,
+                    NewPassword = unlock.NewPassword,
+                    Provider = unlock.EmailProvider,
+                    MasterEmail = masterEmail
+                });
+            }
+        }
 
         private void GenerateAndQueueAccounts()
         {
             var random = new Random();
             int getRandom(int min, int max) => random.Next(min, max);
 
-            var amount = MainWindow.Settings.AccountCreateLimit != 0 ? MainWindow.Settings.AccountCreateLimit : 100;
+            var amount = MainWindow.Settings.AccountServiceLimit != 0 ? MainWindow.Settings.AccountServiceLimit : 100;
             var names = Properties.Resources.names.Split
                 (new string[] { "\n" }, StringSplitOptions.None).Select(x => x.Replace("\r", "")).ToArray();
             var emails = Properties.Resources.emails.Split
@@ -256,7 +373,7 @@ namespace RSMaster.UI
                 };
 
                 // Queue account for creation
-                (Service as AccountService).QueueAccount(account);
+                (Service as AccountService).QueueReqForm(account);
             }
         }
 
@@ -268,10 +385,11 @@ namespace RSMaster.UI
             
             foreach (var account in accounts)
             {
-                (Service as AccountService).QueueAccount(new RSAccountForm
+                (Service as AccountService).QueueReqForm(new RSAccountForm
                 {
                     Email = account.Username,
-                    Password = account.Password
+                    Password = account.Password,
+                    ProxyName = account.ProxyName
                 });
             }
         }
@@ -301,20 +419,23 @@ namespace RSMaster.UI
             }
 
             if (string.IsNullOrEmpty(accountModel.ProxyName)
-                && !string.IsNullOrEmpty(settings.AccountDefaultProxy))
+                && settings.CreateAccountUseProxy 
+                && !string.IsNullOrEmpty(settings.CreateAccountProxyName))
             {
-                accountModel.ProxyName = settings.AccountDefaultProxy;
-            }
-
-            if (accountModel.ProxyEnabled <= 0)
-            {
-                accountModel.ProxyEnabled = Convert.ToInt32(settings.AccountDefaultEnableProxy);
+                accountModel.ProxyEnabled = 1;
+                accountModel.ProxyName = settings.CreateAccountProxyName;
             }
 
             if (string.IsNullOrEmpty(accountModel.Script)
                 && !string.IsNullOrEmpty(settings.AccountDefaultScript))
             {
                 accountModel.Script = settings.AccountDefaultScript;
+            }
+
+            if (!accountModel.GroupId.HasValue 
+                && settings.AccountDefaultGroupId > 0)
+            {
+                accountModel.GroupId = settings.AccountDefaultGroupId;
             }
             
             if (accountModel.Id == 0) 
@@ -325,6 +446,7 @@ namespace RSMaster.UI
                     if (accountModel != null)
                     {
                         Host.AddAccountToList(accountModel);
+                        MainWindow.AccountCreatedCallback?.Invoke(accountModel);
                     }
                 }
             }
@@ -349,7 +471,7 @@ namespace RSMaster.UI
 
             if (settings.LaunchAccountOnCreate)
             {
-                var item = MainWindow.AccountGetById(accountModel.Id);
+                var item = MainWindow.GetAccountsHandler().FirstOrDefault(x => x.Id == accountModel.Id);
                 if (item != null)
                 {
                     Task.Run(async () => await Host.LaunchAccount(item, true));
@@ -357,11 +479,62 @@ namespace RSMaster.UI
             }
         }
 
-        #region Helpers
+        public void ImportUnlock(string[] args)
+        {
+            var unlock = new UnlockModel()
+            {
+                Email = args.Take(0),
+                EmailPassword = args.Take(1),
+                Password = args.Take(2),
+                NewPassword = args.Take(3),
+                EmailProvider = args.Take(4),
+                SubEmail = (args.Take(5) == "sub") ? 1 : 0
+            };
+
+            UnlockModel getExistingUnlock()
+            {
+                var existingUnlock = DataProvider.GetModels<UnlockModel>("unlocks", new DataRequestFilter
+                {
+                    Conditions = new Dictionary<string, object> { { "Email", unlock.Email } }
+                });
+
+                return existingUnlock.FirstOrDefault();
+            }
+
+            if (getExistingUnlock() is null
+                && DataProvider.SaveModel(unlock, "unlocks"))
+            {
+                unlock = getExistingUnlock();
+                if (unlock != null)
+                {
+                    Invoke(() => unlocksListItems.Add(unlock));
+                }
+            }
+        }
+
+#region Helpers
 
         private void ConsoleLog(string text)
         {
             Invoke(() => Console.AppendText(text + Environment.NewLine));
+        }
+
+        private (string provider, string prefix, int min, int max) GetPrefixDetails()
+        {
+            string prefix = null, 
+                   provider = null;
+            int min = 0, 
+                max = 0;
+            
+            Invoke(() =>
+            {
+                prefix = TxtBoxEmailPrefix.Text;
+                provider = TxtBoxEmailProvider.Text;
+                int.TryParse(TxtBoxIncrementLow.Text, out min);
+                int.TryParse(TxtBoxIncrementHigh.Text, out max);
+            });
+
+            return (provider, prefix, min, max);
         }
 
         private void Invoke(Action action) => Dispatcher.Invoke(action);
@@ -373,12 +546,6 @@ namespace RSMaster.UI
             return result;
         }
 
-        #endregion
-
-        private void ButtonTest_Click(object sender, RoutedEventArgs e)
-        {
-            var helper = new HttpHelper();
-            
-        }
+#endregion
     }
 }

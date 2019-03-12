@@ -7,7 +7,7 @@ namespace RSMaster
 {
     using Utility;
 
-    public class SQLiteClient
+    internal class SQLiteClient
     {
         private SQLiteConnection conn;
         private bool IsConnectionOpen() => (conn != null) && conn.State == ConnectionState.Open;

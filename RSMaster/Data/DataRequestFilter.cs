@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace RSMaster
+namespace RSMaster.Data
 {
-    public class DataRequestFilter
+    internal class DataRequestFilter
     {
         public string OrderBy { get; set; } = "DESC";
         public string OrderColumn { get; set; } = "Id";

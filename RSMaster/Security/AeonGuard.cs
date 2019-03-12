@@ -35,7 +35,7 @@ namespace RSMaster.Security
             {
                 if (!MainWindow.NetworkManager.IsHeartBeating())
                 {
-                    MainWindow.Shutdown();
+                    MainWindow.ShutdownHandler();
                     break;
                 }
 
@@ -43,7 +43,7 @@ namespace RSMaster.Security
                     || MainWindow.LoginDialog.Username is null
                     || MainWindow.LoginDialog.Password is null)
                 {
-                    MainWindow.Shutdown();
+                    MainWindow.ShutdownHandler();
                     break;
                 }
 

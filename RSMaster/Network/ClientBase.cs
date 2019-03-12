@@ -13,7 +13,7 @@ namespace RSMaster.Network
 {
     using Enums;
 
-    public abstract class ClientBase
+    internal abstract class ClientBase
     {
         public Socket Socket { get => handle; }
         public IPEndPoint EndPoint { get; private set; }

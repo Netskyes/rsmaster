@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace RSMaster.Network
 {
-    public class Server
+    internal class Server
     {
         public bool Listening { get; private set; }
         public ushort Port { get; private set; }

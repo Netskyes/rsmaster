@@ -16,6 +16,7 @@ namespace RSMaster
         public Server Server { get; set; }
         public Client Client { get; set; }
         public DateTime LastHeartbeat { get; set; }
+        public event PacketReceiveHandler PacketReceiveCallback;
 
         private Task heartBeatTask;
         private CancellationTokenSource cancellationTokenSource;
@@ -26,7 +27,12 @@ namespace RSMaster
             Server = new Server();
             Server.ClientRecv += Server_ClientRecv;
             Server.ClientState += Server_ClientState;
-            Server.Listen(8089);
+            Server.Listen(8046);
+            
+            if (Server.Listening)
+            {
+                MainWindow.LogHandler("Bridge active on port: " + Server.Port);
+            }
 
             Client = new Client();
             Client.ClientRecv += Client_ClientRecv;
@@ -36,12 +42,11 @@ namespace RSMaster
 
         private void Server_ClientState(Server server, Client client, bool isConnected)
         {
-
         }
 
         private void Server_ClientRecv(Server server, Client client, Packet packet)
         {
-            
+            PacketReceiveCallback?.Invoke(packet.Buffer);
         }
 
         public bool IsHeartBeating()

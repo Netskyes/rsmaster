@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 
 namespace RSMaster.UI
 {
+    using Data;
     using Models;
     using Utility;
 

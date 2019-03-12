@@ -32,7 +32,6 @@ namespace RSMaster.Utility
 
         public static void LogException(Exception e)
         {
-#if DEBUG
             var error = string.Format
                 ("Timestamp: {4}" + Environment.NewLine +
                 "Source: {5}" + Environment.NewLine +
@@ -43,7 +42,6 @@ namespace RSMaster.Utility
                 "--------", e.Message, e.TargetSite, e.StackTrace, e.InnerException, DateTime.Now.ToString(), e.Source);
 
             Log(error);
-#endif
         }
 
         public static string AssemblyDirectory

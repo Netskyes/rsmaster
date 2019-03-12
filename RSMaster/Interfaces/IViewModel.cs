@@ -1,6 +1,6 @@
 ﻿namespace RSMaster
 {
-    public interface IViewModel
+    internal interface IViewModel
     {
         int Id { get; set; }
     }

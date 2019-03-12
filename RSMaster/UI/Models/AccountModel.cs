@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using RSMaster.Extensions;
 
 namespace RSMaster.UI.Models
 {
+    using Data;
+
     public class AccountModel : IViewModel, INotifyPropertyChanged
     {
         #region Fields
@@ -13,6 +14,7 @@ namespace RSMaster.UI.Models
         private string password;
         private string script;
         private string proxyName;
+        private string comments;
         private int proxyEnabled;
         private string bankPIN;
         private int? world;
@@ -132,6 +134,16 @@ namespace RSMaster.UI.Models
             {
                 groupId = value;
                 NotifyPropertyChanged("GroupId");
+            }
+        }
+
+        public string Comments
+        {
+            get => comments;
+            set
+            {
+                comments = value;
+                NotifyPropertyChanged("Comments");
             }
         }
 
