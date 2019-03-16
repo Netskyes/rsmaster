@@ -23,7 +23,7 @@ namespace Updater
         public MainWindow()
         {
             InitializeComponent();
-            HttpHelper.SetBearerToken("ScAuEoPGSozwIBUYOHz1sYcRmFnSdk2kLYOr0Xi1NnfK9k044x0CJApDq2ajKB9r");
+            HttpHelper.SetBearerToken("ScAuEoPASozwIBUYOHz1sYcRmFnLdk2kLYOr0Xi1NnfK9k044x0CJApDq2ajKB9b");
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)

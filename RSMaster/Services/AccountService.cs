@@ -146,21 +146,24 @@ namespace RSMaster.Services
             rsHelper?.Dispose();
         }
 
-        private async Task<string> GetCaptchaSolveKey(IRuneScapeForm form)
+        private async Task<string> GetCaptchaSolveKey(IRuneScapeForm form, RsWebHelper rsHelper)
         {
             var captchaResult = string.Empty;
             StatusUpdate(ServiceStatusCode.Updated, form, "Requesting captcha solve");
 
-            var captchaId = await
-                CaptchaHelper.RequestSolveCaptcha(form.RequestUrl);
-
-            if (captchaId == string.Empty
-                || captchaId == "NO_GOOGLE_KEY")
+            var googleKey = await rsHelper.GrabGoogleKey(form.RequestUrl);
+            if (googleKey == string.Empty 
+                || googleKey == "NO_GOOGLE_KEY")
             {
-                var message = (captchaId == "NO_GOOGLE_KEY")
-                    ? "Error obtaining Google Key from requested page" : "An error occured requesting captcha solve";
+                StatusUpdate(ServiceStatusCode.Updated, form, "Error obtaining Google Key from requested page");
+                return string.Empty;
+            }
 
-                StatusUpdate(ServiceStatusCode.Updated, form, message);
+            var captchaId = await
+                CaptchaHelper.RequestSolveCaptcha(googleKey, form.RequestUrl);
+            if (captchaId == string.Empty)
+            {
+                StatusUpdate(ServiceStatusCode.Updated, form, "An error occured requesting captcha solve");
                 return string.Empty;
             }
 
@@ -209,8 +212,7 @@ namespace RSMaster.Services
 
         private async Task<bool> UnlockAccount(RSRecoveryForm recovery, RsWebHelper rsHelper)
         {
-#if !RELEASE
-            var captchaRes = await GetCaptchaSolveKey(recovery);
+            var captchaRes = await GetCaptchaSolveKey(recovery, rsHelper);
             if (captchaRes == string.Empty)
                 return false;
 
@@ -291,16 +293,13 @@ namespace RSMaster.Services
 
             response = await rsHelper.PostRequest(recovery);
             return response.Contains("Successfully set a new password and completed the process");
-#else
-            return false;
-#endif
         }
 
         private async Task<bool> CreateAccount(RSAccountForm account, RsWebHelper rsHelper)
         {
             if (account != null)
             {
-                var captchaRes = await GetCaptchaSolveKey(account);
+                var captchaRes = await GetCaptchaSolveKey(account, rsHelper);
                 if (captchaRes != string.Empty)
                 {
                     account.CaptchaSolve = captchaRes;

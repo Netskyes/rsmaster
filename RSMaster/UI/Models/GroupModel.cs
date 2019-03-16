@@ -10,8 +10,13 @@ namespace RSMaster.UI.Models
         #region Fields
 
         private int id;
+        private int? world;
+        private int proxyEnabled;
         private string name;
         private string color;
+        private string proxyName;
+        private string script;
+        private int overrideLaunch;
 
         #endregion
 
@@ -44,6 +49,56 @@ namespace RSMaster.UI.Models
             {
                 color = value;
                 NotifyPropertyChanged("Color");
+            }
+        }
+
+        public int? World
+        {
+            get => world;
+            set
+            {
+                world = value;
+                NotifyPropertyChanged("World");
+            }
+        }
+
+        public string Script
+        {
+            get => script;
+            set
+            {
+                script = value;
+                NotifyPropertyChanged("Script");
+            }
+        }
+
+        public string ProxyName
+        {
+            get => proxyName;
+            set
+            {
+                proxyName = value;
+                NotifyPropertyChanged("ProxyName");
+            }
+        }
+
+        public int ProxyEnabled
+        {
+            get => proxyEnabled;
+            set
+            {
+                proxyEnabled = value;
+                NotifyPropertyChanged("ProxyEnabled");
+            }
+        }
+
+        public int Override
+        {
+            get => overrideLaunch;
+            set
+            {
+                overrideLaunch = value;
+                NotifyPropertyChanged("Override");
             }
         }
 

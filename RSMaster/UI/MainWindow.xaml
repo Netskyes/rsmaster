@@ -31,7 +31,7 @@
             <Button Content="Settings" x:Name="ButtonBotSettings" Click="ButtonBotSettings_Click" />
             <Button Content="Client Options" x:Name="ButtonClientOptions" Click="ButtonClientOptions_Click" />
             <Button Content="Discord" x:Name="ButtonOpenDiscord" Click="ButtonOpenDiscord_Click" />
-            <Button Content="Donate" x:Name="ButtonOpenDonate" Click="ButtonOpenDonate_Click" />
+            <Button Content="Licenses" x:Name="ButtonOpenLicenses" Click="ButtonOpenLicenses_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.LeftWindowCommands>
     

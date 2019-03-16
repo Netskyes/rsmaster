@@ -23,6 +23,7 @@ namespace RSMaster.UI
 
     public partial class GroupsWindow : MetroWindow
     {
+        public ICollectionView SocksProxyListItems { get; set; }
         public GroupModel OpenAccountGroup { get; set; } = new GroupModel();
 
         private MainWindow Host { get; set; }
@@ -33,10 +34,13 @@ namespace RSMaster.UI
             InitializeComponent();
             Host = host;
 
+            SocksProxyListItems = CollectionViewSource.GetDefaultView(host.SocksProxyListItems);
+
             GroupsList.DataContext = host;
+            GroupOptions.DataContext = OpenAccountGroup;
             GroupSettings.DataContext = OpenAccountGroup;
         }
-        
+
         private void NotifyGroupUpdate(int groupId)
         {
             foreach (var acc in Host.AccountsListItems)
@@ -131,9 +135,13 @@ namespace RSMaster.UI
         }
 
         private void TxtBoxGroupName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            GroupDetailsChanged();
-        }
+            => GroupDetailsChanged();
+
+        private void GroupOptionsChanged(object sender, RoutedEventArgs e)
+            => GroupDetailsChanged();
+
+        private void CmbBoxAccountProxy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            => GroupDetailsChanged();
 
         private void GroupsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

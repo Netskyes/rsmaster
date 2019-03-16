@@ -35,7 +35,48 @@ namespace RSMaster.Security
             LicenseKey = licenseKey;
         }
 
-        public byte[] GetAuthenticationBytes()
+        private async Task TrySend(byte[] bytes)
+        {
+            var connected = NetworkManager.Connected();
+            if (!connected)
+            {
+                connected = await NetworkManager.Connect(2000);
+            }
+
+            if (connected)
+            {
+                NetworkManager.Client.Send(bytes);
+            }
+            else
+            {
+                OnConnectError();
+            }
+        }
+
+        private byte[] GetRegisterBytes()
+        {
+            var userBytes = AES.Encrypt(Encoding.UTF8.GetBytes(Username));
+            var passBytes = AES.Encrypt(Encoding.UTF8.GetBytes(Password));
+
+            int writeOffset = 3;
+            int arrayLen = (userBytes.Length + 1) + (passBytes.Length + 1);
+
+            byte[] array = new byte[3 + arrayLen];
+            Array.Copy(BitConverter.GetBytes(array.Length - 2), 0, array, 0, 2);
+            array[2] = 2; // Opcode
+
+            array[writeOffset] = (byte)userBytes.Length;
+            Array.Copy(userBytes, 0, array, writeOffset + 1, userBytes.Length);
+            writeOffset += (userBytes.Length + 1);
+
+            array[writeOffset] = (byte)passBytes.Length;
+            Array.Copy(passBytes, 0, array, writeOffset + 1, passBytes.Length);
+            writeOffset += (passBytes.Length + 1);
+
+            return array;
+        }
+
+        private byte[] GetAuthenticationBytes()
         {
             var userBytes = AES.Encrypt(Encoding.UTF8.GetBytes(Username));
             var passBytes = AES.Encrypt(Encoding.UTF8.GetBytes(Password));
@@ -70,20 +111,12 @@ namespace RSMaster.Security
 
         public async Task RequestAuth()
         {
-            var connected = NetworkManager.Connected();
-            if (!connected)
-            {
-                connected = await NetworkManager.Connect(2000);
-            }
+            await TrySend(GetAuthenticationBytes());
+        }
 
-            if (connected)
-            {
-                NetworkManager.Client.Send(GetAuthenticationBytes());
-            }
-            else
-            {
-                OnConnectError();
-            }
+        public async Task RequestRegister()
+        {
+            await TrySend(GetRegisterBytes());
         }
 
         private void Client_ClientRecv(ClientBase client, Packet packet)

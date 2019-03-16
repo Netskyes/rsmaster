@@ -10,6 +10,11 @@ namespace RSMaster.Data
         static SchemaProvider()
         {
             Schemas.Add(Groups());
+            Schemas.Add("ALTER TABLE groups ADD COLUMN world INTEGER NULL");
+            Schemas.Add("ALTER TABLE groups ADD COLUMN script VARCHAR(100) NULL");
+            Schemas.Add("ALTER TABLE groups ADD COLUMN proxyname VARCHAR(100) NULL");
+            Schemas.Add("ALTER TABLE groups ADD COLUMN proxyenabled INTEGER DEFAULT 0");
+            Schemas.Add("ALTER TABLE groups ADD COLUMN override INTEGER DEFAULT 1");
             Schemas.Add(Accounts());
             Schemas.Add("ALTER TABLE accounts ADD COLUMN groupId INTEGER NULL");
             Schemas.Add("ALTER TABLE accounts ADD COLUMN comments TEXT NULL");

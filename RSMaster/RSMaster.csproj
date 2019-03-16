@@ -169,9 +169,6 @@
     <Compile Include="Interfaces\IViewModel.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
-    <Compile Include="UI\AuthWindow.xaml.cs">
-      <DependentUpon>AuthWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\GroupValueConverter.cs" />
     <Compile Include="UI\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
@@ -200,10 +197,6 @@
       <DependentUpon>ProxyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SQLiteClient.cs" />
-    <Page Include="UI\AuthWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UI\Dialogs\LoginDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -45,6 +45,15 @@ namespace RSMaster.Helpers
             httpHelper.InitRsWebSupport();
         }
 
+        public async Task<string> GrabGoogleKey(string requestUrl)
+        {
+            var response = (await httpHelper.GetRequest(requestUrl)).message;
+            var regex = new Regex("'sitekey'\\s+:\\s+'(.*)'");
+            var match = regex.Match(response);
+
+            return (match.Success) ? match.Groups[1].Value : string.Empty;
+        }
+
         public async Task<string> PostRequest(IRuneScapeForm requestForm)
         {
             var webForms = requestForm.Build();

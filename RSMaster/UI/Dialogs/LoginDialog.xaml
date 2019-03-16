@@ -14,99 +14,168 @@
     <Dialogs:BaseMetroDialog.Resources>
         <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
     </Dialogs:BaseMetroDialog.Resources>
-    <Grid Width="400">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
+    <Grid 
+        Width="400">
         <TextBlock 
             Grid.Row="0"
             x:Name="ErrorMessage"
             HorizontalAlignment="Left"
             DockPanel.Dock="Left"
-            Height="0"
+            Height="Auto"
             Margin="20 0"
             Foreground="#df1717"
-            Style="{StaticResource TextBlockStyle}">Remember Details</TextBlock>
-        
-        <StackPanel
-            Grid.Row="1" 
-            Margin="20">
+            Style="{StaticResource TextBlockStyle}"/>
+
+        <Grid
+            Margin="0 6 0 0"
+            x:Name="RegisterDialogArea"
+            Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel
+                Grid.Row="0" 
+                Margin="20">
                 <TextBox
-                    Margin="0 0 0 6"
-                    Controls:TextBoxHelper.Watermark="Username"
-                    x:Name="TxtBoxUsername"
-                    Foreground="#FFFFFF" 
-                    Background="{DynamicResource TextBoxBackgroundBrush}"
-                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                        Margin="0 0 0 6"
+                        Controls:TextBoxHelper.Watermark="Username"
+                        x:Name="TxtBoxNewUsername"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
                 </TextBox>
                 <PasswordBox
-                    Margin="0 0 0 6"
-                    Controls:TextBoxHelper.Watermark="Password"
-                    x:Name="TxtBoxPassword"
-                    Foreground="#FFFFFF" 
-                    Background="{DynamicResource TextBoxBackgroundBrush}"
-                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                        Margin="0 0 0 6"
+                        Controls:TextBoxHelper.Watermark="Password"
+                        x:Name="TxtBoxNewPassword"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
                 </PasswordBox>
-                <TextBox
-                    Controls:TextBoxHelper.Watermark="License Key"
-                    x:Name="TxtBoxLicenseKey"
-                    Foreground="#FFFFFF" 
-                    Background="{DynamicResource TextBoxBackgroundBrush}"
-                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
-                </TextBox>
-        </StackPanel>
+                <PasswordBox
+                        Controls:TextBoxHelper.Watermark="Confirm Password"
+                        x:Name="TxtBoxNewPasswordConfirm"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </PasswordBox>
+            </StackPanel>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <DockPanel
+                    HorizontalAlignment="Right"
+                    FlowDirection="LeftToRight"
+                    Margin="0,0,20,20">
+                    <Button
+				        Name="ButtonConfirmRegister"
+				        Height="27"
+				        FontFamily="Tahoma"
+				        FontWeight="Bold"
+				        FontSize="11"
+				        Padding="20,0,20,0"
+				        Content="Register" Style="{StaticResource ButtonStyle}" 
+                        Click="ButtonConfirmRegister_Click"/>
+                    <Button
+				        Name="ButtonReturnToLogin"
+				        Height="27"
+				        FontFamily="Tahoma"
+				        FontWeight="Bold"
+				        FontSize="11"
+				        Padding="20,0,20,0"
+				        Content="Back"
+				        Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
+                        Click="ButtonReturnToLogin_Click"/>
+                </DockPanel>
+            </Grid>
+        </Grid>
+        
+        <Grid 
+            Margin="0 6 0 0"
+            x:Name="LoginDialogArea">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <DockPanel
-                Grid.Column="0"
-                Margin="20 0 20 20"
-                HorizontalAlignment="Left"
-                FlowDirection="LeftToRight">
-                <TextBlock 
-                    DockPanel.Dock="Left"
-                    Width="120"
-                    VerticalAlignment="Center"
-                    Style="{StaticResource TextBlockStyle}">Remember Details</TextBlock>
-                <CheckBox 
-                    DockPanel.Dock="Left"
+            <StackPanel
+                Grid.Row="0" 
+                Margin="20">
+                    <TextBox
+                        Margin="0 0 0 6"
+                        Controls:TextBoxHelper.Watermark="Username"
+                        x:Name="TxtBoxUsername"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                    </TextBox>
+                    <PasswordBox
+                        Margin="0 0 0 6"
+                        Controls:TextBoxHelper.Watermark="Password"
+                        x:Name="TxtBoxPassword"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                    </PasswordBox>
+                    <TextBox
+                        Controls:TextBoxHelper.Watermark="License Key"
+                        x:Name="TxtBoxLicenseKey"
+                        Foreground="#FFFFFF" 
+                        Background="{DynamicResource TextBoxBackgroundBrush}"
+                        BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                    </TextBox>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <DockPanel
+                    Grid.Column="0"
+                    Margin="20 0 20 20"
                     HorizontalAlignment="Left"
-                    x:Name="ChkBoxRememberDetails" 
-                    Style="{DynamicResource CheckBoxStyle}"/>
-            </DockPanel>
+                    FlowDirection="LeftToRight">
+                    <TextBlock 
+                        DockPanel.Dock="Left"
+                        Width="120"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource TextBlockStyle}">Remember Details</TextBlock>
+                    <CheckBox 
+                        DockPanel.Dock="Left"
+                        HorizontalAlignment="Left"
+                        x:Name="ChkBoxRememberDetails" 
+                        Style="{DynamicResource CheckBoxStyle}"/>
+                </DockPanel>
             
-            <DockPanel
-                Grid.Column="1" 
-                HorizontalAlignment="Right"
-                FlowDirection="LeftToRight"
-                Margin="0,0,20,20">
-                <Button
-				    Name="ButtonLogin"
-				    Height="27"
-				    FontFamily="Tahoma"
-				    FontWeight="Bold"
-				    FontSize="11"
-				    Padding="20,0,20,0"
-				    Content="Login" Style="{StaticResource ButtonStyle}" 
-                    Click="ButtonLogin_Click"/>
-                <Button
-				    Name="ButtonRegister"
-				    Height="27"
-				    FontFamily="Tahoma"
-				    FontWeight="Bold"
-				    FontSize="11"
-				    Padding="20,0,20,0"
-				    Content="Register"
-				    Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
-                    Click="ButtonRegister_Click"/>
-            </DockPanel>
+                <DockPanel
+                    Grid.Column="1" 
+                    HorizontalAlignment="Right"
+                    FlowDirection="LeftToRight"
+                    Margin="0,0,20,20">
+                    <Button
+				        Name="ButtonLogin"
+				        Height="27"
+				        FontFamily="Tahoma"
+				        FontWeight="Bold"
+				        FontSize="11"
+				        Padding="20,0,20,0"
+				        Content="Login" Style="{StaticResource ButtonStyle}" 
+                        Click="ButtonLogin_Click"/>
+                    <Button
+				        Name="ButtonRegister"
+				        Height="27"
+				        FontFamily="Tahoma"
+				        FontWeight="Bold"
+				        FontSize="11"
+				        Padding="20,0,20,0"
+				        Content="Register"
+				        Margin="5 0 0 0" Style="{StaticResource ButtonStyle}"
+                        Click="ButtonRegister_Click"/>
+                </DockPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Dialogs:BaseMetroDialog>

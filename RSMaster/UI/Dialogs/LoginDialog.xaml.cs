@@ -19,6 +19,7 @@ namespace RSMaster.UI.Dialogs
         private MainWindow Host { get; set; }
         private AuthHandler authHandler;
         private bool authorizing;
+        private bool registering;
 
         public LoginDialog(MainWindow host)
         {
@@ -119,6 +120,14 @@ namespace RSMaster.UI.Dialogs
                     message = "You're not allowed to login from this machine";
                     break;
 
+                case 16:
+                    message = "A user with that name already exists";
+                    break;
+                case 15:
+                    HandleRegisterSuccess();
+                    SwapContext();
+                    break;
+
                 default:
                     message = "An unknown error occured";
                     break;
@@ -128,6 +137,32 @@ namespace RSMaster.UI.Dialogs
             {
                 DisplayErrorMessage(message);
             }
+        }
+
+        private void HandleRegisterSuccess()
+        {
+            Invoke(() =>
+            {
+                TxtBoxUsername.Text = TxtBoxNewUsername.Text;
+                TxtBoxPassword.Password = TxtBoxNewPassword.Password;
+
+                TxtBoxNewUsername.Clear();
+                TxtBoxNewPassword.Clear();
+                TxtBoxNewPasswordConfirm.Clear();
+            });
+        }
+
+        private void SwapContext()
+        {
+            Invoke(() =>
+            {
+                HideErrors();
+
+                bool loginVisible = (LoginDialogArea.IsVisible);
+
+                LoginDialogArea.Visibility = (loginVisible) ? Visibility.Hidden : Visibility.Visible;
+                RegisterDialogArea.Visibility = (loginVisible) ? Visibility.Visible : Visibility.Hidden;
+            });
         }
 
         private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
@@ -155,8 +190,50 @@ namespace RSMaster.UI.Dialogs
 
         private void ButtonRegister_Click(object sender, RoutedEventArgs e)
         {
+            SwapContext();
         }
-        
+
+        private void ButtonReturnToLogin_Click(object sender, RoutedEventArgs e)
+        {
+            SwapContext();
+        }
+
+        private async void ButtonConfirmRegister_Click(object sender, RoutedEventArgs e)
+        {
+            if (registering)
+                return;
+
+            var username = TxtBoxNewUsername.Text;
+            var password = TxtBoxNewPassword.Password;
+            var password2 = TxtBoxNewPasswordConfirm.Password;
+
+            if (Util.AnyStringNullOrEmpty(username, password, password2))
+            {
+                DisplayErrorMessage("Please fill in all the fields");
+                return;
+            }
+
+            if (username.Length < 3 || password.Length < 3)
+            {
+                DisplayErrorMessage("The length of username/password must be at least 3");
+                return;
+            }
+
+            if (!password.Equals(password2))
+            {
+                DisplayErrorMessage("Passwords do not match");
+                return;
+            }
+
+            HideErrors();
+            registering = true;
+
+            authHandler.SetAuth(username, password, null);
+            await authHandler.RequestRegister();
+
+            registering = false;
+        }
+
         private void Invoke(Action action) => Dispatcher.Invoke(action);
     }
 }

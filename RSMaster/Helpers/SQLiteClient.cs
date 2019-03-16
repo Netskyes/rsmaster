@@ -41,7 +41,7 @@ namespace RSMaster
                     }
                     catch (Exception e)
                     {
-                        Util.LogException(e);
+                        // Don't log, always error when probbing
                     }
                 }
             }

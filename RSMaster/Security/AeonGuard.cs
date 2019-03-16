@@ -18,6 +18,13 @@ namespace RSMaster.Security
 
         public static void Begin()
         {
+            if (MainWindow.LoginDialog is null 
+                || MainWindow.LoginDialog.Username is null
+                || MainWindow.LoginDialog.Password is null)
+            {
+                throw new Exception();
+            }
+
             if (isRunning)
                 return;
 

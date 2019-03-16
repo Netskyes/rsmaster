@@ -103,9 +103,9 @@ namespace RSMaster.UI
             Log("RS Master 1.0.0");
             Log("OSBot Version: " + (OSBotHelper.GetLocalBotVersion() ?? "Unknown"));
             Log("HWID: " + Util.GetHWID());
-            CheckJavaExists();
 
-            ScheduleManager.Begin();
+            CheckJavaExists();
+            ShowLoginDialog();
         }
 
         private void CheckJavaExists()
@@ -416,6 +416,8 @@ namespace RSMaster.UI
 
         private void ButtonBotSettings_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             Invoke(() =>
             {
                 if (AccountTab.IsVisible)
@@ -440,6 +442,8 @@ namespace RSMaster.UI
          
         private void ButtonAccountSettings_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             accountLoading = true;
             var item = GetSelectedAccount();
             if (item is null)
@@ -473,8 +477,7 @@ namespace RSMaster.UI
                 }
 
                 Invoke(() => 
-                    Util.UpdateObjByProps
-                    (account, AccountOpen, clearUp));
+                    Util.UpdateObjByProps(item, AccountOpen, clearUp));
             });
 
             accountLoading = false;
@@ -482,6 +485,8 @@ namespace RSMaster.UI
 
         private void ButtonClientOptions_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             Invoke(() =>
             {
                 if (AccountTab.IsVisible)
@@ -506,6 +511,8 @@ namespace RSMaster.UI
 
         private void ButtonServices_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             if (ServicesWindow != null)
             {
                 if (ServicesWindow.IsVisible)
@@ -526,6 +533,8 @@ namespace RSMaster.UI
 
         private void ButtonProxySettings_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             if (ProxyWindow != null && ProxyWindow.IsVisible)
             {
                 ProxyWindow.Activate();
@@ -619,6 +628,8 @@ namespace RSMaster.UI
 
         private void ButtonDelAccount_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             var item = GetSelectedAccount();
             if (item != null)
             {
@@ -639,6 +650,8 @@ namespace RSMaster.UI
         
         private void ButtonAddAccount_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             var account = new AccountModel("New Account");
             if (DataProvider.SaveAccount(account))
             {
@@ -652,6 +665,8 @@ namespace RSMaster.UI
 
         private async void ButtonLaunchAccount_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             var item = GetSelectedAccount();
             if (item == null)
                 return;
@@ -664,6 +679,8 @@ namespace RSMaster.UI
 
         private void ButtonStopAccount_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             var item = GetSelectedAccount();
             if (item != null)
             {
@@ -673,6 +690,8 @@ namespace RSMaster.UI
 
         private void ButtonAccountSchedule_Click(object sender, RoutedEventArgs e)
         {
+            Security.AeonGuard.Begin();
+
             var item = GetSelectedAccount();
             if (item != null)
             {
@@ -728,11 +747,11 @@ namespace RSMaster.UI
             Process.Start("https://discord.gg/YfCwH6D");
         }
 
-        private void ButtonOpenDonate_Click(object sender, RoutedEventArgs e)
+        private void ButtonOpenLicenses_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.paypal.me/netskyes");
+            Process.Start("https://selly.gg/g/091d43");
         }
 
-#endregion
+        #endregion
     }
 }

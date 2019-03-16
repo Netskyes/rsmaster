@@ -53,7 +53,7 @@
                                     Controls:ButtonHelper.CornerRadius="0" 
                                     HorizontalAlignment="Left"
                                     Click="ButtonStartService_Click"
-                                    ToolTip="Create Accounts">
+                                    ToolTip="Start Service">
                                     <Image Stretch="Fill">
                                         <Image.Style>
                                             <Style TargetType="Image">
@@ -75,7 +75,7 @@
                                     Controls:ButtonHelper.CornerRadius="0" 
                                     HorizontalAlignment="Left"
                                     Click="ButtonStopService_Click"
-                                    ToolTip="Stop Accounts Creation">
+                                    ToolTip="Stop Service">
                                     <Image Stretch="Fill">
                                         <Image.Style>
                                             <Style TargetType="Image">
@@ -269,7 +269,7 @@
                                 <TextBlock 
                                     FontWeight="Bold"
                                     Margin="9 9" 
-                                    Style="{StaticResource TextBlockStyle}">Account Creation</TextBlock>
+                                    Style="{StaticResource TextBlockStyle}">Proxy Setup</TextBlock>
                             </Grid>
 
                             <Grid Grid.Row="2" Background="{DynamicResource WhiteBrush}">
@@ -323,7 +323,7 @@
                                         Width="120"
                                         VerticalAlignment="Center"
                                         Style="{StaticResource TextBlockStyle}"
-                                        ToolTip="Use Proxy associated with imported account if exists">Set Imported Proxy</TextBlock>
+                                        ToolTip="Use Proxy associated with imported account if exists">Use Imported Proxy</TextBlock>
                                     <CheckBox 
                                         x:Name="ChkBoxAccountDefaultEnableProxy" 
                                         Style="{DynamicResource CheckBoxStyle}"

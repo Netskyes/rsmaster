@@ -65,15 +65,9 @@ namespace RSMaster.UI
             ComboBoxServiceAction.Items.Add(new PairValueModel(0, "Create - Imported Accounts"));
             ComboBoxServiceAction.Items.Add(new PairValueModel(1, "Create - Email Prefix"));
             ComboBoxServiceAction.Items.Add(new PairValueModel(2, "Create - In-Built Method"));
-#if !RELEASE
             ComboBoxServiceAction.Items.Add(new PairValueModel(3, "Unlock Accounts"));
-#endif
 
             LoadUnlockList();
-
-#if RELEASE
-            UnlocksTab.Visibility = Visibility.Hidden;
-#endif
         }
 
         internal void LoadUnlockList()

@@ -1,0 +1,1 @@
+dotnet publish RSMaster.Api/RSMaster.Api.csproj -c release -o publish_api -r linux-x64
