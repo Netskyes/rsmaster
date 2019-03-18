@@ -18,8 +18,8 @@ namespace Updater
     public partial class MainWindow : MetroWindow
     {
         const string UpdatesHost = "http://185.5.54.101:8080";
-        public static string AppPath { get { return Environment.CurrentDirectory + @"\"; } }
-
+        private bool updateRequested;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -28,10 +28,18 @@ namespace Updater
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Task.Run(Initialize);
+            Task.Run(Execute);
         }
 
-        private async Task Initialize()
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            if (updateRequested)
+            {
+                Process.Start(App.UpdaterNewPath, "Update");
+            }
+        }
+
+        private async Task Execute()
         {
             UpdateStatusText("Checking for updates...");
             var updates = await GetUpdates();
@@ -45,16 +53,54 @@ namespace Updater
                 UpdateStatusText("Complete");
             }
 
-            var launcherPath = AppPath + @"RSMaster.exe";
-            if (File.Exists(launcherPath))
+            if (File.Exists(App.UpdaterNewPath))
+            {
+                var newHash = string.Empty;
+                var existingHash = string.Empty;
+                var backupPath = Path.Combine(App.AppPath, @"Updater.bak");
+
+                try
+                {
+                    File.Copy(App.UpdaterExistingPath, backupPath, true);
+
+                    using (var stream1 = new FileStream(App.UpdaterNewPath, FileMode.Open))
+                    using (var stream2 = new FileStream(backupPath, FileMode.Open))
+                    using (var md5 = MD5.Create())
+                    {
+                        newHash = BitConverter.ToString(md5.ComputeHash(stream1)).Replace("-", "").ToLower();
+                        existingHash = BitConverter.ToString(md5.ComputeHash(stream2)).Replace("-", "").ToLower();
+
+                        if (!existingHash.Equals(newHash))
+                        {
+                            updateRequested = true;
+                            Invoke(Close);
+
+                            return;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    UpdateStatusText("An error occured updating Updater. Error Code: 1");
+
+                    return;
+                }
+                finally
+                {
+                    File.Delete(Path.Combine(App.AppPath, @"Updater.bak"));
+                }
+            }
+
+            if (File.Exists(App.RSMasterPath))
             {
                 try
                 {
-                    Process.Start(launcherPath, "Raindropz");
+                    Process.Start(App.RSMasterPath, "Raindropz");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    // Something happened...
+                    UpdateStatusText("An error occured launching RSMaster");
+                    return;
                 }
             }
 
@@ -74,7 +120,7 @@ namespace Updater
 
             if (osbVersion == string.Empty || osbVersion != osbLatestVersion)
             {
-                await DownloadFile(AppPath + "osbot.jar", $"{UpdatesHost}/api/osbotlatest");
+                await DownloadFile(App.AppPath + "osbot.jar", $"{UpdatesHost}/api/osbotlatest");
             }
 
             var request = await HttpHelper.GetRequest($"{UpdatesHost}/api/updates");
@@ -91,7 +137,7 @@ namespace Updater
                 for (int i = 0; i < files.Length; i++)
                 {
                     var file = files[i].Split('|');
-                    var path = (AppPath + file[0]);
+                    var path = (App.AppPath + file[0]);
                     var hash = string.Empty;
 
                     if (File.Exists(path))
@@ -129,7 +175,7 @@ namespace Updater
             {
                 UpdateProgressLine(0);
                 var name = Path.GetFileName(path);
-                var pathLocal = AppPath + path;
+                var pathLocal = Path.Combine(App.AppPath, path);
 
                 await DownloadFile(pathLocal, $"{UpdatesHost}/api/download/{name}");
             }

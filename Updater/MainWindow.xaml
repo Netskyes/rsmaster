@@ -16,7 +16,8 @@
         WindowTransitionsEnabled="False"
         RightWindowCommandsOverlayBehavior="HiddenTitleBar"
         ResizeMode="NoResize"
-        Loaded="MetroWindow_Loaded">
+        Loaded="MetroWindow_Loaded"
+        Closed="MetroWindow_Closed">
     
     <Grid Background="{DynamicResource DialogBackgroundBrush}">
         <Grid.RowDefinitions>

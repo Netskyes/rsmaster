@@ -8,7 +8,7 @@ namespace Updater.Helpers
     public static class OSBotHelper
     {
         public static string JarLocation 
-            => MainWindow.AppPath + @"osbot.jar";
+            => App.AppPath + @"osbot.jar";
 
         public static bool LocalJarExists()
             => File.Exists(JarLocation);
