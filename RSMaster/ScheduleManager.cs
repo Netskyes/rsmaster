@@ -82,12 +82,13 @@ namespace RSMaster
             {
                 if (!manager.AccountsLaunching.Contains(account.Username) && !account.PID.HasValue)
                 {
-                    if (string.IsNullOrEmpty(timeEvent.Script))
+                    if (!string.IsNullOrEmpty(timeEvent.Script))
                     {
                         account.Script = timeEvent.Script;
                     }
 
-                    MainWindow.LaunchAccountHandler(account, true);
+                    account.AutoLaunched = true;
+                    MainWindow.AccountManager.QueueAccount(account);
                 }
             }
             else if (account.AutoLaunched && manager.IsRunning(account.Username))

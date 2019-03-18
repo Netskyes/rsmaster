@@ -311,7 +311,7 @@ namespace RSMaster.UI
                 var account = new RSAccountForm()
                 {
                     Email = prefix + i + provider,
-                    Password = Util.RandomString(random.Next(7, 14)).ToLower()
+                    Password = Util.RandomString(random.Next(7, 14), random).ToLower()
                 };
 
                 (Service as AccountService).QueueReqForm(account);
@@ -402,13 +402,19 @@ namespace RSMaster.UI
                 };
             }
             
-            if (settings.AccountDefaultWorld > 0 
-                && (accountModel.World is null || accountModel.World == 0))
+            if (accountModel.World is null || accountModel.World == 0)
             {
-                int world = settings.AccountDefaultWorld;
-                if (world > 0 && (world >= 301 && world <= 525))
+                if (settings.AccountDefaultUseRandomWorld)
                 {
-                    accountModel.World = world;
+                    accountModel.World = Worlds.GetRandom();
+                }
+                else if (settings.AccountDefaultWorld > 0)
+                {
+                    int world = settings.AccountDefaultWorld;
+                    if (world > 0 && (world >= 301 && world <= 525))
+                    {
+                        accountModel.World = world;
+                    }
                 }
             }
 
@@ -465,10 +471,12 @@ namespace RSMaster.UI
 
             if (settings.LaunchAccountOnCreate)
             {
-                var item = MainWindow.GetAccountsHandler().FirstOrDefault(x => x.Id == accountModel.Id);
+                var item = MainWindow.GetAccountsHandler().FirstOrDefault
+                    (x => x.Id == accountModel.Id);
                 if (item != null)
                 {
-                    Task.Run(async () => await Host.LaunchAccount(item, true));
+                    item.AutoLaunched = true;
+                    MainWindow.AccountManager.QueueAccount(item);
                 }
             }
         }

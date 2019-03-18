@@ -129,6 +129,7 @@
     <Compile Include="Api\Delegates.cs" />
     <Compile Include="Api\Objects\Account.cs" />
     <Compile Include="Api\Packets\StatusPacket.cs" />
+    <Compile Include="Data\Worlds.cs" />
     <Compile Include="Helpers\PluginsHelper.cs" />
     <Compile Include="Helpers\PluginsValidator.cs" />
     <Compile Include="Objects\Account.cs" />
@@ -169,6 +170,9 @@
     <Compile Include="Interfaces\IViewModel.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
+    <Compile Include="UI\Dialogs\CustomDetailsDialog.xaml.cs">
+      <DependentUpon>CustomDetailsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\GroupValueConverter.cs" />
     <Compile Include="UI\Dialogs\LoginDialog.xaml.cs">
       <DependentUpon>LoginDialog.xaml</DependentUpon>
@@ -197,6 +201,10 @@
       <DependentUpon>ProxyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SQLiteClient.cs" />
+    <Page Include="UI\Dialogs\CustomDetailsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Dialogs\LoginDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

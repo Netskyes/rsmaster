@@ -34,14 +34,86 @@ namespace RSMaster
 
         public string[] AccountsLaunching { get => launching.ToArray(); }
 
+        private List<string> launching = new List<string>();
+        private bool processingQueue;
+        private DateTime lastLaunchTime;
 
         private Dictionary<string, Account> accountsRunning = new Dictionary<string, Account>();
         private readonly object accountsRunningLock = new object();
 
-        private List<string> launching = new List<string>();
+        private readonly Queue<AccountModel> accountsQueue = new Queue<AccountModel>();
+        private readonly object accountsQueueLock = new object();
 
         public AccountManager()
         {
+        }
+
+        public void QueueAccount(AccountModel account)
+        {
+            lock (accountsQueueLock)
+            {
+                accountsQueue.Enqueue(account);
+                if (!processingQueue)
+                {
+                    processingQueue = true;
+                    ThreadPool.QueueUserWorkItem(ProcessQueue);
+                }
+            }
+        }
+
+        public void ClearQueue()
+        {
+            lock (accountsQueueLock) accountsQueue.Clear();
+        }
+
+        private void ProcessQueue(object state)
+        {
+            while (true)
+            {
+                AccountModel account = null;
+                lock (accountsQueueLock)
+                {
+                    if (!accountsQueue.Any())
+                    {
+                        processingQueue = false;
+                        break;
+                    }
+
+                    if ((DateTime.Now - lastLaunchTime).TotalSeconds <= MainWindow.Settings.AccountLaunchDelayBetween)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    account = accountsQueue.Dequeue();
+                    Task.Run(async () => await LaunchAccount(account));
+
+                    lastLaunchTime = DateTime.Now;
+                }
+            }
+        }
+
+        private int GetErrorCode(string response)
+        {
+            int statusCode = -1;
+            if (response.Contains("Your OSBot Client is out of date"))
+            {
+                statusCode = 2;
+            }
+            else if (response.Contains("Invalid username or password"))
+            {
+                statusCode = 3;
+            }
+            else if (response.Contains("You must update Web Walking through the Boot UI"))
+            {
+                statusCode = 5;
+            }
+            else if (response.Contains("You are not permitted to use OSBot"))
+            {
+                statusCode = 6;
+            }
+
+            return statusCode;
         }
 
         public async Task<(bool success, int errorCode)> LaunchAccount(AccountModel account, bool autoLaunch = false)
@@ -82,24 +154,11 @@ namespace RSMaster
                 return proc.StandardOutput.ReadToEnd();
             });
 
-            var errorCode = 0;
+            var errorCode = GetErrorCode(launchResponse);
 
             if (MainWindow.Settings.DebugMode)
             {
                 MainWindow.LogHandler("DEBUG: " + launchResponse);
-            }
-
-            if (launchResponse.Contains("Your OSBot Client is out of date"))
-            {
-                errorCode = 2;
-            }
-            else if (launchResponse.Contains("Invalid username or password"))
-            {
-                errorCode = 3;
-            }
-            else if (launchResponse.Contains("You must update Web Walking through the Boot UI"))
-            {
-                errorCode = 5;
             }
 
             if (errorCode > 0)

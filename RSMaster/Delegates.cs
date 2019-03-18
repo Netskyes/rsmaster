@@ -12,6 +12,7 @@ namespace RSMaster
     internal delegate void UpdateAccountCallback(AccountModel accountModel);
     internal delegate GroupModel GetGroupByIdCallback(int groupId);
     internal delegate IEnumerable<AccountModel> GetAccountsCallback();
+    internal delegate void StopAccount(int? accountId);
 
     public delegate void PacketReceiveHandler(byte[] buffer);
     public delegate void AccountCreatedHandler(AccountModel accountModel);

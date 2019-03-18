@@ -46,6 +46,24 @@ namespace PluginSample
                         }
                     }
                     break;
+
+                case OpCodes.GeneralStatus:
+                    if (args[3] == "10")
+                    {
+                        var account = GetAccountByUsername(username);
+                        if (account != null)
+                        {
+                            Task.Run(() =>
+                            {
+                                StopAccountById(account.Id);
+                                Thread.Sleep(2000);
+
+                                account.Script = "ClayMiner";
+                                LaunchAccount(account);
+                            });
+                        }
+                    }
+                    break;
             }
         }
 

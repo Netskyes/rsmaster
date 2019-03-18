@@ -67,6 +67,18 @@ namespace RSMaster.Api
         /// <param name="accountId"></param>
         public void LaunchAccountById(int accountId) => proxyBase.LaunchAccountById(accountId);
 
+        /// <summary>
+        /// Launch loaded account.
+        /// </summary>
+        /// <param name="account"></param>
+        public void LaunchAccount(Account account) => proxyBase.LaunchAccount(account);
+
+        /// <summary>
+        /// Stop loaded running account by id.
+        /// </summary>
+        /// <param name="accountid"></param>
+        public void StopAccountById(int accountid) => proxyBase.StopAccountById(accountid);
+
         public CoreBase proxyBase;
     }
 }

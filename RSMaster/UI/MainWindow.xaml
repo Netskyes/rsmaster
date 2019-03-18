@@ -244,7 +244,7 @@
                         ItemsSource="{Binding Path=AccountsListItems}"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
-                        SelectionMode="Single" 
+                        SelectionMode="Extended" 
                         SelectionUnit="FullRow"
                         CanUserAddRows="False"
                         CanUserSortColumns="False"
@@ -256,6 +256,11 @@
                         HeadersVisibility="None"
                         CellStyle="{StaticResource CellStyleWithPadding}"
                         SelectionChanged="AccountsList_SelectionChanged">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="SetDetailsMenu" Header="Update Details" Click="SetDetailsMenu_Click" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
@@ -652,7 +657,7 @@
                                 BorderBrush="{DynamicResource TextBoxBorderBrush}"
                                 TextChanged="Settings_Changed">
                             </TextBox>
-                            
+
                             <DockPanel
                                 Margin="0 0 0 12"
                                 FlowDirection="LeftToRight">
@@ -681,6 +686,33 @@
                                 <TextBlock 
                                     VerticalAlignment="Center"
                                     Style="{StaticResource TextBlockStyle}">Terminate OSBot Clients on program exit</TextBlock>
+                            </DockPanel>
+
+                            <DockPanel
+                                Margin="0 0 0 12"
+                                FlowDirection="LeftToRight">
+                                <TextBlock 
+                                    Width="Auto"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">Delay Between Accounts Launch</TextBlock>
+                                <TextBox
+                                    Width="50"
+                                    Margin="16 0 0 0"
+                                    HorizontalAlignment="Left"
+                                    Controls:TextBoxHelper.Watermark="1"
+                                    Text="{Binding AccountLaunchDelayBetween, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="TxtBoxAccountLaunchDelayBetween"
+                                    Foreground="#FFFFFF" 
+                                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                                    TextChanged="Settings_Changed" />
+                                <TextBlock 
+                                    Width="Auto"
+                                    Margin="16 0 0 0"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource TextBlockStyle}">secs</TextBlock>
                             </DockPanel>
                         </StackPanel>
                     </Grid>

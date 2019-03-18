@@ -1,0 +1,141 @@
+﻿<Dialogs:BaseMetroDialog x:Class="RSMaster.UI.Dialogs.CustomDetailsDialog"
+        Height="Auto" Width="Auto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:RSMaster.UI"
+        mc:Ignorable="d"
+        BorderBrush="{DynamicResource WindowBorderBrush}"
+        Background="{DynamicResource DialogBackgroundBrush}">
+
+    <Dialogs:BaseMetroDialog.Resources>
+        <ResourceDictionary Source="pack://application:,,,/RSMaster;component/UI/Styles/AppStyleDark.xaml" />
+    </Dialogs:BaseMetroDialog.Resources>
+    
+    <Grid Width="320">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <StackPanel
+            Grid.Row="0" 
+            Margin="20"
+            x:Name="AccountDetails">
+            <DockPanel
+                Margin="0 0 0 12"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Set Script</TextBlock>
+                <TextBox
+                    Controls:TextBoxHelper.Watermark="Name/Id:p1.p2.p3"
+                    Text="{Binding Script, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    x:Name="TxtBoxScript"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </TextBox>
+            </DockPanel>
+
+            <DockPanel
+                Margin="0 0 0 12"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Random F2P World</TextBlock>
+                <CheckBox 
+                    x:Name="ChkBoxEnableRandomWorld" 
+                    Style="{DynamicResource CheckBoxStyle}"
+                    IsChecked="{Binding EnableRandomWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+
+            <DockPanel
+                Margin="0 0 0 12"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Set World</TextBlock>
+                <TextBox
+                    Controls:TextBoxHelper.Watermark="301 - 525"
+                    Text="{Binding World, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    x:Name="TxtBoxWorld"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}">
+                </TextBox>
+            </DockPanel>
+
+            <DockPanel
+                Margin="0 0 0 12"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Enable Proxy</TextBlock>
+                <CheckBox 
+                    x:Name="ChkBoxEnableProxy" 
+                    Style="{DynamicResource CheckBoxStyle}"
+                    IsChecked="{Binding EnableProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+
+            <DockPanel
+                Margin="0 0 0 12"
+                FlowDirection="LeftToRight">
+                <TextBlock 
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBlockStyle}">Socks5 Proxy</TextBlock>
+                <ComboBox
+                    DockPanel.Dock="Right"
+                    ItemsSource="{Binding SocksProxyListItems}"
+                    DisplayMemberPath="Alias"
+                    SelectedValuePath="Alias"
+                    SelectedValue="{Binding ProxyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    x:Name="CmbBoxAccountProxy"
+                    Foreground="#FFFFFF" 
+                    Background="{DynamicResource TextBoxBackgroundBrush}"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}"/>
+            </DockPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="20 0 20 20">
+            <DockPanel
+                HorizontalAlignment="Left"
+                FlowDirection="LeftToRight">
+                <Button
+			        Name="ButtonUpdate"
+			        Height="27"
+                    Width="Auto"
+			        FontFamily="Tahoma"
+			        FontWeight="Bold"
+			        FontSize="11"
+			        Padding="20,0,20,0"
+			        Content="Update" Style="{StaticResource ButtonStyle}"
+                    Click="ButtonSetDetails_Click"/>
+                <Button
+			        Name="ButtonClose"
+                    Margin="5 0"
+			        Height="27"
+                    Width="Auto"
+			        FontFamily="Tahoma"
+			        FontWeight="Bold"
+			        FontSize="11"
+			        Padding="20,0,20,0"
+			        Content="Close" Style="{StaticResource ButtonStyle}"
+                    Click="ButtonClose_Click"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Dialogs:BaseMetroDialog>

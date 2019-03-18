@@ -31,12 +31,14 @@ namespace RSMaster.Config
         public bool RememberLoginDetails { get; set; }
         public bool KillClientsOnExit { get; set; }
         public bool DebugMode { get; set; }
+        public bool AccountDefaultUseRandomWorld { get; set; }
 
         public int AccountDefaultWorld { get; set; }
         public int AccountServiceQueueLimit { get; set; }
         public int AccountServiceBreakTime { get; set; }
         public int AccountServiceLimit { get; set; }
         public int AccountDefaultGroupId { get; set; }
+        public int AccountLaunchDelayBetween { get; set; } = 20;
 
         public void Save()
         {

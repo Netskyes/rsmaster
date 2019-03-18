@@ -376,6 +376,22 @@
                                         DockPanel.Dock="Left"
                                         Width="120"
                                         VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockStyle}">Random F2P World</TextBlock>
+                                    <CheckBox 
+                                        x:Name="ChkBoxEnableRandomWorld" 
+                                        Style="{DynamicResource CheckBoxStyle}"
+                                        IsChecked="{Binding AccountDefaultUseRandomWorld, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Checked="Settings_Changed"
+                                        Unchecked="Settings_Changed"/>
+                                </DockPanel>
+
+                                <DockPanel
+                                    Margin="0 0 0 12"
+                                    FlowDirection="LeftToRight">
+                                    <TextBlock 
+                                        DockPanel.Dock="Left"
+                                        Width="120"
+                                        VerticalAlignment="Center"
                                         Style="{StaticResource TextBlockStyle}">Set World</TextBlock>
                                     <TextBox
                                         Controls:TextBoxHelper.Watermark="301 - 525"

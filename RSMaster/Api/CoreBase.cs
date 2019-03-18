@@ -8,6 +8,7 @@ namespace RSMaster.Api
 {
     using UI;
     using Objects;
+    using RSMaster.UI.Models;
 
     public class CoreBase : PluginObject
     {
@@ -52,7 +53,48 @@ namespace RSMaster.Api
             }
         }
 
+        public void LaunchAccount(Account account)
+        {
+            MainWindow.LaunchAccountHandler(GetModelByAccount(account));
+        }
+
+        public void StopAccountById(int accountId)
+        {
+            MainWindow.StopAccountCallback(accountId);
+        }
+
         #endregion
+
+        #region Helpers
+
+        private AccountModel GetModelByAccount(Account source)
+        {
+            if (source is null)
+                return null;
+
+            var account = new AccountModel()
+            {
+                Id = source.Id,
+                Name = source.Name,
+                World = source.World,
+                Username = source.Username,
+                Password = source.Password,
+                Script = source.Script,
+                ProxyName = source.ProxyName,
+                ProxyEnabled = source.ProxyEnabled ? 1 : 0,
+                BankPIN = source.BankPIN,
+                Temporary = source.IsTemporary ? 1 : 0,
+                GroupId = source.GroupId,
+                Comments = source.Comments,
+                PID = source.PID,
+                Created = source.Created,
+                Visible = source.Visible,
+                AutoLaunched = source.AutoLaunched,
+                WindowHandle = source.WindowHandle
+            };
+
+            return account;
+        }
 
         private Account GetAccountByModel(UI.Models.AccountModel source)
         {
@@ -83,5 +125,7 @@ namespace RSMaster.Api
 
             return account;
         }
+
+        #endregion
     }
 }

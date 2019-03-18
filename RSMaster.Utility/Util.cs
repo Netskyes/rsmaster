@@ -176,9 +176,9 @@ namespace RSMaster.Utility
             return retArray;
         }
 
-        public static string RandomString(int length)
+        public static string RandomString(int length, Random random = null)
         {
-            var random = new Random();
+            random = random ?? new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }

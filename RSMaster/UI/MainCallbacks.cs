@@ -10,5 +10,6 @@
         internal static GetGroupByIdCallback GetGroupByIdHandler;
         internal static GetAccountsCallback GetAccountsHandler;
         internal static AccountCreatedHandler AccountCreatedCallback;
+        internal static StopAccount StopAccountCallback;
     }
 }

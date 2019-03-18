@@ -69,6 +69,7 @@ namespace RSMaster.UI
             UpdateAccountHandler = UpdateAccount;
             LaunchAccountHandler = LaunchAccount;
             GetAccountsHandler = GetLoadedAccounts;
+            StopAccountCallback = StopAccount;
 
             #endregion
 
@@ -146,6 +147,22 @@ namespace RSMaster.UI
         public void LoginSuccessPostEvent()
         {
             ScheduleManager.Begin();
+            LoadPlugins();
+        }
+
+        internal void LoadPlugins()
+        {
+            var helper = new PluginsHelper();
+            foreach (var plugin in helper.FetchPlugins())
+            {
+                try
+                {
+                    new Api.CoreBase().LaunchPlugin(plugin);
+                }
+                catch (Exception e)
+                {
+                }
+            }
         }
 
         internal void LoadGroups()
@@ -202,16 +219,25 @@ namespace RSMaster.UI
             return Invoke(() => AccountsList.SelectedItem) as AccountModel;
         }
 
-        private void UpdateAccount(AccountModel accountModel)
+        private IEnumerable<AccountModel> GetSelectedAccounts()
         {
-            Invoke(() =>
+            return Invoke(() => AccountsList.SelectedItems).OfType<AccountModel>();
+        }
+
+        private void UpdateAccount(AccountModel account)
+        {
+            if (DataProvider.UpdateAccount(account))
             {
-                var item = accountsListItems.FirstOrDefault(x => x.Id == accountModel.Id);
-                if (item != null)
+                Invoke(() =>
                 {
-                    Util.UpdateObjByProps(accountModel, item, false);
-                }
-            });
+                    var item = accountsListItems.FirstOrDefault(x => x.Id == account.Id);
+                    if (item != null)
+                    {
+                        Invoke(() =>
+                            Util.UpdateObjByProps(account, item, false));
+                    }
+                });
+            }
         }
 
         private void AppShutdown()
@@ -220,6 +246,26 @@ namespace RSMaster.UI
         }
 
         internal void AddAccountToList(AccountModel account) => Invoke(() => accountsListItems.Insert(0, account));
+
+        internal void StopAccount(int? accountId = null)
+        {
+            if (accountId.HasValue)
+            {
+                var item = Invoke(() => accountsListItems.FirstOrDefault(x => x.Id == accountId));
+                if (item != null)
+                {
+                    AccountManager.StopAccount(item);
+                }
+            }
+            else
+            {
+                var item = GetSelectedAccount();
+                if (item != null)
+                {
+                    AccountManager.StopAccount(item);
+                }
+            }
+        }
 
         internal async Task LaunchAccount(AccountModel account, bool autoLaunch = false)
         {
@@ -284,6 +330,10 @@ namespace RSMaster.UI
 
                 case 5:
                     Log("Web Walking has been updated, please manually run osbot.jar and install it through Boot UI.");
+                    break;
+
+                case 6:
+                    Log("Your OSBot account is banned, can't launch accounts.");
                     break;
 
                 default:
@@ -604,20 +654,10 @@ namespace RSMaster.UI
                 return;
 
             var account = Invoke(() => AccountOpen);
-            if (account != null)
+            if (account != null 
+                && !GetLoadedAccounts().Any(x => x.Username == account.Username && x.Id != account.Id))
             {
-                if (DataProvider.UpdateAccount(account))
-                {
-                    Invoke(() =>
-                    {
-                        var item = accountsListItems.FirstOrDefault(x => x.Id == account.Id);
-                        if (item != null)
-                        {
-                            Invoke(() => 
-                                Util.UpdateObjByProps(account, item, false));
-                        }
-                    });
-                }
+                UpdateAccount(account);
             }
         }
 
@@ -626,12 +666,21 @@ namespace RSMaster.UI
             Settings.Save();
         }
 
-        private void ButtonDelAccount_Click(object sender, RoutedEventArgs e)
+        private async void ButtonDelAccount_Click(object sender, RoutedEventArgs e)
         {
             Security.AeonGuard.Begin();
 
-            var item = GetSelectedAccount();
-            if (item != null)
+            var items = GetSelectedAccounts().ToList();
+            if (!items.Any())
+                return;
+
+            if (items.Count > 1 
+                && !await ShowMessageDialog($"Delete Accounts ({items.Count})", "Are you sure you'd like to delete these accounts?"))
+            {
+                return;
+            }
+
+            foreach (var item in items)
             {
                 if (DataProvider.DeleteAccount(item.Id))
                 {
@@ -667,13 +716,21 @@ namespace RSMaster.UI
         {
             Security.AeonGuard.Begin();
 
-            var item = GetSelectedAccount();
-            if (item == null)
-                return;
-
-            if (item != null)
+            var items = GetSelectedAccounts().ToList();
+            if (items.Count > 1)
             {
-                await LaunchAccount(item);
+                foreach (var account in items.Where(x => x != null))
+                {
+                    AccountManager.QueueAccount(account);
+                }
+            }
+            else
+            {
+                var item = items.FirstOrDefault();
+                if (item != null)
+                {
+                    await LaunchAccount(item);
+                }
             }
         }
 
@@ -681,10 +738,13 @@ namespace RSMaster.UI
         {
             Security.AeonGuard.Begin();
 
-            var item = GetSelectedAccount();
-            if (item != null)
+            var items = GetSelectedAccounts().ToList();
+            if (items.Any())
             {
-                AccountManager.StopAccount(item);
+                foreach (var id in items.Where(x => x != null).Select(x => x.Id))
+                {
+                    StopAccount(id);
+                }
             }
         }
 
@@ -695,13 +755,6 @@ namespace RSMaster.UI
             var item = GetSelectedAccount();
             if (item != null)
             {
-                //if (SchedulerWindow != null && SchedulerWindow.IsVisible)
-                //{
-                //    SchedulerWindow.Activate();
-
-                //    return;
-                //}
-
                 SchedulerWindow = new SchedulerWindow(this, item);
                 SchedulerWindow.ShowDialog();
             }
@@ -750,6 +803,12 @@ namespace RSMaster.UI
         private void ButtonOpenLicenses_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("https://selly.gg/g/091d43");
+        }
+
+        private async void SetDetailsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            await this.ShowMetroDialogAsync
+                (new Dialogs.CustomDetailsDialog(this));
         }
 
         #endregion
