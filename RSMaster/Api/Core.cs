@@ -68,16 +68,31 @@ namespace RSMaster.Api
         public void LaunchAccountById(int accountId) => proxyBase.LaunchAccountById(accountId);
 
         /// <summary>
-        /// Launch loaded account.
-        /// </summary>
-        /// <param name="account"></param>
-        public void LaunchAccount(Account account) => proxyBase.LaunchAccount(account);
-
-        /// <summary>
         /// Stop loaded running account by id.
         /// </summary>
         /// <param name="accountid"></param>
         public void StopAccountById(int accountid) => proxyBase.StopAccountById(accountid);
+
+        /// <summary>
+        /// Update account.
+        /// </summary>
+        /// <param name="account"></param>
+        public void UpdateAccount(Account account) => proxyBase.UpdateAccount(account);
+
+        /// <summary>
+        /// Update account's script by account id.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <param name="scriptName"></param>
+        public void UpdateScriptByAccountId(int accountId, string scriptName)
+        {
+            var account = GetAccountById(accountId);
+            if (account != null)
+            {
+                account.Script = scriptName;
+                UpdateAccount(account);
+            }
+        }
 
         public CoreBase proxyBase;
     }

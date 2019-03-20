@@ -53,14 +53,14 @@ namespace RSMaster.Api
             }
         }
 
-        public void LaunchAccount(Account account)
-        {
-            MainWindow.LaunchAccountHandler(GetModelByAccount(account));
-        }
-
         public void StopAccountById(int accountId)
         {
             MainWindow.StopAccountCallback(accountId);
+        }
+
+        public void UpdateAccount(Account account)
+        {
+            MainWindow.UpdateAccountHandler(GetModelByAccount(account));
         }
 
         #endregion

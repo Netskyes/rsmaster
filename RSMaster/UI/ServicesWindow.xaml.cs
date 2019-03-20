@@ -141,14 +141,7 @@ namespace RSMaster.UI
                     }
                     else
                     {
-                        Invoke(() =>
-                        {
-                            var item = unlocksListItems.FirstOrDefault(x => x.Email == form.Email);
-                            if (item != null)
-                            {
-                                unlocksListItems.Remove(item);
-                            }
-                        });
+                        HandleUnlock(form as RSRecoveryForm);
                     }
                 }
             }
@@ -388,6 +381,26 @@ namespace RSMaster.UI
             }
         }
 
+        private void HandleUnlock(RSRecoveryForm recovery)
+        {
+            var account = MainWindow.GetAccountsHandler().FirstOrDefault
+                (x => x.Username == recovery.Email);
+            if (account != null)
+            {
+                account.Password = recovery.NewPassword;
+                DataProvider.SaveAccount(account);
+            }
+
+            Invoke(() =>
+            {
+                var item = unlocksListItems.FirstOrDefault(x => x.Email == recovery.Email);
+                if (item != null)
+                {
+                    unlocksListItems.Remove(item);
+                }
+            });
+        }
+
         private void HandleCreate(RSAccountForm account)
         {
             var settings = MainWindow.Settings;
@@ -487,10 +500,10 @@ namespace RSMaster.UI
             {
                 Email = args.Take(0),
                 EmailPassword = args.Take(1),
-                Password = args.Take(2),
-                NewPassword = args.Take(3),
-                EmailProvider = args.Take(4),
-                SubEmail = (args.Take(5) == "sub") ? 1 : 0
+                Password = "Unknown",
+                NewPassword = args.Take(2),
+                EmailProvider = args.Take(3),
+                SubEmail = (args.Take(4) == "sub") ? 1 : 0
             };
 
             UnlockModel getExistingUnlock()

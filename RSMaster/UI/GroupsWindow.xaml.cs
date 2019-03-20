@@ -20,6 +20,7 @@ namespace RSMaster.UI
     using Data;
     using Models;
     using Utility;
+    using Extensions;
 
     public partial class GroupsWindow : MetroWindow
     {
@@ -157,6 +158,40 @@ namespace RSMaster.UI
             }
 
             groupLoading = false;
+        }
+
+        private void ButtonLaunchGroup_Click(object sender, RoutedEventArgs e)
+        {
+            var group = Invoke(() => GroupsList.SelectedItem) as GroupModel;
+            if (group is null)
+                return;
+
+            var accounts = Invoke(() => Host.accountsListItems).Where(x => x.GroupId == group.Id);
+            foreach (var account in accounts)
+            {
+                bool replace = (group.Override > 0);
+
+                if ((replace || !account.Script.HasValue()) && group.Script.HasValue())
+                {
+                    account.Script = group.Script;
+                }
+
+                if ((replace || !account.World.HasValue) && group.World.HasValue)
+                {
+                    account.World = group.World;
+                }
+
+                if ((replace || account.ProxyEnabled < 1)
+                    && (group.ProxyEnabled > 0 && group.ProxyName.HasValue()))
+                {
+                    account.ProxyEnabled = 1;
+                    account.ProxyName = group.ProxyName;
+                }
+
+                MainWindow.AccountManager.QueueAccount(account);
+            }
+
+            Invoke(Close);
         }
 
         #region Helpers

@@ -58,8 +58,10 @@ namespace PluginSample
                                 StopAccountById(account.Id);
                                 Thread.Sleep(2000);
 
-                                account.Script = "ClayMiner";
-                                LaunchAccount(account);
+                                account.Script = "ExplvAIO:default.config";
+                                account.GroupId = 77;
+                                UpdateAccount(account);
+                                LaunchAccountById(account.Id);
                             });
                         }
                     }

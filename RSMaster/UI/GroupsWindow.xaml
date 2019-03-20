@@ -194,6 +194,29 @@
                 <Border BorderThickness="0 1 0 1" BorderBrush="{DynamicResource WindowBorderBrush}">
                     <DockPanel Grid.Row="0">
                         <Button 
+                            x:Name="ButtonLaunchGroup"
+                            Padding="0"
+                            Margin="1 0 0 0"
+                            BorderThickness="0"
+                            Height="29" Width="31"
+                            Controls:ButtonHelper.CornerRadius="0" 
+                            HorizontalAlignment="Left"
+                            Click="ButtonLaunchGroup_Click"
+                            ToolTip="Launch Group">
+                            <Image Stretch="Fill">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="{StaticResource PlayNormal}"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Source" Value="{StaticResource PlayHovered}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </Button>
+                        <Button 
                             x:Name="ButtonAddGroup"
                             Padding="0"
                             Margin="1 0 0 0"

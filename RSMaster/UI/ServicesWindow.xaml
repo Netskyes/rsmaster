@@ -685,8 +685,7 @@
                             <DataGridTextColumn Binding="{Binding Email}" Header="Email" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="200"/>
                             <DataGridTextColumn Header="Passwords" CanUserResize="False" CanUserReorder="False" IsReadOnly="True" Width="*">
                                 <DataGridTextColumn.Binding>
-                                    <MultiBinding StringFormat="{}{0} -> {1}">
-                                        <Binding Path="Password" />
+                                    <MultiBinding StringFormat="{}New Password -> {0}">
                                         <Binding Path="NewPassword" />
                                     </MultiBinding>
                                 </DataGridTextColumn.Binding>
@@ -705,7 +704,7 @@
                             IsReadOnly="True"
                             Background="{DynamicResource BrightBrush}"
                             VerticalScrollBarVisibility="Auto"
-                            Text="Import format: email / email password / rs password / rs new password / provider (gmail, yahoo) / sub
+                            Text="Import format: email / email password / rs new password / provider (gmail, yahoo) / sub (if mail+)
                             Do not use spaces in between /"
                             Foreground="#CCC">
                             <TextBox.Style>

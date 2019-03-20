@@ -130,6 +130,7 @@
     <Compile Include="Api\Objects\Account.cs" />
     <Compile Include="Api\Packets\StatusPacket.cs" />
     <Compile Include="Data\Worlds.cs" />
+    <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Helpers\PluginsHelper.cs" />
     <Compile Include="Helpers\PluginsValidator.cs" />
     <Compile Include="Objects\Account.cs" />
